@@ -1,12 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import ParticleBackground from '@/components/ParticleBackground';
+import Header from '@/components/Header';
+import Navigation from '@/components/Navigation';
+import IdeaGenerator from '@/components/IdeaGenerator';
+import TokenomicsEngine from '@/components/TokenomicsEngine';
+import SocialMediaLaunchpad from '@/components/SocialMediaLaunchpad';
+import ResourcesSection from '@/components/ResourcesSection';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-black text-white overflow-x-hidden">
+      <ParticleBackground />
+      <Navigation />
+      <Header />
+      <IdeaGenerator />
+      <TokenomicsEngine />
+      <SocialMediaLaunchpad />
+      <ResourcesSection />
+      <Footer />
     </div>
   );
 };
