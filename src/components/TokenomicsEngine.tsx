@@ -5,8 +5,12 @@ import { TokenomicsData, validateAllocations } from '@/utils/tokenomicsValidatio
 import { BasicSettingsForm } from './tokenomics/BasicSettingsForm';
 import { TaxAllocationForm } from './tokenomics/TaxAllocationForm';
 import { SupplyAllocationForm } from './tokenomics/SupplyAllocationForm';
-import { TokenomicsPieChart } from './tokenomics/TokenomicsCharts';
+import { TokenomicsDistributionChart } from './tokenomics/TokenomicsDistributionChart';
 import { ActionButtons } from './tokenomics/ActionButtons';
+import { PresetSelector } from './tokenomics/PresetSelector';
+import { TokenLockSchedule } from './tokenomics/TokenLockSchedule';
+import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const TokenomicsEngine = () => {
   const [tokenomics, setTokenomics] = useState<TokenomicsData>({
@@ -66,6 +70,15 @@ const TokenomicsEngine = () => {
     }
   };
 
+  // Set entire tokenomics data (for presets)
+  const setTokenomicsData = (data: TokenomicsData) => {
+    setTokenomics(data);
+    toast({
+      title: "Preset Applied! 🎯",
+      description: "Tokenomics values have been updated.",
+    });
+  };
+
   // Chart data
   const taxChartData = [
     { name: 'Liquidity', value: parseFloat(tokenomics.taxAllocation.liquidity || '0'), color: '#6a0dad' },
@@ -92,47 +105,77 @@ const TokenomicsEngine = () => {
             Configure your meme coin's tokenomics with built-in validation and visual charts
           </p>
         </div>
-
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          {/* Input Controls */}
-          <div className="space-y-6">
-            <BasicSettingsForm 
-              totalSupply={tokenomics.totalSupply}
-              buyTax={tokenomics.buyTax}
-              sellTax={tokenomics.sellTax}
-              onUpdate={updateTokenomics}
-            />
+        
+        <div className="max-w-6xl mx-auto space-y-8">
+          <PresetSelector onSelectPreset={setTokenomicsData} />
+          
+          <Tabs defaultValue="basic" className="w-full">
+            <TabsList className="grid grid-cols-3 mb-8">
+              <TabsTrigger value="basic">Basic Configuration</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced Features</TabsTrigger>
+              <TabsTrigger value="visualization">Visualizations</TabsTrigger>
+            </TabsList>
             
-            <TaxAllocationForm 
-              taxAllocation={tokenomics.taxAllocation}
-              error={errors.taxAllocation}
-              onUpdate={updateTokenomics}
-            />
+            <TabsContent value="basic" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <BasicSettingsForm 
+                    totalSupply={tokenomics.totalSupply}
+                    buyTax={tokenomics.buyTax}
+                    sellTax={tokenomics.sellTax}
+                    onUpdate={updateTokenomics}
+                  />
+                  
+                  <TaxAllocationForm 
+                    taxAllocation={tokenomics.taxAllocation}
+                    error={errors.taxAllocation}
+                    onUpdate={updateTokenomics}
+                  />
+                  
+                  <SupplyAllocationForm 
+                    supplyAllocation={tokenomics.supplyAllocation}
+                    error={errors.supplyAllocation}
+                    onUpdate={updateTokenomics}
+                  />
+                </div>
+                
+                <div className="space-y-6">
+                  <TokenomicsDistributionChart 
+                    taxData={taxChartData}
+                    supplyData={supplyChartData}
+                  />
+                  
+                  <ActionButtons 
+                    tokenomics={tokenomics}
+                    hasErrors={Object.keys(errors).length > 0}
+                  />
+                </div>
+              </div>
+            </TabsContent>
             
-            <SupplyAllocationForm 
-              supplyAllocation={tokenomics.supplyAllocation}
-              error={errors.supplyAllocation}
-              onUpdate={updateTokenomics}
-            />
-          </div>
-
-          {/* Charts and Actions */}
-          <div className="space-y-6">
-            <TokenomicsPieChart 
-              data={taxChartData}
-              title="Tax Allocation"
-            />
+            <TabsContent value="advanced" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-8">
+                <TokenLockSchedule />
+                <TokenUtilitySuggestions />
+              </div>
+            </TabsContent>
             
-            <TokenomicsPieChart 
-              data={supplyChartData}
-              title="Supply Allocation"
-            />
-            
-            <ActionButtons 
-              tokenomics={tokenomics}
-              hasErrors={Object.keys(errors).length > 0}
-            />
-          </div>
+            <TabsContent value="visualization" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-8">
+                <TokenomicsDistributionChart 
+                  taxData={taxChartData}
+                  supplyData={supplyChartData}
+                />
+                
+                <div className="space-y-6">
+                  <ActionButtons 
+                    tokenomics={tokenomics}
+                    hasErrors={Object.keys(errors).length > 0}
+                  />
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </section>

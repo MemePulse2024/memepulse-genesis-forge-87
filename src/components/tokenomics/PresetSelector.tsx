@@ -1,0 +1,91 @@
+
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Check, Info } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { tokenomicsPresets } from '@/utils/tokenomicsPresets';
+import { TokenomicsData } from '@/utils/tokenomicsValidation';
+
+interface PresetSelectorProps {
+  onSelectPreset: (preset: TokenomicsData) => void;
+}
+
+export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
+  const [selectedPreset, setSelectedPreset] = useState<string>('');
+
+  const handlePresetChange = (value: string) => {
+    setSelectedPreset(value);
+    const preset = tokenomicsPresets.find(p => p.name === value);
+    if (preset) {
+      onSelectPreset(preset);
+    }
+  };
+
+  return (
+    <div className="mb-6 bg-card/80 backdrop-blur-md border-purple-500/20 rounded-lg p-4 shadow-lg">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-2 gap-4">
+        <div>
+          <h3 className="font-orbitron text-lg font-bold text-white mb-1">🧩 Tokenomics Templates</h3>
+          <p className="text-gray-400 text-sm">Jump-start with proven tokenomics models</p>
+        </div>
+        
+        <div className="w-full md:w-64">
+          <Select value={selectedPreset} onValueChange={handlePresetChange}>
+            <SelectTrigger className="bg-black/50 border-gray-600">
+              <SelectValue placeholder="Select a template" />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-800 border-gray-600">
+              <SelectGroup>
+                <SelectLabel>Preset Templates</SelectLabel>
+                {tokenomicsPresets.map((preset) => (
+                  <SelectItem 
+                    key={preset.name} 
+                    value={preset.name}
+                    className="text-white hover:bg-gray-700 flex items-center justify-between"
+                  >
+                    <div className="flex items-center">
+                      <span>{preset.name}</span>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button variant="ghost" className="h-6 w-6 p-0 ml-2">
+                              <Info className="h-3 w-3" />
+                              <span className="sr-only">Info</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-gray-900 border-gray-700">
+                            <p>{preset.description}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {selectedPreset && (
+        <div className="bg-gradient-to-r from-purple-900/20 to-orange-900/20 rounded mt-2 p-2 text-xs text-gray-300">
+          <p>Selected: <span className="text-pulse-orange">{selectedPreset}</span> - {tokenomicsPresets.find(p => p.name === selectedPreset)?.description}</p>
+        </div>
+      )}
+    </div>
+  );
+};
