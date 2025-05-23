@@ -1,7 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DonutChart } from '@/components/tokenomics/DonutChart';
-import { Pie, PieChart, ResponsiveContainer, Cell, Tooltip, Legend } from 'recharts';
 
 interface ChartData {
   name: string;
@@ -21,44 +20,25 @@ export const TokenomicsDistributionChart = ({ taxData, supplyData }: TokenomicsD
         <CardTitle className="font-orbitron text-center">Tokenomics Distribution</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <h3 className="text-center text-gray-300 mb-2">Tax Allocation</h3>
-            <div className="h-[200px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={taxData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={40}
-                    outerRadius={70}
-                    dataKey="value"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}%`}
-                  >
-                    {taxData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    formatter={(value) => [`${value}%`, 'Allocation']}
-                    contentStyle={{ backgroundColor: '#333', borderColor: '#666', color: '#fff' }}
-                  />
-                  <Legend formatter={(value) => <span style={{ color: '#fff' }}>{value}</span>} />
-                </PieChart>
-              </ResponsiveContainer>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="flex flex-col">
+            <h3 className="text-center text-gray-300 mb-4 font-semibold">Tax Allocation</h3>
+            <div className="h-[250px]"> {/* Increased height for better spacing */}
+              <DonutChart 
+                data={taxData} 
+                innerRadius={50}
+                outerRadius={80}
+              />
             </div>
           </div>
           
-          <div>
-            <h3 className="text-center text-gray-300 mb-2">Supply Allocation</h3>
-            <div className="h-[200px]">
+          <div className="flex flex-col">
+            <h3 className="text-center text-gray-300 mb-4 font-semibold">Supply Allocation</h3>
+            <div className="h-[250px]"> {/* Increased height for better spacing */}
               <DonutChart 
                 data={supplyData} 
-                innerRadius={40}
-                outerRadius={70}
-                dataKey="value"
+                innerRadius={50}
+                outerRadius={80}
               />
             </div>
           </div>

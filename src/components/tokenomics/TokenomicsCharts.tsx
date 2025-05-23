@@ -18,21 +18,46 @@ export const TokenomicsPieChart = ({ data, title }: ChartProps) => {
         <CardTitle className="font-orbitron text-center">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={250}>
+        <ResponsiveContainer width="100%" height={280}> {/* Increased height */}
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              outerRadius={80}
+              outerRadius={90} {/* Slightly larger */}
               dataKey="value"
-              label={({ name, value }) => `${name}: ${value}%`}
+              labelLine={false}
+              label={({ name, value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                // Only show label if the segment is large enough
+                if (value < 5) return null;
+                
+                const RADIAN = Math.PI / 180;
+                const radius = 25 + innerRadius + (outerRadius - innerRadius);
+                const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                
+                return (
+                  <text 
+                    x={x} 
+                    y={y} 
+                    fill="#fff" 
+                    textAnchor={x > cx ? 'start' : 'end'} 
+                    dominantBaseline="central"
+                    fontSize="12"
+                  >
+                    {`${name}: ${value}%`}
+                  </text>
+                );
+              }}
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip />
+            <Tooltip 
+              formatter={(value) => [`${value}%`, 'Allocation']}
+              contentStyle={{ backgroundColor: '#333', borderColor: '#666', color: '#fff' }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </CardContent>

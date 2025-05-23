@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -48,7 +47,7 @@ export const TokenLockSchedule = () => {
   );
   
   const hasError = Math.abs(totalPercentage - 100) > 0.01;
-
+  
   // Sort data by months for chart
   const chartData = [...lockPeriods]
     .sort((a, b) => (parseInt(a.months) || 0) - (parseInt(b.months) || 0))
@@ -70,11 +69,11 @@ export const TokenLockSchedule = () => {
         )}
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-4">
+        <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2"> {/* Added max height with scroll */}
           {lockPeriods.map((period) => (
-            <div key={period.id} className="flex gap-2 items-end">
-              <div className="flex-1">
-                <Label htmlFor={`months-${period.id}`}>Months</Label>
+            <div key={period.id} className="grid grid-cols-12 gap-2 items-end">
+              <div className="col-span-2">
+                <Label htmlFor={`months-${period.id}`} className="text-xs">Months</Label>
                 <Input
                   id={`months-${period.id}`}
                   type="number"
@@ -84,8 +83,8 @@ export const TokenLockSchedule = () => {
                   className="bg-black/50 border-gray-600"
                 />
               </div>
-              <div className="flex-1">
-                <Label htmlFor={`percentage-${period.id}`}>Percentage (%)</Label>
+              <div className="col-span-2">
+                <Label htmlFor={`percentage-${period.id}`} className="text-xs">Percent</Label>
                 <Input
                   id={`percentage-${period.id}`}
                   type="number"
@@ -96,8 +95,8 @@ export const TokenLockSchedule = () => {
                   className="bg-black/50 border-gray-600"
                 />
               </div>
-              <div className="flex-[2]">
-                <Label htmlFor={`description-${period.id}`}>Description</Label>
+              <div className="col-span-7">
+                <Label htmlFor={`description-${period.id}`} className="text-xs">Description</Label>
                 <Input
                   id={`description-${period.id}`}
                   value={period.description}
@@ -105,14 +104,16 @@ export const TokenLockSchedule = () => {
                   className="bg-black/50 border-gray-600"
                 />
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => removeLockPeriod(period.id)}
-                className="text-gray-400 hover:text-red-400"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="col-span-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeLockPeriod(period.id)}
+                  className="text-gray-400 hover:text-red-400 h-9 w-9"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           ))}
         </div>
@@ -128,17 +129,36 @@ export const TokenLockSchedule = () => {
 
         <div className="mt-4 pt-4 border-t border-gray-700">
           <p className="text-gray-300 text-sm mb-2">Token Release Schedule</p>
-          <div className="h-64 w-full">
+          <div className="h-72 w-full"> {/* Increased height */}
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
-                <XAxis dataKey="months" tick={{ fill: '#aaa' }} axisLine={{ stroke: '#666' }} />
-                <YAxis tick={{ fill: '#aaa' }} axisLine={{ stroke: '#666' }} unit="%" />
+              <BarChart 
+                data={chartData} 
+                margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                barCategoryGap="20%"
+              >
+                <XAxis 
+                  dataKey="months" 
+                  tick={{ fill: '#aaa' }} 
+                  axisLine={{ stroke: '#666' }} 
+                  tickMargin={10}
+                />
+                <YAxis 
+                  tick={{ fill: '#aaa' }} 
+                  axisLine={{ stroke: '#666' }} 
+                  unit="%" 
+                  width={40}
+                />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#333', borderColor: '#666' }}
                   formatter={(value: number) => [`${value}%`, 'Unlock']}
                   labelFormatter={(label) => `${label} Months`}
                 />
-                <Bar dataKey="value" name="Unlock" fill="#6a0dad" />
+                <Bar 
+                  dataKey="value" 
+                  name="Unlock" 
+                  fill="#6a0dad" 
+                  radius={[4, 4, 0, 0]}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>

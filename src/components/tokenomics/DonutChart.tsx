@@ -31,7 +31,29 @@ export const DonutChart = ({
           outerRadius={outerRadius}
           dataKey={dataKey}
           labelLine={false}
-          label={({ name, value }) => `${name}: ${value}%`}
+          // Simplified labels to prevent overlap
+          label={({ name, value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+            // Only show the label if the segment is large enough
+            if (value < 5) return null;
+            
+            const RADIAN = Math.PI / 180;
+            const radius = 25 + innerRadius + (outerRadius - innerRadius);
+            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+            
+            return (
+              <text 
+                x={x} 
+                y={y} 
+                fill="#fff" 
+                textAnchor={x > cx ? 'start' : 'end'} 
+                dominantBaseline="central"
+                fontSize="12"
+              >
+                {`${name}: ${value}%`}
+              </text>
+            );
+          }}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />
@@ -41,7 +63,13 @@ export const DonutChart = ({
           formatter={(value) => [`${value}%`, 'Allocation']}
           contentStyle={{ backgroundColor: '#333', borderColor: '#666', color: '#fff' }}
         />
-        <Legend formatter={(value) => <span style={{ color: '#fff' }}>{value}</span>} />
+        <Legend 
+          formatter={(value) => <span style={{ color: '#fff' }}>{value}</span>}
+          layout="horizontal"
+          align="center"
+          verticalAlign="bottom"
+          wrapperStyle={{ paddingTop: '10px' }}
+        />
       </PieChart>
     </ResponsiveContainer>
   );
