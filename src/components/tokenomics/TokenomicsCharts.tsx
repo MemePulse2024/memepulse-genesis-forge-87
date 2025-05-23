@@ -24,7 +24,7 @@ export const TokenomicsPieChart = ({ data, title }: ChartProps) => {
               data={data}
               cx="50%"
               cy="50%"
-              outerRadius={90} {/* Slightly larger */}
+              outerRadius={90} /* Fixed syntax - removed curly braces */
               dataKey="value"
               labelLine={false}
               label={({ name, value, cx, cy, midAngle, innerRadius, outerRadius }) => {
