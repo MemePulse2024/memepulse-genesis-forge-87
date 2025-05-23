@@ -39,15 +39,24 @@ const TokenomicsEngine = () => {
   const updateTokenomics = (field: string, value: string, subField?: string) => {
     if (subField) {
       setTokenomics(prev => {
-        // Create a safe copy for the nested field
-        const fieldCopy = { ...prev[field as keyof TokenomicsData] } as Record<string, string>;
-        // Update the subfield in the copy
-        fieldCopy[subField] = value;
-        // Return new state with the updated copy
-        return {
-          ...prev,
-          [field]: fieldCopy
-        };
+        if (field === 'taxAllocation') {
+          return {
+            ...prev,
+            taxAllocation: {
+              ...prev.taxAllocation,
+              [subField]: value
+            }
+          };
+        } else if (field === 'supplyAllocation') {
+          return {
+            ...prev,
+            supplyAllocation: {
+              ...prev.supplyAllocation,
+              [subField]: value
+            }
+          };
+        }
+        return prev;
       });
     } else {
       setTokenomics(prev => ({
