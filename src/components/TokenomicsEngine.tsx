@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -71,15 +70,20 @@ const TokenomicsEngine = () => {
     validateAllocations();
   }, [tokenomics]);
 
+  // Fixed function - properly handling nested objects in state
   const updateTokenomics = (field: string, value: string, subField?: string) => {
     if (subField) {
-      setTokenomics(prev => ({
-        ...prev,
-        [field]: {
-          ...prev[field as keyof TokenomicsData],
-          [subField]: value
-        }
-      }));
+      setTokenomics(prev => {
+        // Create a safe copy for the nested field
+        const fieldCopy = { ...prev[field as keyof TokenomicsData] } as Record<string, string>;
+        // Update the subfield in the copy
+        fieldCopy[subField] = value;
+        // Return new state with the updated copy
+        return {
+          ...prev,
+          [field]: fieldCopy
+        };
+      });
     } else {
       setTokenomics(prev => ({
         ...prev,
