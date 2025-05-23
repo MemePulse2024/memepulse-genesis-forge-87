@@ -18,7 +18,7 @@ export const TokenomicsPieChart = ({ data, title }: ChartProps) => {
         <CardTitle className="font-orbitron text-center">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={280}> {/* Increased height */}
+        <ResponsiveContainer width="100%" height={280}>
           <PieChart>
             <Pie
               data={data}
