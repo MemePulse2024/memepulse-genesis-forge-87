@@ -1,7 +1,6 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, BookOpen, Zap, Users, Shield } from 'lucide-react';
+import { ExternalLink, BookOpen, Zap, Shield } from 'lucide-react';
 
 const ResourcesSection = () => {
   const resources = [
@@ -9,14 +8,14 @@ const ResourcesSection = () => {
       icon: <Zap className="w-6 h-6" />,
       title: "How to Deploy a PRC-20 Token",
       description: "Step-by-step guide to deploying your meme coin smart contract on PulseChain",
-      url: "https://docs.pulsechain.com/how-to/deploy-token",
+      url: "https://docs.openzeppelin.com/contracts/5.x/erc20",
       category: "Development"
     },
     {
       icon: <ExternalLink className="w-6 h-6" />,
       title: "Adding Liquidity to PulseX",
       description: "Learn how to provide liquidity for your token on PulseChain's native DEX",
-      url: "https://pulsex.com/docs/liquidity",
+      url: "https://ipfs.app.pulsex.com/",
       category: "DeFi"
     },
     {
@@ -27,29 +26,22 @@ const ResourcesSection = () => {
       category: "Tools"
     },
     {
-      icon: <Users className="w-6 h-6" />,
-      title: "Community Building Guide",
-      description: "Best practices for building and managing your meme coin community",
-      url: "https://academy.binance.com/en/articles/how-to-build-a-crypto-community",
-      category: "Marketing"
-    },
-    {
       icon: <Shield className="w-6 h-6" />,
       title: "Legal & Compliance Basics",
       description: "Understanding legal requirements and compliance for token projects",
-      url: "https://blog.coinbase.com/understanding-cryptocurrency-regulation-for-developers-b3f6c18b5d6",
+      url: "https://coinmarketcap.com/disclaimer/",
       category: "Legal"
     },
     {
       icon: <BookOpen className="w-6 h-6" />,
       title: "Tokenomics Design Principles",
       description: "Learn the fundamentals of designing sustainable token economics",
-      url: "https://coinmarketcap.com/alexandria/article/what-is-tokenomics",
+      url: "https://docs.openzeppelin.com/contracts/5.x/wizard",
       category: "Education"
     }
   ];
 
-  const categories = ["All", "Development", "DeFi", "Tools", "Marketing", "Legal", "Education"];
+  const categories = ["All", "Development", "DeFi", "Tools", "Legal", "Education"];
 
   return (
     <section id="resources" className="py-20 bg-gradient-to-br from-black to-gray-900">
@@ -145,17 +137,8 @@ const ResourcesSection = () => {
                     variant="outline"
                     className="border-purple-500/50 hover:bg-purple-500/20"
                   >
-                    <a href="https://twitter.com/PulseChainCom" target="_blank" rel="noopener noreferrer">
+                    <a href="https://x.com/pulsenet369?t=h7EY6mvJAI9rnm-i0GKRhA&s=09" target="_blank" rel="noopener noreferrer">
                       🐦 Twitter Updates
-                    </a>
-                  </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="border-purple-500/50 hover:bg-purple-500/20"
-                  >
-                    <a href="https://discord.gg/pulsechain" target="_blank" rel="noopener noreferrer">
-                      💬 Discord Server
                     </a>
                   </Button>
                 </div>
