@@ -40,7 +40,7 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
       <div className="w-full md:w-96 mx-auto">
         <Select value={selectedPreset} onValueChange={handlePresetChange}>
           <SelectTrigger className="bg-gray-800/70 border-purple-500/20 text-white flex items-center justify-between px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-            <span className="font-orbitron text-base">{selectedPreset ? selectedPreset : 'Select a template'}</span>
+            <SelectValue placeholder="Select a template" className="font-orbitron text-base" />
           </SelectTrigger>
           <SelectContent className="bg-gray-800 border-gray-600">
             <SelectGroup>
