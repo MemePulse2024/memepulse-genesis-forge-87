@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,9 +12,9 @@ interface CoinIdea {
   logoIdea: string;
 }
 
-const IdeaGenerator = () => {
+const IdeaGenerator = ({ coinIdea, setCoinIdea }: { coinIdea: CoinIdea | null, setCoinIdea: (idea: CoinIdea) => void }) => {
   const [theme, setTheme] = useState('');
-  const [generatedIdea, setGeneratedIdea] = useState<CoinIdea | null>(null);
+  const [generatedIdea, setGeneratedIdea] = useState<CoinIdea | null>(coinIdea);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
@@ -69,7 +68,7 @@ const IdeaGenerator = () => {
       setGeneratedIdea(newIdea);
       setIsGenerating(false);
       setShowConfetti(true);
-      
+      setCoinIdea(newIdea); // sync with parent
       // Save to localStorage
       localStorage.setItem('lastGeneratedIdea', JSON.stringify(newIdea));
       

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,19 +13,15 @@ interface CoinIdea {
   logoIdea: string;
 }
 
-const SocialMediaLaunchpad = () => {
+const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [generatedPost, setGeneratedPost] = useState('');
-  const [coinIdea, setCoinIdea] = useState<CoinIdea | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load last generated idea from localStorage
-    const savedIdea = localStorage.getItem('lastGeneratedIdea');
-    if (savedIdea) {
-      setCoinIdea(JSON.parse(savedIdea));
-    }
-  }, []);
+    // If coinIdea changes, update state (no need to load from localStorage)
+    // This ensures the latest idea is always used
+  }, [coinIdea]);
 
   const platforms = [
     { value: 'twitter-announcement', label: '🐦 Twitter Announcement' },
