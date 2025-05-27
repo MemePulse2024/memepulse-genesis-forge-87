@@ -12,7 +12,7 @@ import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import { useState as useTabState } from 'react';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const TokenomicsEngine = () => {
   const [tokenomics, setTokenomics] = useState<TokenomicsData>({
@@ -120,21 +120,26 @@ const TokenomicsEngine = () => {
           {/* Mobile view: Show select dropdown */}
           <div className="md:hidden w-full mb-6">
             <div className="w-full md:w-96 mx-auto">
-              <select
-                value={activeTab}
-                onChange={(e) => handleTabChange(e.target.value)}
-                className="w-full bg-gray-800/70 border-purple-500/20 text-white px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right 1rem center',
-                  backgroundSize: '1.5em'
-                }}
-              >
-                <option value="basic">Basic Configuration</option>
-                <option value="advanced">Advanced Features</option>
-                <option value="visualization">Visualizations</option>
-              </select>
+              <Select value={activeTab} onValueChange={handleTabChange}>
+                <SelectTrigger className="w-full bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
+                  <SelectValue placeholder="Select Section">
+                    {activeTab === 'basic' ? 'Basic Configuration' : 
+                     activeTab === 'advanced' ? 'Advanced Features' : 
+                     'Visualizations'}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border-gray-600">
+                  <SelectItem value="basic" className="text-white hover:bg-gray-700 cursor-pointer">
+                    Basic Configuration
+                  </SelectItem>
+                  <SelectItem value="advanced" className="text-white hover:bg-gray-700 cursor-pointer">
+                    Advanced Features
+                  </SelectItem>
+                  <SelectItem value="visualization" className="text-white hover:bg-gray-700 cursor-pointer">
+                    Visualizations
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           
