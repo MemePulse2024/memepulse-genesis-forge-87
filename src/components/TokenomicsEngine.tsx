@@ -120,10 +120,10 @@ const TokenomicsEngine = () => {
           <div className="md:hidden w-full mb-6">
             <Menubar className="w-full bg-gray-800/70 backdrop-blur-md border-purple-500/20">
               <MenubarMenu>
-                <MenubarTrigger className="w-full bg-gray-800 text-white hover:bg-gray-700">
-                  {activeTab === 'basic' && 'Basic Configuration'}
-                  {activeTab === 'advanced' && 'Advanced Features'}
-                  {activeTab === 'visualization' && 'Visualizations'}
+                <MenubarTrigger className="w-full bg-gray-800 text-white hover:bg-gray-700 flex items-center justify-between px-4 py-3 rounded-lg">
+                  {/* Show only Basic Configuration with arrow, hide others */}
+                  <span>Basic Configuration</span>
+                  <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                 </MenubarTrigger>
                 <MenubarContent className="bg-gray-800 text-white border-purple-500/20 min-w-[200px]">
                   <MenubarItem onClick={() => handleTabChange('basic')} className="cursor-pointer">
