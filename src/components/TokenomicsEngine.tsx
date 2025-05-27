@@ -120,41 +120,30 @@ const TokenomicsEngine = () => {
           {/* Mobile view: Show select dropdown */}
           <div className="md:hidden w-full mb-6">
             <div className="w-full md:w-96 mx-auto">
-              <Select value={activeTab} onValueChange={handleTabChange}>
-                <SelectTrigger className="bg-gray-800/70 border-purple-500/20 text-white flex items-center justify-between px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none">
-                  <span className="font-orbitron text-base">
-                    {activeTab === 'basic' && 'Basic Configuration'}
-                    {activeTab === 'advanced' && 'Advanced Features'}
-                    {activeTab === 'visualization' && 'Visualizations'}
-                  </span>
-                  <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-600">
-                  <SelectGroup>
-                    <SelectLabel>Navigation</SelectLabel>
-                    <SelectItem value="basic" className="text-white hover:bg-gray-700">
-                      Basic Configuration
-                    </SelectItem>
-                    <SelectItem value="advanced" className="text-white hover:bg-gray-700">
-                      Advanced Features
-                    </SelectItem>
-                    <SelectItem value="visualization" className="text-white hover:bg-gray-700">
-                      Visualizations
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <select
+                value={activeTab}
+                onChange={(e) => handleTabChange(e.target.value)}
+                className="w-full bg-gray-800/70 border-purple-500/20 text-white px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 1rem center',
+                  backgroundSize: '1.5em'
+                }}
+              >
+                <option value="basic">Basic Configuration</option>
+                <option value="advanced">Advanced Features</option>
+                <option value="visualization">Visualizations</option>
+              </select>
             </div>
           </div>
           
           {/* Desktop view */}
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
-              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between gap-2">
-                <span>Basic Configuration</span>
-                <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between px-4 py-3">
+                <span className="font-orbitron">Basic Configuration</span>
+                <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </TabsTrigger>
