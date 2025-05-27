@@ -127,7 +127,9 @@ const TokenomicsEngine = () => {
                     {activeTab === 'advanced' && 'Advanced Features'}
                     {activeTab === 'visualization' && 'Visualizations'}
                   </span>
-                  <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                  <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
                 </SelectTrigger>
                 <SelectContent className="bg-gray-800 border-gray-600">
                   <SelectGroup>
@@ -147,17 +149,19 @@ const TokenomicsEngine = () => {
             </div>
           </div>
           
+          {/* Desktop view */}
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            {/* Desktop view: Show tabs */}
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
-              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between gap-2 pr-4 pl-4">
+              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between gap-2">
                 <span>Basic Configuration</span>
-                <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
               </TabsTrigger>
-              <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50 flex items-center gap-2 pr-4 pl-4">
+              <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50">
                 Advanced Features
               </TabsTrigger>
-              <TabsTrigger value="visualization" className="text-white data-[state=active]:bg-purple-800/50 flex items-center gap-2 pr-4 pl-4">
+              <TabsTrigger value="visualization" className="text-white data-[state=active]:bg-purple-800/50">
                 Visualizations
               </TabsTrigger>
             </TabsList>
