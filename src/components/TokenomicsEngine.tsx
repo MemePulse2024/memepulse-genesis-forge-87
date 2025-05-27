@@ -116,28 +116,20 @@ const TokenomicsEngine = () => {
         <div className="max-w-6xl mx-auto space-y-8">
           <PresetSelector onSelectPreset={setTokenomicsData} />
           
-          {/* Mobile view: Show menubar for navigation */}
+          {/* Mobile view: Show dropdown for navigation */}
           <div className="md:hidden w-full mb-6">
-            <Menubar className="w-full bg-gray-800/70 backdrop-blur-md border-purple-500/20">
-              <MenubarMenu>
-                <MenubarTrigger className="w-full bg-gray-800 text-white hover:bg-gray-700 flex items-center justify-between px-4 py-3 rounded-lg">
-                  {/* Show only Basic Configuration with arrow, hide others */}
-                  <span>Basic Configuration</span>
-                  <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-                </MenubarTrigger>
-                <MenubarContent className="bg-gray-800 text-white border-purple-500/20 min-w-[200px]">
-                  <MenubarItem onClick={() => handleTabChange('basic')} className="cursor-pointer">
-                    Basic Configuration
-                  </MenubarItem>
-                  <MenubarItem onClick={() => handleTabChange('advanced')} className="cursor-pointer">
-                    Advanced Features
-                  </MenubarItem>
-                  <MenubarItem onClick={() => handleTabChange('visualization')} className="cursor-pointer">
-                    Visualizations
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+            <div className="w-full md:w-96 mx-auto">
+              <select
+                value={activeTab}
+                onChange={e => handleTabChange(e.target.value)}
+                className="bg-gray-800/70 border-purple-500/20 text-white flex items-center justify-between px-4 py-3 rounded-lg shadow-md w-full appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500 pr-10"
+                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg fill=\'none\' stroke=\'%239B5DE5\' stroke-width=\'2\' viewBox=\'0 0 24 24\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center' }}
+              >
+                <option value="basic">Basic Configuration</option>
+                <option value="advanced">Advanced Features</option>
+                <option value="visualization">Visualizations</option>
+              </select>
+            </div>
           </div>
           
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
