@@ -51,19 +51,7 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
                   value={preset.name}
                   className="text-white hover:bg-gray-700"
                 >
-                  <div className="flex items-center w-full justify-between">
-                    <span>{preset.name}</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Info className="h-3 w-3 ml-2" />
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-gray-900 border-gray-700">
-                          <p>{preset.description}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
+                  {preset.name}
                 </SelectItem>
               ))}
             </SelectGroup>
