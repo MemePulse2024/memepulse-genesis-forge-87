@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData, validateAllocations } from '@/utils/tokenomicsValidation';
@@ -144,9 +143,18 @@ const TokenomicsEngine = () => {
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             {/* Desktop view: Show tabs */}
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
-              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50">Basic Configuration</TabsTrigger>
-              <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50">Advanced Features</TabsTrigger>
-              <TabsTrigger value="visualization" className="text-white data-[state=active]:bg-purple-800/50">Visualizations</TabsTrigger>
+              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-center gap-2">
+                Basic Configuration
+                <span className="ml-1 text-xs bg-purple-700/60 text-white px-2 py-0.5 rounded-full">▼</span>
+              </TabsTrigger>
+              <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-center gap-2">
+                Advanced Features
+                <span className="ml-1 text-xs bg-purple-700/60 text-white px-2 py-0.5 rounded-full">▼</span>
+              </TabsTrigger>
+              <TabsTrigger value="visualization" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-center gap-2">
+                Visualizations
+                <span className="ml-1 text-xs bg-purple-700/60 text-white px-2 py-0.5 rounded-full">▼</span>
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="basic" className="space-y-6">
