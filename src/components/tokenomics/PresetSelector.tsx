@@ -1,12 +1,4 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Check, Info } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { tokenomicsPresets } from '@/utils/tokenomicsPresets';
 import { TokenomicsData } from '@/utils/tokenomicsValidation';
 
@@ -29,28 +21,30 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
   return (
     <div className="mb-6">
       <div className="w-full md:w-96 mx-auto">
-        <select
-          value={selectedPreset}
-          onChange={(e) => handlePresetChange(e.target.value)}
-          className="w-full bg-gray-800/70 border border-purple-500/20 text-white font-orbitron px-4 py-3 h-[50px] rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'right 1rem center',
-            backgroundSize: '1.5em'
-          }}
-        >
-          <option value="" className="bg-gray-800 text-white">Select a template</option>
-          {tokenomicsPresets.map((preset) => (
-            <option 
-              key={preset.name} 
-              value={preset.name}
-              className="bg-gray-800 text-white"
-            >
-              {preset.name}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            value={selectedPreset}
+            onChange={(e) => handlePresetChange(e.target.value)}
+            className="w-full bg-gray-800/70 border border-purple-500/20 text-white font-orbitron px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 1rem center',
+              backgroundSize: '1.5em'
+            }}
+          >
+            <option value="" disabled>Select a template</option>
+            {tokenomicsPresets.map((preset) => (
+              <option 
+                key={preset.name} 
+                value={preset.name}
+                className="bg-gray-800 text-white"
+              >
+                {preset.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-2 gap-4">
         <div>
