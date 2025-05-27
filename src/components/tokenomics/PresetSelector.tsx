@@ -32,7 +32,8 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
     if (preset) {
       onSelectPreset(preset);
     }
-  };
+  }
+  
 
   return (
     <div className="mb-6">
