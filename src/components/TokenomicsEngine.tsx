@@ -12,6 +12,7 @@ import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import { useState as useTabState } from 'react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from '@/components/ui/select';
 
 const TokenomicsEngine = () => {
   const [tokenomics, setTokenomics] = useState<TokenomicsData>({
@@ -116,19 +117,33 @@ const TokenomicsEngine = () => {
         <div className="max-w-6xl mx-auto space-y-8">
           <PresetSelector onSelectPreset={setTokenomicsData} />
           
-          {/* Mobile view: Show dropdown for navigation */}
+          {/* Mobile view: Show select dropdown */}
           <div className="md:hidden w-full mb-6">
             <div className="w-full md:w-96 mx-auto">
-              <select
-                value={activeTab}
-                onChange={e => handleTabChange(e.target.value)}
-                className="bg-gray-800/70 border-purple-500/20 text-white flex items-center justify-between px-4 py-3 rounded-lg shadow-md w-full appearance-none focus:outline-none focus:ring-2 focus:ring-purple-500 pr-10"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg fill=\'none\' stroke=\'%239B5DE5\' stroke-width=\'2\' viewBox=\'0 0 24 24\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center' }}
-              >
-                <option value="basic">Basic Configuration</option>
-                <option value="advanced">Advanced Features</option>
-                <option value="visualization">Visualizations</option>
-              </select>
+              <Select value={activeTab} onValueChange={handleTabChange}>
+                <SelectTrigger className="bg-gray-800/70 border-purple-500/20 text-white flex items-center justify-between px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none">
+                  <span className="font-orbitron text-base">
+                    {activeTab === 'basic' && 'Basic Configuration'}
+                    {activeTab === 'advanced' && 'Advanced Features'}
+                    {activeTab === 'visualization' && 'Visualizations'}
+                  </span>
+                  <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border-gray-600">
+                  <SelectGroup>
+                    <SelectLabel>Navigation</SelectLabel>
+                    <SelectItem value="basic" className="text-white hover:bg-gray-700">
+                      Basic Configuration
+                    </SelectItem>
+                    <SelectItem value="advanced" className="text-white hover:bg-gray-700">
+                      Advanced Features
+                    </SelectItem>
+                    <SelectItem value="visualization" className="text-white hover:bg-gray-700">
+                      Visualizations
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           
@@ -137,14 +152,13 @@ const TokenomicsEngine = () => {
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
               <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between gap-2 pr-4 pl-4">
                 <span>Basic Configuration</span>
-                {/* Only show arrow for Basic Configuration */}
-                <svg className="w-4 h-4 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                <svg className="w-5 h-5 ml-2 text-purple-300 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
               </TabsTrigger>
-              <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between gap-2 pr-4 pl-4">
-                <span>Advanced Features</span>
+              <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50 flex items-center gap-2 pr-4 pl-4">
+                Advanced Features
               </TabsTrigger>
-              <TabsTrigger value="visualization" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between gap-2 pr-4 pl-4">
-                <span>Visualizations</span>
+              <TabsTrigger value="visualization" className="text-white data-[state=active]:bg-purple-800/50 flex items-center gap-2 pr-4 pl-4">
+                Visualizations
               </TabsTrigger>
             </TabsList>
             
