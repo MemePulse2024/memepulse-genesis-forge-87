@@ -1,4 +1,11 @@
 import { useState } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { tokenomicsPresets } from '@/utils/tokenomicsPresets';
 import { TokenomicsData } from '@/utils/tokenomicsValidation';
 
@@ -16,42 +23,35 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
       onSelectPreset(preset);
     }
   }
-  
 
   return (
     <div className="mb-6">
       <div className="w-full md:w-96 mx-auto">
-        <div className="relative">
-          <select
-            value={selectedPreset}
-            onChange={(e) => handlePresetChange(e.target.value)}
-            className="w-full bg-gray-800/70 border border-purple-500/20 text-white font-orbitron px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'right 1rem center',
-              backgroundSize: '1.5em'
-            }}
-          >
-            <option value="" disabled>Select a template</option>
+        <Select value={selectedPreset} onValueChange={handlePresetChange}>
+          <SelectTrigger className="bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
+            <SelectValue placeholder="Select a template" />
+          </SelectTrigger>
+          <SelectContent className="bg-gray-800 border-gray-600">
             {tokenomicsPresets.map((preset) => (
-              <option 
-                key={preset.name} 
+              <SelectItem
+                key={preset.name}
                 value={preset.name}
-                className="bg-gray-800 text-white"
+                className="text-white hover:bg-gray-700 cursor-pointer"
               >
                 {preset.name}
-              </option>
+              </SelectItem>
             ))}
-          </select>
-        </div>
+          </SelectContent>
+        </Select>
       </div>
+
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-2 gap-4">
         <div>
           <h3 className="font-orbitron text-lg font-bold text-white mb-1">🧩 Tokenomics Templates</h3>
           <p className="text-gray-400 text-sm">Jump-start with proven tokenomics models</p>
         </div>
       </div>
+      
       {selectedPreset && (
         <div className="bg-gradient-to-r from-purple-900/20 to-orange-900/20 rounded mt-2 p-2 text-xs text-gray-300">
           <p>Selected: <span className="text-pulse-orange">{selectedPreset}</span> - {tokenomicsPresets.find(p => p.name === selectedPreset)?.description}</p>
