@@ -129,13 +129,13 @@ const TokenomicsEngine = () => {
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="bg-gray-800 border-gray-600">
-                  <SelectItem value="basic" className="text-white hover:bg-gray-700 cursor-pointer">
+                  <SelectItem value="basic" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
                     Basic Configuration
                   </SelectItem>
-                  <SelectItem value="advanced" className="text-white hover:bg-gray-700 cursor-pointer">
+                  <SelectItem value="advanced" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
                     Advanced Features
                   </SelectItem>
-                  <SelectItem value="visualization" className="text-white hover:bg-gray-700 cursor-pointer">
+                  <SelectItem value="visualization" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
                     Visualizations
                   </SelectItem>
                 </SelectContent>

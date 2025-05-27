@@ -36,7 +36,7 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
               <SelectItem
                 key={preset.name}
                 value={preset.name}
-                className="text-white hover:bg-gray-700 cursor-pointer"
+                className="text-white hover:bg-gray-700 cursor-pointer font-normal"
               >
                 {preset.name}
               </SelectItem>
