@@ -40,8 +40,7 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
         <Select value={selectedPreset} onValueChange={handlePresetChange}>
           <SelectTrigger className="bg-gray-800/70 border-purple-500/20 text-white flex items-center justify-between px-4 py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500">
             <span className="font-orbitron text-base">{selectedPreset ? selectedPreset : 'Select a template'}</span>
-            {/* Only one arrow for the dropdown */}
-            <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+            {/* Remove custom SVG, use only the default arrow from SelectTrigger */}
           </SelectTrigger>
           <SelectContent className="bg-gray-800 border-gray-600">
             <SelectGroup>
