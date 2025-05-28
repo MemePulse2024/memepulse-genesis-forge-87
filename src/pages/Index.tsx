@@ -39,7 +39,7 @@ const Index = () => {
       <Navigation />
       <Header />
       <IdeaGenerator coinIdea={coinIdea} setCoinIdea={setCoinIdea} />
-      <TokenomicsEngine />
+      <TokenomicsEngine tokenomics={tokenomics} setTokenomics={setTokenomics} />
       <ContractCodeGenerator tokenomics={tokenomics} coinIdea={coinIdea} />
       <SocialMediaLaunchpad coinIdea={coinIdea} />
       <LaunchChecklist />

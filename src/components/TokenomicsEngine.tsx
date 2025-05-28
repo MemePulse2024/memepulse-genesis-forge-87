@@ -14,25 +14,12 @@ import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } fro
 import { useState as useTabState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const TokenomicsEngine = () => {
-  const [tokenomics, setTokenomics] = useState<TokenomicsData>({
-    totalSupply: '1000000000',
-    buyTax: '5',
-    sellTax: '5',
-    taxAllocation: {
-      liquidity: '40',
-      marketing: '40',
-      reflection: '20'
-    },
-    supplyAllocation: {
-      pulsex: '80',
-      airdrop: '10',
-      dev: '5',
-      marketing: '3',
-      burn: '2'
-    }
-  });
+interface TokenomicsEngineProps {
+  tokenomics: TokenomicsData;
+  setTokenomics: (tokenomics: TokenomicsData) => void;
+}
 
+const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) => {
   const [activeTab, setActiveTab] = useTabState('basic');
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const { toast } = useToast();
@@ -120,7 +107,7 @@ const TokenomicsEngine = () => {
           {/* Mobile view: Show select dropdown */}
           <div className="md:hidden w-full mb-6">
             <div className="w-full md:w-96 mx-auto">
-              <Select value={activeTab} onValueChange={handleTabChange}>
+              <Select value={activeTab} onValueChange={setActiveTab}>
                 <SelectTrigger className="w-full bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
                   <SelectValue placeholder="Select Section">
                     {activeTab === 'basic' ? 'Basic Configuration' : 
@@ -144,7 +131,7 @@ const TokenomicsEngine = () => {
           </div>
           
           {/* Desktop view */}
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
               <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50">
                 <div className="flex items-center justify-between px-4 py-3 w-full">
