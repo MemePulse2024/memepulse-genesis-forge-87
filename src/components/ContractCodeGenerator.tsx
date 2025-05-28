@@ -616,359 +616,373 @@ contract ${contractSettings.name} is IERC20, IERC20Metadata, Ownable${contractSe
                 Advanced Contract Configuration
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border border-purple-500/20">
+                <TabsList className="grid grid-cols-3 w-full h-auto mb-8 bg-gray-800/50 backdrop-blur-md border border-purple-500/20 rounded-xl p-2">
                   <TabsTrigger 
                     value="basic" 
-                    className="text-white data-[state=active]:bg-blue-600/70 data-[state=active]:text-white flex items-center gap-2 py-3"
+                    className="text-white data-[state=active]:bg-blue-600/80 data-[state=active]:text-white transition-all duration-200 rounded-lg py-4 px-6"
                   >
-                    <Coins className="w-4 h-4" />
-                    <span className="font-semibold">Basic Settings</span>
+                    <div className="flex flex-col items-center gap-2">
+                      <Coins className="w-5 h-5" />
+                      <span className="font-semibold text-sm">Basic Settings</span>
+                    </div>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="security" 
-                    className="text-white data-[state=active]:bg-red-600/70 data-[state=active]:text-white flex items-center gap-2 py-3"
+                    className="text-white data-[state=active]:bg-red-600/80 data-[state=active]:text-white transition-all duration-200 rounded-lg py-4 px-6"
                   >
-                    <Shield className="w-4 h-4" />
-                    <span className="font-semibold">Security Features</span>
+                    <div className="flex flex-col items-center gap-2">
+                      <Shield className="w-5 h-5" />
+                      <span className="font-semibold text-sm">Security Features</span>
+                    </div>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="advanced" 
-                    className="text-white data-[state=active]:bg-green-600/70 data-[state=active]:text-white flex items-center gap-2 py-3"
+                    className="text-white data-[state=active]:bg-green-600/80 data-[state=active]:text-white transition-all duration-200 rounded-lg py-4 px-6"
                   >
-                    <Cog className="w-4 h-4" />
-                    <span className="font-semibold">Advanced Options</span>
+                    <div className="flex flex-col items-center gap-2">
+                      <Cog className="w-5 h-5" />
+                      <span className="font-semibold text-sm">Advanced Options</span>
+                    </div>
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="basic" className="space-y-6">
-                  <div className="bg-blue-900/20 border-l-4 border-blue-500 rounded-lg p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Coins className="w-5 h-5 text-blue-400" />
-                      <h3 className="text-xl font-bold text-blue-300">Core Token Configuration</h3>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="contractName" className="text-white font-medium">Contract Name</Label>
-                          <Input
-                            id="contractName"
-                            value={contractSettings.name}
-                            onChange={(e) => updateSetting('name', e.target.value)}
-                            className="bg-black/50 border-blue-500/30 text-white mt-2"
-                            placeholder="YourMemeCoin"
-                          />
-                          <p className="text-xs text-blue-300 mt-1">✨ Auto-synced with Idea Generator</p>
+                <div className="min-h-[500px]">
+                  <TabsContent value="basic" className="mt-0 space-y-6">
+                    <div className="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-blue-500/20 rounded-lg">
+                          <Coins className="w-6 h-6 text-blue-400" />
                         </div>
-                        
-                        <div>
-                          <Label htmlFor="contractSymbol" className="text-white font-medium">Token Symbol</Label>
-                          <Input
-                            id="contractSymbol"
-                            value={contractSettings.symbol}
-                            onChange={(e) => updateSetting('symbol', e.target.value)}
-                            className="bg-black/50 border-blue-500/30 text-white mt-2"
-                            placeholder="MEME"
-                          />
-                          <p className="text-xs text-blue-300 mt-1">✨ Auto-synced with Idea Generator</p>
-                        </div>
-
-                        <div>
-                          <Label className="text-white font-medium">Contract Version</Label>
-                          <Select value={contractSettings.version} onValueChange={(value) => updateSetting('version', value)}>
-                            <SelectTrigger className="bg-black/50 border-blue-500/30 text-white mt-2">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-gray-800 border-gray-600">
-                              <SelectItem value="standard">🔷 Standard (Basic features)</SelectItem>
-                              <SelectItem value="advanced">🔸 Advanced (Enhanced features)</SelectItem>
-                              <SelectItem value="premium">💎 Premium (All features)</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
+                        <h3 className="text-2xl font-bold text-blue-300">Core Token Configuration</h3>
                       </div>
                       
-                      <div className="bg-blue-800/20 rounded-lg p-4 border border-blue-500/30">
-                        <h4 className="font-bold text-blue-300 mb-3 flex items-center gap-2">
-                          <Coins className="w-4 h-4" />
-                          Basic Features Included
-                        </h4>
-                        <ul className="text-sm text-blue-200 space-y-1">
-                          <li>• ERC-20 compliant token standard</li>
-                          <li>• Configurable buy/sell tax rates</li>
-                          <li>• Automatic tax distribution system</li>
-                          <li>• PulseChain network optimized</li>
-                          <li>• Gas efficient transactions</li>
-                          <li>• Owner management functions</li>
-                          <li>• Token transfer controls</li>
-                          <li>• Emergency wallet functions</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="security" className="space-y-6">
-                  <div className="bg-red-900/20 border-l-4 border-red-500 rounded-lg p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Shield className="w-5 h-5 text-red-400" />
-                      <h3 className="text-xl font-bold text-red-300">Security & Protection Features</h3>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-6">
-                        <div className="bg-red-800/20 rounded-lg p-4 border border-red-500/30">
-                          <div className="flex items-center justify-between mb-3">
-                            <div>
-                              <Label className="text-white font-medium flex items-center gap-2">
-                                <AlertTriangle className="w-4 h-4 text-red-400" />
-                                Anti-Whale Protection
-                              </Label>
-                              <p className="text-xs text-red-300">Prevents large transactions from manipulating price</p>
-                            </div>
-                            <Switch
-                              checked={contractSettings.antiWhaleEnabled}
-                              onCheckedChange={(checked) => updateSetting('antiWhaleEnabled', checked)}
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                          <div className="space-y-3">
+                            <Label htmlFor="contractName" className="text-white font-medium text-base">Contract Name</Label>
+                            <Input
+                              id="contractName"
+                              value={contractSettings.name}
+                              onChange={(e) => updateSetting('name', e.target.value)}
+                              className="bg-black/50 border-blue-500/30 text-white h-12"
+                              placeholder="YourMemeCoin"
                             />
+                            <p className="text-sm text-blue-300">✨ Auto-synced with Idea Generator</p>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            <Label htmlFor="contractSymbol" className="text-white font-medium text-base">Token Symbol</Label>
+                            <Input
+                              id="contractSymbol"
+                              value={contractSettings.symbol}
+                              onChange={(e) => updateSetting('symbol', e.target.value)}
+                              className="bg-black/50 border-blue-500/30 text-white h-12"
+                              placeholder="MEME"
+                            />
+                            <p className="text-sm text-blue-300">✨ Auto-synced with Idea Generator</p>
                           </div>
 
-                          {contractSettings.antiWhaleEnabled && (
-                            <div className="space-y-4 pl-4 border-l-2 border-red-500/30">
-                              <div>
-                                <Label className="text-white text-sm">Max Transaction Amount (%)</Label>
-                                <Slider
-                                  value={[parseFloat(contractSettings.maxTxAmount)]}
-                                  onValueChange={(value) => updateSetting('maxTxAmount', value[0].toString())}
-                                  max={5}
-                                  min={0.1}
-                                  step={0.1}
-                                  className="mt-2"
-                                />
-                                <p className="text-xs text-red-300 mt-1">{contractSettings.maxTxAmount}% of total supply per transaction</p>
-                              </div>
-
-                              <div>
-                                <Label className="text-white text-sm">Max Wallet Amount (%)</Label>
-                                <Slider
-                                  value={[parseFloat(contractSettings.maxWalletAmount)]}
-                                  onValueChange={(value) => updateSetting('maxWalletAmount', value[0].toString())}
-                                  max={10}
-                                  min={0.5}
-                                  step={0.1}
-                                  className="mt-2"
-                                />
-                                <p className="text-xs text-red-300 mt-1">{contractSettings.maxWalletAmount}% of total supply per wallet</p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-between bg-red-800/20 rounded-lg p-4 border border-red-500/30">
-                          <div>
-                            <Label className="text-white font-medium">Address Blacklist</Label>
-                            <p className="text-xs text-red-300">Block malicious addresses from trading</p>
+                          <div className="space-y-3">
+                            <Label className="text-white font-medium text-base">Contract Version</Label>
+                            <Select value={contractSettings.version} onValueChange={(value) => updateSetting('version', value)}>
+                              <SelectTrigger className="bg-black/50 border-blue-500/30 text-white h-12">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="bg-gray-800 border-gray-600 z-50">
+                                <SelectItem value="standard" className="text-white hover:bg-gray-700">🔷 Standard (Basic features)</SelectItem>
+                                <SelectItem value="advanced" className="text-white hover:bg-gray-700">🔸 Advanced (Enhanced features)</SelectItem>
+                                <SelectItem value="premium" className="text-white hover:bg-gray-700">💎 Premium (All features)</SelectItem>
+                              </SelectContent>
+                            </Select>
                           </div>
-                          <Switch
-                            checked={contractSettings.blacklistEnabled}
-                            onCheckedChange={(checked) => updateSetting('blacklistEnabled', checked)}
-                          />
                         </div>
-
-                        <div className="flex items-center justify-between bg-red-800/20 rounded-lg p-4 border border-red-500/30">
-                          <div>
-                            <Label className="text-white font-medium">Emergency Pause</Label>
-                            <p className="text-xs text-red-300">Ability to pause all token transfers</p>
-                          </div>
-                          <Switch
-                            checked={contractSettings.pausableEnabled}
-                            onCheckedChange={(checked) => updateSetting('pausableEnabled', checked)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-6">
-                        <div className="flex items-center justify-between bg-red-800/20 rounded-lg p-4 border border-red-500/30">
-                          <div>
-                            <Label className="text-white font-medium">Reflection Rewards</Label>
-                            <p className="text-xs text-red-300">Automatic rewards for token holders</p>
-                          </div>
-                          <Switch
-                            checked={contractSettings.reflectionEnabled}
-                            onCheckedChange={(checked) => updateSetting('reflectionEnabled', checked)}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between bg-red-800/20 rounded-lg p-4 border border-red-500/30">
-                          <div>
-                            <Label className="text-white font-medium">Token Burning</Label>
-                            <p className="text-xs text-red-300">Allow permanent token removal</p>
-                          </div>
-                          <Switch
-                            checked={contractSettings.burnableEnabled}
-                            onCheckedChange={(checked) => updateSetting('burnableEnabled', checked)}
-                          />
-                        </div>
-
-                        <div className="bg-red-800/20 rounded-lg p-4 border border-red-500/30">
-                          <Label className="text-white font-medium">Liquidity Lock Period</Label>
-                          <Slider
-                            value={[contractSettings.liquidityLockDays]}
-                            onValueChange={(value) => updateSetting('liquidityLockDays', value[0])}
-                            max={1095}
-                            min={30}
-                            step={30}
-                            className="mt-2"
-                          />
-                          <p className="text-xs text-red-300 mt-1">{contractSettings.liquidityLockDays} days locked</p>
-                        </div>
-
-                        <div className="bg-red-700/20 rounded-lg p-3 border border-red-400/30">
-                          <h4 className="text-red-300 font-bold mb-2 text-sm">🛡️ Security Benefits</h4>
-                          <ul className="text-xs text-red-200 space-y-1">
-                            <li>• Prevents pump and dump schemes</li>
-                            <li>• Protects against flash loan attacks</li>
-                            <li>• Blocks known malicious addresses</li>
-                            <li>• Emergency response capabilities</li>
-                            <li>• Automated holder rewards</li>
+                        
+                        <div className="bg-blue-800/20 rounded-xl p-6 border border-blue-500/30">
+                          <h4 className="font-bold text-blue-300 mb-4 flex items-center gap-2 text-lg">
+                            <Coins className="w-5 h-5" />
+                            Basic Features Included
+                          </h4>
+                          <ul className="text-sm text-blue-200 space-y-2">
+                            <li>• ERC-20 compliant token standard</li>
+                            <li>• Configurable buy/sell tax rates</li>
+                            <li>• Automatic tax distribution system</li>
+                            <li>• PulseChain network optimized</li>
+                            <li>• Gas efficient transactions</li>
+                            <li>• Owner management functions</li>
+                            <li>• Token transfer controls</li>
+                            <li>• Emergency wallet functions</li>
                           </ul>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </TabsContent>
+                  </TabsContent>
 
-                <TabsContent value="advanced" className="space-y-6">
-                  <div className="bg-green-900/20 border-l-4 border-green-500 rounded-lg p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Cog className="w-5 h-5 text-green-400" />
-                      <h3 className="text-xl font-bold text-green-300">Advanced Technical Settings</h3>
+                  <TabsContent value="security" className="mt-0 space-y-6">
+                    <div className="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-red-500/20 rounded-lg">
+                          <Shield className="w-6 h-6 text-red-400" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-red-300">Security & Protection Features</h3>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                          <div className="bg-red-800/20 rounded-xl p-6 border border-red-500/30">
+                            <div className="flex items-center justify-between mb-4">
+                              <div>
+                                <Label className="text-white font-medium flex items-center gap-2 text-base">
+                                  <AlertTriangle className="w-5 h-5 text-red-400" />
+                                  Anti-Whale Protection
+                                </Label>
+                                <p className="text-sm text-red-300 mt-1">Prevents large transactions from manipulating price</p>
+                              </div>
+                              <Switch
+                                checked={contractSettings.antiWhaleEnabled}
+                                onCheckedChange={(checked) => updateSetting('antiWhaleEnabled', checked)}
+                              />
+                            </div>
+
+                            {contractSettings.antiWhaleEnabled && (
+                              <div className="space-y-5 pl-4 border-l-2 border-red-500/30 mt-4">
+                                <div>
+                                  <Label className="text-white text-sm font-medium">Max Transaction Amount (%)</Label>
+                                  <Slider
+                                    value={[parseFloat(contractSettings.maxTxAmount)]}
+                                    onValueChange={(value) => updateSetting('maxTxAmount', value[0].toString())}
+                                    max={5}
+                                    min={0.1}
+                                    step={0.1}
+                                    className="mt-3"
+                                  />
+                                  <p className="text-xs text-red-300 mt-2">{contractSettings.maxTxAmount}% of total supply per transaction</p>
+                                </div>
+
+                                <div>
+                                  <Label className="text-white text-sm font-medium">Max Wallet Amount (%)</Label>
+                                  <Slider
+                                    value={[parseFloat(contractSettings.maxWalletAmount)]}
+                                    onValueChange={(value) => updateSetting('maxWalletAmount', value[0].toString())}
+                                    max={10}
+                                    min={0.5}
+                                    step={0.1}
+                                    className="mt-3"
+                                  />
+                                  <p className="text-xs text-red-300 mt-2">{contractSettings.maxWalletAmount}% of total supply per wallet</p>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex items-center justify-between bg-red-800/20 rounded-xl p-6 border border-red-500/30">
+                            <div>
+                              <Label className="text-white font-medium text-base">Address Blacklist</Label>
+                              <p className="text-sm text-red-300 mt-1">Block malicious addresses from trading</p>
+                            </div>
+                            <Switch
+                              checked={contractSettings.blacklistEnabled}
+                              onCheckedChange={(checked) => updateSetting('blacklistEnabled', checked)}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between bg-red-800/20 rounded-xl p-6 border border-red-500/30">
+                            <div>
+                              <Label className="text-white font-medium text-base">Emergency Pause</Label>
+                              <p className="text-sm text-red-300 mt-1">Ability to pause all token transfers</p>
+                            </div>
+                            <Switch
+                              checked={contractSettings.pausableEnabled}
+                              onCheckedChange={(checked) => updateSetting('pausableEnabled', checked)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="flex items-center justify-between bg-red-800/20 rounded-xl p-6 border border-red-500/30">
+                            <div>
+                              <Label className="text-white font-medium text-base">Reflection Rewards</Label>
+                              <p className="text-sm text-red-300 mt-1">Automatic rewards for token holders</p>
+                            </div>
+                            <Switch
+                              checked={contractSettings.reflectionEnabled}
+                              onCheckedChange={(checked) => updateSetting('reflectionEnabled', checked)}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between bg-red-800/20 rounded-xl p-6 border border-red-500/30">
+                            <div>
+                              <Label className="text-white font-medium text-base">Token Burning</Label>
+                              <p className="text-sm text-red-300 mt-1">Allow permanent token removal</p>
+                            </div>
+                            <Switch
+                              checked={contractSettings.burnableEnabled}
+                              onCheckedChange={(checked) => updateSetting('burnableEnabled', checked)}
+                            />
+                          </div>
+
+                          <div className="bg-red-800/20 rounded-xl p-6 border border-red-500/30">
+                            <Label className="text-white font-medium text-base">Liquidity Lock Period</Label>
+                            <Slider
+                              value={[contractSettings.liquidityLockDays]}
+                              onValueChange={(value) => updateSetting('liquidityLockDays', value[0])}
+                              max={1095}
+                              min={30}
+                              step={30}
+                              className="mt-4"
+                            />
+                            <p className="text-sm text-red-300 mt-2">{contractSettings.liquidityLockDays} days locked</p>
+                          </div>
+
+                          <div className="bg-red-700/20 rounded-xl p-4 border border-red-400/30">
+                            <h4 className="text-red-300 font-bold mb-3 text-base">🛡️ Security Benefits</h4>
+                            <ul className="text-sm text-red-200 space-y-1">
+                              <li>• Prevents pump and dump schemes</li>
+                              <li>• Protects against flash loan attacks</li>
+                              <li>• Blocks known malicious addresses</li>
+                              <li>• Emergency response capabilities</li>
+                              <li>• Automated holder rewards</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="advanced" className="mt-0 space-y-6">
+                    <div className="bg-green-900/20 border border-green-500/30 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-green-500/20 rounded-lg">
+                          <Cog className="w-6 h-6 text-green-400" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-green-300">Advanced Technical Settings</h3>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                          <div className="bg-green-800/20 rounded-xl p-6 border border-green-500/30">
+                            <Label htmlFor="gasFee" className="text-white font-medium text-base">Gas Limit Optimization</Label>
+                            <Input
+                              id="gasFee"
+                              value={contractSettings.gasFee}
+                              onChange={(e) => updateSetting('gasFee', e.target.value)}
+                              className="bg-black/50 border-green-500/30 text-white h-12 mt-3"
+                              placeholder="300000"
+                            />
+                            <p className="text-sm text-green-300 mt-2">Recommended: 300,000 - 500,000 gas units</p>
+                          </div>
+
+                          <div className="bg-green-800/20 rounded-xl p-6 border border-green-500/30">
+                            <Label className="text-white font-medium text-base">Auto-Swap Threshold (%)</Label>
+                            <Slider
+                              value={[parseFloat(contractSettings.minimumTokensBeforeSwap)]}
+                              onValueChange={(value) => updateSetting('minimumTokensBeforeSwap', value[0].toString())}
+                              max={1}
+                              min={0.01}
+                              step={0.01}
+                              className="mt-4"
+                            />
+                            <p className="text-sm text-green-300 mt-2">{contractSettings.minimumTokensBeforeSwap}% triggers automatic liquidity swap</p>
+                          </div>
+
+                          <div className="flex items-center justify-between bg-green-800/20 rounded-xl p-6 border border-green-500/30">
+                            <div>
+                              <Label className="text-white font-medium text-base">Mintable Supply</Label>
+                              <p className="text-sm text-green-300 mt-1">Allow creating new tokens (use carefully)</p>
+                            </div>
+                            <Switch
+                              checked={contractSettings.mintableEnabled}
+                              onCheckedChange={(checked) => updateSetting('mintableEnabled', checked)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="bg-green-700/20 rounded-xl p-6 border border-green-400/30">
+                          <h4 className="text-green-300 font-bold mb-4 flex items-center gap-2 text-lg">
+                            <Cog className="w-5 h-5" />
+                            Advanced Capabilities
+                          </h4>
+                          <ul className="text-sm text-green-200 space-y-2">
+                            <li>• Automated liquidity generation</li>
+                            <li>• Dynamic tax rate adjustments</li>
+                            <li>• Multi-signature wallet support</li>
+                            <li>• Time-locked contract functions</li>
+                            <li>• Cross-chain bridge compatibility</li>
+                            <li>• Governance voting mechanisms</li>
+                            <li>• Advanced staking protocols</li>
+                            <li>• Flash loan attack protection</li>
+                            <li>• MEV (front-running) protection</li>
+                            <li>• Automated market maker integration</li>
+                            <li>• Real-time analytics hooks</li>
+                            <li>• Emergency recovery functions</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-gray-600">
+                  <Button
+                    onClick={generateContract}
+                    className="w-full bg-gradient-to-r from-pulse-purple to-pulse-orange hover:from-pulse-orange hover:to-pulse-purple text-lg py-4 font-bold h-14"
+                  >
+                    <Zap className="w-5 h-5 mr-2" />
+                    Generate {contractSettings.version.charAt(0).toUpperCase() + contractSettings.version.slice(1)} Smart Contract
+                  </Button>
+                </div>
+
+                {generatedContract && (
+                  <div className="space-y-4 mt-8">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-orbitron text-lg font-bold text-pulse-orange">
+                        Generated Smart Contract ({contractSettings.version})
+                      </h3>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={copyContract}
+                          variant="outline"
+                          size="sm"
+                          className="border-gray-600 hover:bg-gray-800"
+                        >
+                          <Copy className="w-4 h-4 mr-2" />
+                          Copy
+                        </Button>
+                        <Button
+                          onClick={downloadContract}
+                          variant="outline"
+                          size="sm"
+                          className="border-gray-600 hover:bg-gray-800"
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          Download
+                        </Button>
+                      </div>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-6">
-                        <div className="bg-green-800/20 rounded-lg p-4 border border-green-500/30">
-                          <Label htmlFor="gasFee" className="text-white font-medium">Gas Limit Optimization</Label>
-                          <Input
-                            id="gasFee"
-                            value={contractSettings.gasFee}
-                            onChange={(e) => updateSetting('gasFee', e.target.value)}
-                            className="bg-black/50 border-green-500/30 text-white mt-2"
-                            placeholder="300000"
-                          />
-                          <p className="text-xs text-green-300 mt-1">Recommended: 300,000 - 500,000 gas units</p>
-                        </div>
-
-                        <div className="bg-green-800/20 rounded-lg p-4 border border-green-500/30">
-                          <Label className="text-white font-medium">Auto-Swap Threshold (%)</Label>
-                          <Slider
-                            value={[parseFloat(contractSettings.minimumTokensBeforeSwap)]}
-                            onValueChange={(value) => updateSetting('minimumTokensBeforeSwap', value[0].toString())}
-                            max={1}
-                            min={0.01}
-                            step={0.01}
-                            className="mt-2"
-                          />
-                          <p className="text-xs text-green-300 mt-1">{contractSettings.minimumTokensBeforeSwap}% triggers automatic liquidity swap</p>
-                        </div>
-
-                        <div className="flex items-center justify-between bg-green-800/20 rounded-lg p-4 border border-green-500/30">
-                          <div>
-                            <Label className="text-white font-medium">Mintable Supply</Label>
-                            <p className="text-xs text-green-300">Allow creating new tokens (use carefully)</p>
-                          </div>
-                          <Switch
-                            checked={contractSettings.mintableEnabled}
-                            onCheckedChange={(checked) => updateSetting('mintableEnabled', checked)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="bg-green-700/20 rounded-lg p-4 border border-green-400/30">
-                        <h4 className="text-green-300 font-bold mb-3 flex items-center gap-2">
-                          <Cog className="w-4 h-4" />
-                          Advanced Capabilities
-                        </h4>
-                        <ul className="text-sm text-green-200 space-y-2">
-                          <li>• Automated liquidity generation</li>
-                          <li>• Dynamic tax rate adjustments</li>
-                          <li>• Multi-signature wallet support</li>
-                          <li>• Time-locked contract functions</li>
-                          <li>• Cross-chain bridge compatibility</li>
-                          <li>• Governance voting mechanisms</li>
-                          <li>• Advanced staking protocols</li>
-                          <li>• Flash loan attack protection</li>
-                          <li>• MEV (front-running) protection</li>
-                          <li>• Automated market maker integration</li>
-                          <li>• Real-time analytics hooks</li>
-                          <li>• Emergency recovery functions</li>
-                        </ul>
-                      </div>
+                    <Textarea
+                      value={generatedContract}
+                      readOnly
+                      className="bg-black/50 border-gray-600 text-white min-h-[400px] font-mono text-xs"
+                    />
+                    
+                    <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+                      <h4 className="text-blue-300 font-bold mb-2">📚 Deployment Steps:</h4>
+                      <ol className="text-sm text-blue-200 space-y-1">
+                        <li>1. Review and test the generated contract code</li>
+                        <li>2. Deploy to PulseChain testnet for testing</li>
+                        <li>3. Get contract audited (highly recommended)</li>
+                        <li>4. Deploy to PulseChain mainnet</li>
+                        <li>5. Verify contract on PulseScan</li>
+                        <li>6. Add liquidity to PulseX DEX</li>
+                        <li>7. Lock liquidity for {contractSettings.liquidityLockDays} days</li>
+                        <li>8. Set up marketing wallet and configure taxes</li>
+                      </ol>
                     </div>
                   </div>
-                </TabsContent>
+                )}
               </Tabs>
-
-              <div className="pt-6 border-t border-gray-600">
-                <Button
-                  onClick={generateContract}
-                  className="w-full bg-gradient-to-r from-pulse-purple to-pulse-orange hover:from-pulse-orange hover:to-pulse-purple text-lg py-4 font-bold"
-                >
-                  <Zap className="w-5 h-5 mr-2" />
-                  Generate {contractSettings.version.charAt(0).toUpperCase() + contractSettings.version.slice(1)} Smart Contract
-                </Button>
-              </div>
-
-              {generatedContract && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-orbitron text-lg font-bold text-pulse-orange">
-                      Generated Smart Contract ({contractSettings.version})
-                    </h3>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={copyContract}
-                        variant="outline"
-                        size="sm"
-                        className="border-gray-600 hover:bg-gray-800"
-                      >
-                        <Copy className="w-4 h-4 mr-2" />
-                        Copy
-                      </Button>
-                      <Button
-                        onClick={downloadContract}
-                        variant="outline"
-                        size="sm"
-                        className="border-gray-600 hover:bg-gray-800"
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <Textarea
-                    value={generatedContract}
-                    readOnly
-                    className="bg-black/50 border-gray-600 text-white min-h-[400px] font-mono text-xs"
-                  />
-                  
-                  <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
-                    <h4 className="text-blue-300 font-bold mb-2">📚 Deployment Steps:</h4>
-                    <ol className="text-sm text-blue-200 space-y-1">
-                      <li>1. Review and test the generated contract code</li>
-                      <li>2. Deploy to PulseChain testnet for testing</li>
-                      <li>3. Get contract audited (highly recommended)</li>
-                      <li>4. Deploy to PulseChain mainnet</li>
-                      <li>5. Verify contract on PulseScan</li>
-                      <li>6. Add liquidity to PulseX DEX</li>
-                      <li>7. Lock liquidity for {contractSettings.liquidityLockDays} days</li>
-                      <li>8. Set up marketing wallet and configure taxes</li>
-                    </ol>
-                  </div>
-                </div>
-              )}
             </CardContent>
           </Card>
         </div>
