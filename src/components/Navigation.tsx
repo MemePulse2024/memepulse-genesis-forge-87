@@ -1,102 +1,85 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
-  const [activeSection, setActiveSection] = useState('generator');
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { id: 'generator', label: '💡 Generator' },
-    { id: 'tokenomics', label: '⚙️ Tokenomics' },
-    { id: 'social', label: '📱 Social Media' },
-    { id: 'resources', label: '📚 Resources' }
+    { href: '#generator', label: '💡 Idea Generator' },
+    { href: '#tokenomics', label: '⚙️ Tokenomics' },
+    { href: '#contract', label: '🔧 Smart Contract' },
+    { href: '#social', label: '📱 Social Media' },
+    { href: '#checklist', label: '📋 Launch Guide' },
+    { href: '#analytics', label: '📊 Analytics' },
+    { href: '#resources', label: '📚 Resources' },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-      
-      // Update active section based on scroll position
-      const sections = navItems.map(item => item.id);
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-    setIsMobileMenuOpen(false);
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsOpen(false);
+    }
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-black/90 backdrop-blur-md shadow-2xl' : 'bg-transparent'
-    }`}>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-purple-500/20">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="font-orbitron font-bold text-xl text-white">
-            MemePulse 🚀
+          {/* Logo */}
+          <div className="flex items-center">
+            <h1 className="font-orbitron text-xl font-bold text-white">
+              <span className="text-pulse-purple">Meme</span>
+              <span className="text-pulse-orange">Pulse</span>
+            </h1>
           </div>
-          
+
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`transition-all duration-300 hover:text-pulse-orange ${
-                  activeSection === item.id 
-                    ? 'text-pulse-orange border-b-2 border-pulse-orange' 
-                    : 'text-gray-300'
-                }`}
+              <Button
+                key={item.href}
+                variant="ghost"
+                size="sm"
+                onClick={() => scrollToSection(item.href)}
+                className="text-gray-300 hover:text-white hover:bg-purple-800/50 transition-colors text-xs px-3"
               >
                 {item.label}
-              </button>
+              </Button>
             ))}
           </div>
-          
+
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-              <div className={`w-full h-0.5 bg-white transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
-              <div className={`w-full h-0.5 bg-white transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
-              <div className={`w-full h-0.5 bg-white transition-all ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
-            </div>
-          </button>
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white"
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
-        
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-black/95 backdrop-blur-md">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`block w-full text-left px-4 py-3 transition-all duration-300 hover:bg-pulse-purple/20 ${
-                  activeSection === item.id ? 'text-pulse-orange bg-pulse-purple/10' : 'text-gray-300'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+
+        {/* Mobile Navigation Menu */}
+        {isOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-md border-t border-purple-500/20">
+              {navItems.map((item) => (
+                <Button
+                  key={item.href}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => scrollToSection(item.href)}
+                  className="w-full text-left text-gray-300 hover:text-white hover:bg-purple-800/50 transition-colors justify-start"
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </div>
           </div>
         )}
       </div>
