@@ -146,11 +146,13 @@ const TokenomicsEngine = () => {
           {/* Desktop view */}
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
-              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50 flex items-center justify-between px-4 py-3">
-                <span className="font-orbitron">Basic Configuration</span>
-                <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
+              <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50">
+                <div className="flex items-center justify-between px-4 py-3 w-full">
+                  <span className="font-orbitron">Basic Configuration</span>
+                  <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </TabsTrigger>
               <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50">
                 Advanced Features
