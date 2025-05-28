@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData, validateAllocations } from '@/utils/tokenomicsValidation';
@@ -16,7 +17,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 
 interface TokenomicsEngineProps {
   tokenomics: TokenomicsData;
-  setTokenomics: (tokenomics: TokenomicsData) => void;
+  setTokenomics: React.Dispatch<React.SetStateAction<TokenomicsData>>;
 }
 
 const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) => {
