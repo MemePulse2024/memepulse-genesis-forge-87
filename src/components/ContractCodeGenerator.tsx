@@ -45,6 +45,14 @@ interface SecurityFeatures {
   pausable: boolean;
   reflection: boolean;
   burnable: boolean;
+  governance: boolean;
+  autoLiquidity: boolean;
+  tokenVesting: boolean;
+  rebaseTokenomics: boolean;
+  stakingRewards: boolean;
+  deflation: boolean;
+  multisig: boolean;
+  tradingLimits: boolean;
 }
 
 interface AdvancedSettings {
@@ -77,6 +85,12 @@ interface ContractSettings {
   tradingCooldown: number; // in seconds
   initialLiquidity: number; // percentage of total supply
   uniswapRouter: string;
+  governanceThreshold?: number;
+  governanceQuorum?: number;
+  stakingApy?: number;
+  vestingPeriod?: number;
+  rebaseInterval?: number; // in seconds
+  deflationRate?: number; // for deflation settings
 }
 
 const getFeatureDescription = (feature: string): string => {
@@ -86,10 +100,14 @@ const getFeatureDescription = (feature: string): string => {
     pausable: "Emergency pause functionality for trading",
     reflection: "Automatic rewards for token holders",
     burnable: "Enable token burning mechanism",
-    maxTxLimit: "Maximum tokens per transaction (% of total supply)",
-    maxWalletLimit: "Maximum tokens per wallet (% of total supply)",
-    tradingCooldown: "Cooldown period between trades (seconds)",
-    liquidityLockTime: "Time to lock initial liquidity (days)"
+    governance: "DAO voting and proposal system",
+    autoLiquidity: "Automatic liquidity generation on trades",
+    tokenVesting: "Time-locked token release schedules",
+    rebaseTokenomics: "Elastic supply adjustment mechanism",
+    stakingRewards: "Staking pools with rewards",
+    deflation: "Automatic burn on transactions",
+    multisig: "Multi-signature security for admin functions",
+    tradingLimits: "Configurable trading limits and cooldowns"
   };
   return descriptions[feature] || "";
 };
@@ -357,8 +375,7 @@ const TABS = [
 // Contract Generator Component
 const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorProps) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('settings');
-  const [generatedCode, setGeneratedCode] = useState('');
+  const [activeTab, setActiveTab] = useState<string>('settings');
   const [settings, setSettings] = useState<ContractSettings>({
     tokenName: coinIdea?.name || '',
     tokenSymbol: coinIdea?.ticker?.replace('$', '') || '',
@@ -383,11 +400,25 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
       blacklist: true,
       pausable: true,
       reflection: true,
-      burnable: true
+      burnable: true,
+      governance: true,
+      autoLiquidity: true,
+      tokenVesting: true,
+      rebaseTokenomics: true,
+      stakingRewards: true,
+      deflation: true,
+      multisig: true,
+      tradingLimits: true
     },
     tradingCooldown: 30,
     initialLiquidity: 80,
     uniswapRouter: '0x...',
+    governanceThreshold: 0,
+    governanceQuorum: 0,
+    stakingApy: 0,
+    rebaseInterval: 0,
+    deflationRate: 0,
+    vestingPeriod: 0,
   });
   const [advancedSettings, setAdvancedSettings] = useState<AdvancedSettings>({
     maxTxLimit: 1,
@@ -395,6 +426,8 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     tradingCooldown: 30,
     liquidityLockTime: 365
   });
+
+  const [generatedCode, setGeneratedCode] = useState<string>('');
 
   useEffect(() => {
     setSettings(prev => ({
@@ -615,7 +648,7 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
           <TabsContent value="security" className="mt-0 border-none">
             <div className="space-y-8">
               <div>
-                <h3 className="text-lg font-semibold mb-4">Security Features</h3>
+                <h3 className="text-lg font-semibold mb-4">Core Security Features</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
                     <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg border border-purple-500/20">
@@ -633,7 +666,7 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
+                <h3 className="text-lg font-semibold mb-4">Transaction Settings</h3>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-6">
                     <div className="space-y-2">
@@ -652,7 +685,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
                           !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
                         )}
                       />
-                      <p className="text-xs text-gray-500">Maximum tokens per transaction (as % of total supply)</p>
                     </div>
 
                     <div className="space-y-2">
@@ -671,7 +703,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
                           !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
                         )}
                       />
-                      <p className="text-xs text-gray-500">Maximum tokens per wallet (as % of total supply)</p>
                     </div>
                   </div>
 
@@ -688,7 +719,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
                         max={300}
                         step={1}
                       />
-                      <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
                     </div>
 
                     <div className="space-y-2">
@@ -703,11 +733,113 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
                         max={730}
                         step={30}
                       />
-                      <p className="text-xs text-gray-500">Duration to lock initial liquidity</p>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {settings.securityFeatures.governance && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Governance Settings</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Proposal Threshold</Label>
+                        <Input
+                          type="number"
+                          value={settings.governanceThreshold ?? ''}
+                          onChange={(e) => handleSettingsChange('governanceThreshold', parseFloat(e.target.value))}
+                          className="bg-black/50 border-purple-500/20"
+                        />
+                        <p className="text-xs text-gray-500">Minimum tokens required to create a proposal</p>
+                      </div>
+                      <div>
+                        <Label>Quorum Percentage</Label>
+                        <Input
+                          type="number"
+                          value={settings.governanceQuorum ?? ''}
+                          onChange={(e) => handleSettingsChange('governanceQuorum', parseFloat(e.target.value))}
+                          className="bg-black/50 border-purple-500/20"
+                        />
+                        <p className="text-xs text-gray-500">Percentage of total supply needed for proposal to pass</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {settings.securityFeatures.stakingRewards && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Staking Settings</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Staking APY</Label>
+                      <div className="flex items-center space-x-2">
+                        <Input
+                          type="number"
+                          value={settings.stakingApy ?? ''}
+                          onChange={(e) => handleSettingsChange('stakingApy', parseFloat(e.target.value))}
+                          className="bg-black/50 border-purple-500/20"
+                        />
+                        <span>%</span>
+                      </div>
+                      <p className="text-xs text-gray-500">Annual Percentage Yield for stakers</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {settings.securityFeatures.tokenVesting && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Vesting Settings</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <Label>Vesting Period (Days)</Label>
+                      <Input
+                        type="number"
+                        value={settings.vestingPeriod ?? ''}
+                        onChange={(e) => handleSettingsChange('vestingPeriod', parseFloat(e.target.value))}
+                        className="bg-black/50 border-purple-500/20"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {settings.securityFeatures.rebaseTokenomics && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Rebase Settings</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <Label>Rebase Interval (Hours)</Label>
+                      <Input
+                        type="number"
+                        value={settings.rebaseInterval ? settings.rebaseInterval / 3600 : ''}
+                        onChange={(e) => handleSettingsChange('rebaseInterval', parseFloat(e.target.value) * 3600)}
+                        className="bg-black/50 border-purple-500/20"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {settings.securityFeatures.deflation && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Deflation Settings</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <Label>Deflation Rate (%)</Label>
+                      <Input
+                        type="number"
+                        value={settings.deflationRate ?? ''}
+                        onChange={(e) => handleSettingsChange('deflationRate', parseFloat(e.target.value))}
+                        className="bg-black/50 border-purple-500/20"
+                      />
+                      <p className="text-xs text-gray-500">Percentage of tokens burned per transaction</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-between mt-6">
                 <Button variant="outline" onClick={() => setActiveTab('settings')}>
