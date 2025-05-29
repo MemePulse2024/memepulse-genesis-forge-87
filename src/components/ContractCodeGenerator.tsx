@@ -573,230 +573,241 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
       <span className="pulse-sparkle pulse-sparkle-4" />
       <span className="pulse-sparkle pulse-sparkle-5" />
       {/* Animated logo or badge removed as requested */}
-      <div className="flex flex-col items-center mb-4 animate-fade-in">
-        {/* <img src="/favicon.ico" alt="PulseChain Logo" className="w-16 h-16 mb-2 drop-shadow-xl animate-spin-slow" /> */}
-        <div className="pulse-title text-3xl font-extrabold tracking-wider mb-1">PulseChain Genesis Forge</div>
-        <div className="text-lg font-medium text-purple-200 pulse-tab mb-2 animate-gradient-x">The Ultimate PRC20 Smart Contract Generator</div>
-        <div className="flex items-center gap-2 text-xs text-purple-300 font-mono bg-black/40 px-3 py-1 rounded-full border border-purple-700/40 animate-fade-in">
+      <div className="flex flex-col items-center mb-8 animate-fade-in">
+        <div className="pulse-title text-3xl font-extrabold tracking-wider mb-2 text-center">PulseChain Genesis Forge</div>
+        <div className="text-lg font-medium text-purple-200 pulse-tab mb-3 animate-gradient-x text-center">The Ultimate PRC20 Smart Contract Generator</div>
+        <div className="flex items-center gap-2 text-xs text-purple-300 font-mono bg-black/40 px-4 py-2 rounded-full border border-purple-700/40 animate-fade-in mt-1">
           <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
-          100% On-Chain. No Coding Required. PulseChain Ready.
+          {/* Updated tagline, removed '100% On-Chain' and improved spacing */}
+          No Coding Required &bull; PulseChain Ready
         </div>
       </div>
       <div className="w-full max-w-3xl mx-auto">
-        <Card className="pulse-gradient-border pulse-glass w-full">
-          <CardHeader>
-            <CardTitle className="pulse-title text-2xl font-bold flex flex-col items-center gap-2">
+        <Card className="pulse-gradient-border pulse-glass w-full px-0 py-0 md:px-6 md:py-8">
+          <CardHeader className="pb-2">
+            <CardTitle className="pulse-title text-2xl font-bold flex flex-col items-center gap-2 text-center">
               <span>Smart Contract Generator</span>
-              <span className="text-xs px-3 py-1 rounded bg-purple-900/40 border border-purple-500/30 text-purple-200 font-mono pulse-tab">
+              <span className="text-xs px-3 py-1 rounded bg-purple-900/40 border border-purple-500/30 text-purple-200 font-mono pulse-tab mt-1">
                 {contractType === 'noTax' ? 'Standard PRC20 (No Tax)' : contractType ? contractType.charAt(0).toUpperCase() + contractType.slice(1) + ' Layout' : 'Custom'}
               </span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <StepIndicator activeTab={activeTab} />
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-              <TabsContent value="settings" className="mt-0 border-none">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Token Name</Label>
-                      <Input
-                        value={settings.tokenName}
-                        onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Token Symbol</Label>
-                      <Input
-                        value={settings.tokenSymbol}
-                        onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Total Supply</Label>
-                      <Input
-                        type="text"
-                        value={settings.totalSupply}
-                        onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Decimals</Label>
-                      <Input
-                        type="number"
-                        value={settings.decimals}
-                        onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-end mt-6">
-                  <Button onClick={() => setActiveTab('security')} className="pulse-glow-btn">
-                    Next: Security Features
-                  </Button>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="security" className="mt-0 border-none">
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4 pulse-tab">Security Features</h3>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
-                        <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg pulse-feature">
-                          <Switch
-                            checked={enabled}
-                            onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
-                          />
-                          <div>
-                            <h3 className="font-medium pulse-tab">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
-                            <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-6">
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <Label>Max Transaction Limit</Label>
-                            <span className="text-sm text-gray-400">{advancedSettings.maxTxLimit}% of supply</span>
-                          </div>
-                          <Slider
-                            value={[advancedSettings.maxTxLimit]}
-                            onValueChange={([value]) => handleAdvancedSettingChange('maxTxLimit', value)}
-                            min={0.1}
-                            max={5}
-                            step={0.1}
-                            className={cn(
-                              "w-full",
-                              !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
-                            )}
-                          />
-                          <p className="text-xs text-gray-500">Maximum tokens per transaction (as % of total supply)</p>
-                        </div>
-
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <Label>Max Wallet Limit</Label>
-                            <span className="text-sm text-gray-400">{advancedSettings.maxWalletLimit}% of supply</span>
-                          </div>
-                          <Slider
-                            value={[advancedSettings.maxWalletLimit]}
-                            onValueChange={([value]) => handleAdvancedSettingChange('maxWalletLimit', value)}
-                            min={0.1}
-                            max={5}
-                            step={0.1}
-                            className={cn(
-                              "w-full",
-                              !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
-                            )}
-                          />
-                          <p className="text-xs text-gray-500">Maximum tokens per wallet (as % of total supply)</p>
-                        </div>
+          <CardContent className="pt-0">
+            <div className="flex flex-col gap-8 md:gap-10">
+              <StepIndicator activeTab={activeTab} />
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-8">
+                <TabsContent value="settings" className="mt-0 border-none">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Token Name</Label>
+                        <Input
+                          value={settings.tokenName}
+                          onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
+                          className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                        />
                       </div>
 
-                      <div className="space-y-6">
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <Label>Trading Cooldown</Label>
-                            <span className="text-sm text-gray-400">{advancedSettings.tradingCooldown} seconds</span>
-                          </div>
-                          <Slider
-                            value={[advancedSettings.tradingCooldown]}
-                            onValueChange={([value]) => handleAdvancedSettingChange('tradingCooldown', value)}
-                            min={0}
-                            max={300}
-                            step={1}
-                          />
-                          <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
-                        </div>
+                      <div>
+                        <Label>Token Symbol</Label>
+                        <Input
+                          value={settings.tokenSymbol}
+                          onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
+                          className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Total Supply</Label>
+                        <Input
+                          type="text"
+                          value={settings.totalSupply}
+                          onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
+                          className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Decimals</Label>
+                        <Input
+                          type="number"
+                          value={settings.decimals}
+                          onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
+                          className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                        />
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex justify-between mt-6">
-                    <Button variant="outline" onClick={() => setActiveTab('settings')}>
-                      Back to Settings
-                    </Button>
-                    <Button onClick={() => setActiveTab('code')} className="pulse-glow-btn">
-                      Next: Generate Code
+                  <div className="flex justify-end mt-6">
+                    <Button onClick={() => setActiveTab('security')} className="pulse-glow-btn">
+                      Next: Security Features
                     </Button>
                   </div>
-                </div>
-              </TabsContent>
+                </TabsContent>
 
-              <TabsContent value="code" className="mt-0 border-none">
-                <div className="space-y-6">
-                  <div className="flex justify-center mb-4">
-                    <Button onClick={generateContract} className="pulse-glow-btn animate-pulse">
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Generate Smart Contract
-                    </Button>
-                  </div>
-
-                  {generatedCode && (
-                    <div className="relative">
-                      <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-purple-500/20">
-                        <code className="text-sm text-gray-300 font-mono">{generatedCode}</code>
-                      </pre>
-                      <div className="absolute top-2 right-2 flex space-x-2">
-                        <Button
-                          onClick={copyToClipboard}
-                          variant="outline"
-                          size="icon"
-                          className="bg-black/50"
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          onClick={downloadContract}
-                          variant="outline"
-                          size="icon"
-                          className="bg-black/50"
-                        >
-                          <Download className="w-4 h-4" />
-                        </Button>
+                <TabsContent value="security" className="mt-0 border-none">
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 pulse-tab">Security Features</h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
+                          <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg pulse-feature">
+                            <Switch
+                              checked={enabled}
+                              onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
+                            />
+                            <div>
+                              <h3 className="font-medium pulse-tab">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
+                              <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  )}
 
-                  <div className="flex justify-between">
-                    <Button variant="outline" onClick={() => setActiveTab('security')}>
-                      Back to Security
-                    </Button>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <Label>Max Transaction Limit</Label>
+                              <span className="text-sm text-gray-400">{advancedSettings.maxTxLimit}% of supply</span>
+                            </div>
+                            <Slider
+                              value={[advancedSettings.maxTxLimit]}
+                              onValueChange={([value]) => handleAdvancedSettingChange('maxTxLimit', value)}
+                              min={0.1}
+                              max={5}
+                              step={0.1}
+                              className={cn(
+                                "w-full",
+                                !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
+                              )}
+                            />
+                            <p className="text-xs text-gray-500">Maximum tokens per transaction (as % of total supply)</p>
+                          </div>
+
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <Label>Max Wallet Limit</Label>
+                              <span className="text-sm text-gray-400">{advancedSettings.maxWalletLimit}% of supply</span>
+                            </div>
+                            <Slider
+                              value={[advancedSettings.maxWalletLimit]}
+                              onValueChange={([value]) => handleAdvancedSettingChange('maxWalletLimit', value)}
+                              min={0.1}
+                              max={5}
+                              step={0.1}
+                              className={cn(
+                                "w-full",
+                                !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
+                              )}
+                            />
+                            <p className="text-xs text-gray-500">Maximum tokens per wallet (as % of total supply)</p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-6">
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <Label>Trading Cooldown</Label>
+                              <span className="text-sm text-gray-400">{advancedSettings.tradingCooldown} seconds</span>
+                            </div>
+                            <Slider
+                              value={[advancedSettings.tradingCooldown]}
+                              onValueChange={([value]) => handleAdvancedSettingChange('tradingCooldown', value)}
+                              min={0}
+                              max={300}
+                              step={1}
+                            />
+                            <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between mt-6">
+                      <Button variant="outline" onClick={() => setActiveTab('settings')}>
+                        Back to Settings
+                      </Button>
+                      <Button onClick={() => setActiveTab('code')} className="pulse-glow-btn">
+                        Next: Generate Code
+                      </Button>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="code" className="mt-0 border-none">
+                  <div className="space-y-6">
+                    <div className="flex justify-center mb-4">
+                      <Button onClick={generateContract} className="pulse-glow-btn animate-pulse">
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Generate Smart Contract
+                      </Button>
+                    </div>
+
                     {generatedCode && (
-                      <div className="flex space-x-2">
-                        <Button variant="outline" onClick={copyToClipboard}>
-                          <Copy className="w-4 h-4 mr-2" />
-                          Copy Code
-                        </Button>
-                        <Button variant="outline" onClick={downloadContract}>
-                          <Download className="w-4 h-4 mr-2" />
-                          Download Contract
-                        </Button>
+                      <div className="relative">
+                        <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-purple-500/20">
+                          <code className="text-sm text-gray-300 font-mono">{generatedCode}</code>
+                        </pre>
+                        <div className="absolute top-2 right-2 flex space-x-2">
+                          <Button
+                            onClick={copyToClipboard}
+                            variant="outline"
+                            size="icon"
+                            className="bg-black/50"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            onClick={downloadContract}
+                            variant="outline"
+                            size="icon"
+                            className="bg-black/50"
+                          >
+                            <Download className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
                     )}
+
+                    <div className="flex justify-between">
+                      <Button variant="outline" onClick={() => setActiveTab('security')}>
+                        Back to Security
+                      </Button>
+                      {generatedCode && (
+                        <div className="flex space-x-2">
+                          <Button variant="outline" onClick={copyToClipboard}>
+                            <Copy className="w-4 h-4 mr-2" />
+                            Copy Code
+                          </Button>
+                          <Button variant="outline" onClick={downloadContract}>
+                            <Download className="w-4 h-4 mr-2" />
+                            Download Contract
+                          </Button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </TabsContent>
-            </Tabs>
+                </TabsContent>
+              </Tabs>
+            </div>
           </CardContent>
         </Card>
+        {/* Token Analytics section moved to the bottom for better flow */}
+        <div className="mt-12">
+          <div className="pulse-title text-xl font-bold mb-4 text-center">Token Analytics</div>
+          <div className="pulse-glass p-6">
+            {/* If you have a TokenAnalyticsDashboard component, render it here */}
+            {/* <TokenAnalyticsDashboard ...props /> */}
+            <p className="text-purple-200 text-center">Token analytics and charts will appear here after contract generation.</p>
+          </div>
+        </div>
       </div>
     </div>
   );
