@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, Code, Shield, Copy, Download, Zap } from 'lucide-react';
+import { Settings, Code, Shield, Copy, Download, Zap, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface TokenomicsData {
@@ -486,6 +486,7 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
     }));
   }, [tokenomics]);
 
+
   useEffect(() => {
     setSettings(prev => ({
       ...prev,
@@ -509,6 +510,31 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
         [feature]: !prev.securityFeatures[feature]
       }
     }));
+  };
+
+  const handleAiNameSuggestion = async () => {
+    const theme = coinIdea.theme || 'meme coin';
+    const suggestions = [
+      'Pulse' + theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1),
+      theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1) + 'Chain',
+      'Meta' + theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1),
+      theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1) + 'X',
+      theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1) + 'DAO'
+    ];
+
+    const aiSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+    const ticker = aiSuggestion.substring(0, 4).toUpperCase();
+
+    setSettings(prev => ({
+      ...prev,
+      tokenName: aiSuggestion,
+      tokenSymbol: ticker
+    }));
+
+    toast({
+      title: "AI Name Generated! 🤖",
+      description: `Generated name: ${aiSuggestion} ($${ticker})`
+    });
   };
 
   const handleGenerateContract = async () => {
@@ -657,12 +683,22 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
                       <div className="space-y-4">
                         <div>
                           <Label htmlFor="tokenName">Token Name</Label>
-                          <Input
-                            id="tokenName"
-                            value={settings.tokenName}
-                            onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
-                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                          />
+                          <div className="flex gap-2">
+                            <Input
+                              id="tokenName"
+                              value={settings.tokenName}
+                              onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
+                              className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                            />
+                            <Button
+                              onClick={handleAiNameSuggestion}
+                              variant="outline"
+                              className="border-gray-600 hover:bg-gray-800"
+                              title="Generate AI Name Suggestion"
+                            >
+                              <Sparkles className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
                         <div>
                           <Label htmlFor="tokenSymbol">Token Symbol</Label>
