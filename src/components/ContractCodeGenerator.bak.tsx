@@ -17,7 +17,30 @@ interface TokenomicsData {
     liquidity: string;
     marketing: string;
     reflection: string;
+  };
+  supplyAllocation: {
+    pulsex: string;
+    airdrop: string;
+    dev: string;
+    marketing: string;
     burn: string;
+  };
+}
+
+interface ContractCodeGeneratorProps {
+  tokenomics?: TokenomicsData;
+  coinIdea?: any;
+}
+
+// Helper functions and types
+interface TokenomicsData {
+  totalSupply: string;
+  buyTax: string;
+  sellTax: string;
+  taxAllocation: {
+    liquidity: string;
+    marketing: string;
+    reflection: string;
   };
   supplyAllocation: {
     pulsex: string;
@@ -30,12 +53,7 @@ interface TokenomicsData {
 
 interface ContractCodeGeneratorProps {
   tokenomics: TokenomicsData;
-  coinIdea: {
-    name: string;
-    ticker: string;
-    theme: string;
-    logoIdea: string;
-  };
+  coinIdea: any;
 }
 
 interface SecurityFeatures {
@@ -57,18 +75,7 @@ interface ContractSettings {
   autoLiquidity: boolean;
   liquidityLockDays: number;
   owner: string;
-  buyTax: number;
-  sellTax: number;
-  transferTax: number;
-  liquidityShare: number;
-  marketingShare: number;
-  devShare: number;
-  reflectionShare: number;
-  burnShare: number;
   securityFeatures: SecurityFeatures;
-  tradingCooldown: number; // in seconds
-  initialLiquidity: number; // percentage of total supply
-  uniswapRouter: string;
 }
 
 const getFeatureDescription = (feature: string): string => {
@@ -87,323 +94,72 @@ const generateContractCode = (settings: ContractSettings): string => {
     'pragma solidity ^0.8.19;',
     '',
     'import "@openzeppelin/contracts/token/ERC20/ERC20.sol";',
-    'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";',
     'import "@openzeppelin/contracts/security/Pausable.sol";',
     'import "@openzeppelin/contracts/access/Ownable.sol";',
-    'import "@openzeppelin/contracts/utils/math/SafeMath.sol";',
+    settings.securityFeatures.burnable ? 'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";' : '',
     settings.securityFeatures.reflection ? 'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";' : '',
   ].filter(Boolean).join('\n');
 
   const contractName = settings.tokenName.replace(/\s+/g, '');
   const inheritance = [
     'ERC20',
-    'ERC20Burnable',
     'Pausable',
     'Ownable',
+    settings.securityFeatures.burnable ? 'ERC20Burnable' : '',
     settings.securityFeatures.reflection ? 'ERC20Votes' : ''
   ].filter(Boolean).join(', ');
 
   const contractStart = `
 contract ${contractName} is ${inheritance} {
-    using SafeMath for uint256;
-
-    // Token configuration
-    uint256 private constant DECIMALS = ${settings.decimals};
-    uint256 private constant TOTAL_SUPPLY = ${settings.totalSupply} * 10**DECIMALS;
-    
-    // Trading limits
     uint256 public maxTxAmount;
     uint256 public maxWalletAmount;
-    
-    // Trading status
     bool public tradingEnabled;
-    bool public tradingPaused;
-    
-    // Fee configuration
-    uint256 public buyTax;
-    uint256 public sellTax;
-    uint256 public transferTax;
-    
-    // Fee distribution
-    uint256 public liquidityShare;
-    uint256 public marketingShare;
-    uint256 public devShare;
-    uint256 public reflectionShare;
-    uint256 public burnShare;
-    
-    // Wallets
-    address public marketingWallet;
-    address public devWallet;
-    address public autoLiquidityWallet;
-    
-    // Anti-bot & security
-    mapping(address => bool) private _isExcludedFromFees;
-    mapping(address => bool) private _isExcludedFromLimits;
     ${settings.securityFeatures.blacklist ? 'mapping(address => bool) private _blacklist;' : ''}
-    mapping(address => uint256) private _lastTrade;
-    uint256 public tradeCooldown;
-    
-    // Events
-    event TradingEnabled();
-    event WalletUpdated(string walletType, address newWallet);
-    event ExcludedFromFees(address account, bool isExcluded);
-    event ExcludedFromLimits(address account, bool isExcluded);
-    ${settings.securityFeatures.blacklist ? 'event AddressBlacklisted(address account, bool isBlacklisted);' : ''}
-    event TaxUpdated(string taxType, uint256 newValue);
-    event TaxSharesUpdated(
-        uint256 liquidity,
-        uint256 marketing,
-        uint256 dev,
-        uint256 reflection,
-        uint256 burn
-    );
+    ${settings.autoLiquidity ? 'uint256 public liquidityFee = 300; // 3%' : ''}
 `;
 
   const constructor = `
-    constructor(
-        address _marketingWallet,
-        address _devWallet,
-        address _autoLiquidityWallet
-    ) ERC20("${settings.tokenName}", "${settings.tokenSymbol}") {
-        require(_marketingWallet != address(0), "Marketing wallet cannot be zero address");
-        require(_devWallet != address(0), "Dev wallet cannot be zero address");
-        require(_autoLiquidityWallet != address(0), "Auto liquidity wallet cannot be zero address");
-        
-        _mint(msg.sender, TOTAL_SUPPLY);
-        
-        marketingWallet = _marketingWallet;
-        devWallet = _devWallet;
-        autoLiquidityWallet = _autoLiquidityWallet;
-        
-        // Initialize trading limits
-        maxTxAmount = (TOTAL_SUPPLY * ${settings.maxTxAmount}) / 100;
-        maxWalletAmount = (TOTAL_SUPPLY * ${settings.maxWalletAmount}) / 100;
-        
-        // Initialize fees
-        buyTax = ${settings.buyTax || 5};
-        sellTax = ${settings.sellTax || 5};
-        transferTax = ${settings.transferTax || 0};
-        
-        // Initialize fee shares
-        liquidityShare = ${settings.liquidityShare || 40};
-        marketingShare = ${settings.marketingShare || 30};
-        devShare = ${settings.devShare || 10};
-        reflectionShare = ${settings.reflectionShare || 10};
-        burnShare = ${settings.burnShare || 10};
-        
-        // Set initial trading cooldown
-        tradeCooldown = 30 seconds;
-        
-        // Exclude contract deployer and essential addresses from fees and limits
-        _isExcludedFromFees[msg.sender] = true;
-        _isExcludedFromFees[address(this)] = true;
-        _isExcludedFromFees[marketingWallet] = true;
-        _isExcludedFromFees[devWallet] = true;
-        _isExcludedFromFees[autoLiquidityWallet] = true;
-        
-        _isExcludedFromLimits[msg.sender] = true;
-        _isExcludedFromLimits[address(this)] = true;
-        _isExcludedFromLimits[marketingWallet] = true;
-        _isExcludedFromLimits[devWallet] = true;
-        _isExcludedFromLimits[autoLiquidityWallet] = true;
+    constructor() ERC20("${settings.tokenName}", "${settings.tokenSymbol}") {
+        _mint(msg.sender, ${settings.totalSupply} * 10 ** decimals());
+        maxTxAmount = (${settings.maxTxAmount} * totalSupply()) / 100;
+        maxWalletAmount = (${settings.maxWalletAmount} * totalSupply()) / 100;
     }
 `;
 
-  const coreFunctions = `
-    // Core transfer function override with enhanced security
-    function _transfer(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) internal virtual override {
-        require(sender != address(0), "ERC20: transfer from zero address");
-        require(recipient != address(0), "ERC20: transfer to zero address");
-        require(amount > 0, "Transfer amount must be greater than zero");
-        require(!tradingPaused || _isExcludedFromFees[sender] || _isExcludedFromFees[recipient], "Trading is paused");
-        ${settings.securityFeatures.blacklist ? 'require(!_blacklist[sender] && !_blacklist[recipient], "Address is blacklisted");' : ''}
-        
-        // Validate trading status and bot protection
-        if (!tradingEnabled) {
-            require(_isExcludedFromFees[sender] || _isExcludedFromFees[recipient], "Trading not yet enabled");
-        } else {
-            if (!_isExcludedFromFees[sender] && !_isExcludedFromFees[recipient]) {
-                require(block.timestamp >= _lastTrade[sender].add(tradeCooldown), "Must wait for cooldown");
-                _lastTrade[sender] = block.timestamp;
-            }
+  const securityFeatures = [
+    settings.securityFeatures.antiWhale ? `
+    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override {
+        super._beforeTokenTransfer(from, to, amount);
+        require(amount <= maxTxAmount || from == owner() || to == owner(), "Transfer amount exceeds maximum");
+        if (to != owner() && from != owner()) {
+            require(balanceOf(to) + amount <= maxWalletAmount, "Wallet amount exceeds maximum");
         }
-        
-        // Transaction and wallet limits
-        if (!_isExcludedFromLimits[sender] && !_isExcludedFromLimits[recipient]) {
-            require(amount <= maxTxAmount, "Transfer exceeds max transaction amount");
-            if (recipient != uniswapV2Pair) {
-                uint256 recipientBalance = balanceOf(recipient);
-                require(recipientBalance.add(amount) <= maxWalletAmount, "Recipient would exceed max wallet amount");
-            }
-            require(balanceOf(recipient).add(amount) <= maxWalletAmount, "Recipient wallet amount exceeds maximum");
-            require(block.timestamp >= _lastTrade[sender].add(tradeCooldown), "Must wait for trade cooldown");
-            _lastTrade[sender] = block.timestamp;
-        }
-        
-        // Calculate fees
-        uint256 feeAmount = 0;
-        if (!_isExcludedFromFees[sender] && !_isExcludedFromFees[recipient]) {
-            uint256 taxRate;
-            if (sender == uniswapV2Pair) {
-                taxRate = buyTax;
-            } else if (recipient == uniswapV2Pair) {
-                taxRate = sellTax;
-            } else {
-                taxRate = transferTax;
-            }
-            
-            if (taxRate > 0) {
-                feeAmount = amount.mul(taxRate).div(100);
-                uint256 liquidityAmount = feeAmount.mul(liquidityShare).div(100);
-                uint256 marketingAmount = feeAmount.mul(marketingShare).div(100);
-                uint256 devAmount = feeAmount.mul(devShare).div(100);
-                uint256 reflectionAmount = feeAmount.mul(reflectionShare).div(100);
-                uint256 burnAmount = feeAmount.mul(burnShare).div(100);
-                
-                // Process fee distributions
-                if (liquidityAmount > 0) super._transfer(sender, autoLiquidityWallet, liquidityAmount);
-                if (marketingAmount > 0) super._transfer(sender, marketingWallet, marketingAmount);
-                if (devAmount > 0) super._transfer(sender, devWallet, devAmount);
-                if (reflectionAmount > 0) _redistribute(sender, reflectionAmount);
-                if (burnAmount > 0) _burn(sender, burnAmount);
-            }
-        }
-        
-        // Transfer remaining amount
-        super._transfer(sender, recipient, amount.sub(feeAmount));
+    }` : '',
+    
+    settings.securityFeatures.blacklist ? `
+    function blacklistAddress(address account, bool value) external onlyOwner {
+        _blacklist[account] = value;
     }
 
-    // Redistribution mechanism
-    function _redistribute(address sender, uint256 amount) internal {
-        uint256 totalShares = totalSupply().sub(balanceOf(address(0)));
-        if (totalShares > 0) {
-            foreach(address holder in getHolders()) {
-                if (holder != sender && holder != address(0)) {
-                    uint256 share = amount.mul(balanceOf(holder)).div(totalShares);
-                    super._transfer(sender, holder, share);
-                }
-            }
-        }
-    }
-`;
-
-  const ownerFunctions = `
-    // Owner functions
-    function enableTrading() external onlyOwner {
-        tradingEnabled = true;
-        emit TradingEnabled();
-    }
-    
-    function setTradingPaused(bool paused) external onlyOwner {
-        tradingPaused = paused;
-    }
-    
-    function setMaxTxAmount(uint256 amount) external onlyOwner {
-        require(amount > 0, "Amount must be greater than 0");
-        maxTxAmount = amount;
-    }
-    
-    function setMaxWalletAmount(uint256 amount) external onlyOwner {
-        require(amount > 0, "Amount must be greater than 0");
-        maxWalletAmount = amount;
-    }
-    
-    function setTradeCooldown(uint256 seconds_) external onlyOwner {
-        tradeCooldown = seconds_;
-    }
-    
-    function setTaxes(
-        uint256 _buyTax,
-        uint256 _sellTax,
-        uint256 _transferTax
-    ) external onlyOwner {
-        require(_buyTax <= 25 && _sellTax <= 25 && _transferTax <= 25, "Tax cannot exceed 25%");
-        buyTax = _buyTax;
-        sellTax = _sellTax;
-        transferTax = _transferTax;
-        emit TaxUpdated("Buy", _buyTax);
-        emit TaxUpdated("Sell", _sellTax);
-        emit TaxUpdated("Transfer", _transferTax);
-    }
-    
-    function setTaxShares(
-        uint256 _liquidityShare,
-        uint256 _marketingShare,
-        uint256 _devShare,
-        uint256 _reflectionShare,
-        uint256 _burnShare
-    ) external onlyOwner {
-        require(
-            _liquidityShare.add(_marketingShare).add(_devShare).add(_reflectionShare).add(_burnShare) == 100,
-            "Shares must total 100"
-        );
-        liquidityShare = _liquidityShare;
-        marketingShare = _marketingShare;
-        devShare = _devShare;
-        reflectionShare = _reflectionShare;
-        burnShare = _burnShare;
-        emit TaxSharesUpdated(_liquidityShare, _marketingShare, _devShare, _reflectionShare, _burnShare);
-    }
-    
-    function setWallets(
-        address _marketingWallet,
-        address _devWallet,
-        address _autoLiquidityWallet
-    ) external onlyOwner {
-        if (_marketingWallet != address(0)) {
-            marketingWallet = _marketingWallet;
-            emit WalletUpdated("Marketing", _marketingWallet);
-        }
-        if (_devWallet != address(0)) {
-            devWallet = _devWallet;
-            emit WalletUpdated("Dev", _devWallet);
-        }
-        if (_autoLiquidityWallet != address(0)) {
-            autoLiquidityWallet = _autoLiquidityWallet;
-            emit WalletUpdated("AutoLiquidity", _autoLiquidityWallet);
-        }
-    }
-    
-    function excludeFromFees(address account, bool excluded) external onlyOwner {
-        _isExcludedFromFees[account] = excluded;
-        emit ExcludedFromFees(account, excluded);
-    }
-    
-    function excludeFromLimits(address account, bool excluded) external onlyOwner {
-        _isExcludedFromLimits[account] = excluded;
-        emit ExcludedFromLimits(account, excluded);
-    }
-    
-    ${settings.securityFeatures.blacklist ? `
-    function setBlacklisted(address account, bool blacklisted) external onlyOwner {
-        _blacklist[account] = blacklisted;
-        emit AddressBlacklisted(account, blacklisted);
-    }` : ''}
-`;
-
-  const getterFunctions = `
-    // Getter functions
-    function isExcludedFromFees(address account) external view returns (bool) {
-        return _isExcludedFromFees[account];
-    }
-    
-    function isExcludedFromLimits(address account) external view returns (bool) {
-        return _isExcludedFromLimits[account];
-    }
-    
-    ${settings.securityFeatures.blacklist ? `
-    function isBlacklisted(address account) external view returns (bool) {
+    function isBlacklisted(address account) public view returns (bool) {
         return _blacklist[account];
-    }` : ''}
+    }` : '',
     
-    function getLastTrade(address account) external view returns (uint256) {
-        return _lastTrade[account];
+    settings.securityFeatures.pausable ? `
+    function pause() public onlyOwner {
+        _pause();
     }
-`;
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }` : '',
+    
+    settings.autoLiquidity ? `
+    function setLiquidityFee(uint256 fee) external onlyOwner {
+        require(fee <= 1000, "Fee cannot exceed 10%");
+        liquidityFee = fee;
+    }` : ''
+  ].filter(Boolean).join('\n');
 
   return `// SPDX-License-Identifier: MIT
 ${imports}
@@ -413,11 +169,7 @@ ${imports}
  * @dev Generated by MemePulse Genesis Forge
  * @custom:security-contact ${settings.owner}
  */
-${contractStart}
-${constructor}
-${coreFunctions}
-${ownerFunctions}
-${getterFunctions}
+${contractStart}${constructor}${securityFeatures}
 }`;
 };
 
@@ -441,6 +193,7 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [generatedContract, setGeneratedContract] = useState("");
+
   const [settings, setSettings] = useState<ContractSettings>({
     tokenName: "",
     tokenSymbol: "",
@@ -452,17 +205,6 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
     autoLiquidity: true,
     liquidityLockDays: 365,
     owner: "",
-    buyTax: 5,
-    sellTax: 5,
-    transferTax: 0,
-    liquidityShare: 40,
-    marketingShare: 30,
-    devShare: 10,
-    reflectionShare: 10,
-    burnShare: 10,
-    tradingCooldown: 30,
-    initialLiquidity: 80,
-    uniswapRouter: "0x01A79ea342a54E64e4Aa7903b59493570C42A866", // Production PulseX Router v3
     securityFeatures: {
       antiWhale: true,
       blacklist: true,
@@ -473,26 +215,21 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
   });
 
   useEffect(() => {
-    setSettings(prev => ({
-      ...prev,
-      totalSupply: tokenomics.totalSupply,
-      maxTxAmount: tokenomics.buyTax,
-      maxWalletAmount: tokenomics.sellTax,
-      securityFeatures: {
-        ...prev.securityFeatures,
-        reflection: tokenomics.taxAllocation.reflection !== "0",
-        burnable: tokenomics.taxAllocation.burn !== "0"
-      }
-    }));
+    if (tokenomics) {
+      setSettings(prev => ({
+        ...prev,
+        totalSupply: tokenomics.totalSupply,
+        maxTxAmount: tokenomics.buyTax,
+        maxWalletAmount: tokenomics.sellTax,
+        securityFeatures: {
+          ...prev.securityFeatures,
+          reflection: tokenomics.taxAllocation.reflection !== "0",
+          burnable: tokenomics.taxAllocation.burn !== "0"
+        },
+        supplyAllocation: tokenomics.supplyAllocation
+      }));
+    }
   }, [tokenomics]);
-
-  useEffect(() => {
-    setSettings(prev => ({
-      ...prev,
-      tokenName: coinIdea.name,
-      tokenSymbol: coinIdea.ticker || coinIdea.name.substring(0, 4).toUpperCase()
-    }));
-  }, [coinIdea]);
 
   const handleSettingsChange = (field: keyof ContractSettings, value: any) => {
     setSettings(prev => ({

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
@@ -12,9 +11,21 @@ import TokenAnalyticsDashboard from '@/components/TokenAnalyticsDashboard';
 import ResourcesSection from '@/components/ResourcesSection';
 import Footer from '@/components/Footer';
 
+interface CoinIdea {
+  name: string;
+  ticker: string;
+  theme: string;
+  logoIdea: string;
+}
+
 const Index = () => {
   // Shared state
-  const [coinIdea, setCoinIdea] = useState(null);
+  const [coinIdea, setCoinIdea] = useState<CoinIdea>({
+    name: '',
+    ticker: '',
+    theme: '',
+    logoIdea: ''
+  });
   const [tokenomics, setTokenomics] = useState({
     totalSupply: '1000000000',
     buyTax: '5',
@@ -22,7 +33,8 @@ const Index = () => {
     taxAllocation: {
       liquidity: '40',
       marketing: '40',
-      reflection: '20'
+      reflection: '10',
+      burn: '10'
     },
     supplyAllocation: {
       pulsex: '80',

@@ -1,0 +1,7 @@
+[33mcommit 8502bccb4a2e21e1624bce9bbdc5ba4525ea3b5e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: gpt-engineer-app[bot] <159125892+gpt-engineer-app[bot]@users.noreply.github.com>
+Date:   Wed May 28 09:13:43 2025 +0000
+
+    Fix: Smart Contract Generator tab overlap
+    
+    Improved the layout of the Smart Contract Generator tabs to prevent overlapping content and enhance readability.

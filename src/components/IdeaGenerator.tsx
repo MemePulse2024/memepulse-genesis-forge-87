@@ -12,7 +12,7 @@ interface CoinIdea {
   logoIdea: string;
 }
 
-const IdeaGenerator = ({ coinIdea, setCoinIdea }: { coinIdea: CoinIdea | null, setCoinIdea: (idea: CoinIdea) => void }) => {
+const IdeaGenerator = ({ coinIdea, setCoinIdea }: { coinIdea: CoinIdea, setCoinIdea: (idea: CoinIdea) => void }) => {
   const [theme, setTheme] = useState('');
   const [generatedIdea, setGeneratedIdea] = useState<CoinIdea | null>(coinIdea);
   const [isGenerating, setIsGenerating] = useState(false);
