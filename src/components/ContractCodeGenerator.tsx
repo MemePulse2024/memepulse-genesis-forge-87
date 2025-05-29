@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, Code, Shield, Copy, Download, Zap, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
+import ParticleBackground from "./ParticleBackground";
 
 interface TokenomicsData {
   totalSupply: string;
@@ -534,247 +535,250 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
   };
 
   return (
-    <Card className="w-full bg-black/50 border-purple-500/20">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold flex items-center gap-3">
-          Smart Contract Generator
-          <span className="text-xs px-3 py-1 rounded bg-purple-900/40 border border-purple-500/30 text-purple-200 font-mono">
-            {contractType === 'noTax' ? 'Standard PRC20 (No Tax)' : contractType ? contractType.charAt(0).toUpperCase() + contractType.slice(1) + ' Layout' : 'Custom'}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-6">
-          <div className="flex items-center justify-center space-x-4 bg-gray-900/50 p-4 rounded-lg">
-            <div className={cn(
-              "flex items-center space-x-2 p-2 rounded-lg",
-              activeTab === 'settings' ? "bg-purple-500/20" : "opacity-50"
-            )}>
-              <Settings className="w-4 h-4" />
-              <span>1. Basic Settings</span>
-            </div>
-            <div className="h-px w-8 bg-gray-600" />
-            <div className={cn(
-              "flex items-center space-x-2 p-2 rounded-lg",
-              activeTab === 'security' ? "bg-purple-500/20" : "opacity-50"
-            )}>
-              <Shield className="w-4 h-4" />
-              <span>2. Security Features</span>
-            </div>
-            <div className="h-px w-8 bg-gray-600" />
-            <div className={cn(
-              "flex items-center space-x-2 p-2 rounded-lg",
-              activeTab === 'code' ? "bg-purple-500/20" : "opacity-50"
-            )}>
-              <Code className="w-4 h-4" />
-              <span>3. Generate Code</span>
+    <div className="relative">
+      <ParticleBackground />
+      <Card className="pulse-gradient-border pulse-glass w-full">
+        <CardHeader>
+          <CardTitle className="pulse-title text-2xl font-bold flex items-center gap-3">
+            Smart Contract Generator
+            <span className="text-xs px-3 py-1 rounded bg-purple-900/40 border border-purple-500/30 text-purple-200 font-mono pulse-tab">
+              {contractType === 'noTax' ? 'Standard PRC20 (No Tax)' : contractType ? contractType.charAt(0).toUpperCase() + contractType.slice(1) + ' Layout' : 'Custom'}
+            </span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-6">
+            <div className="flex items-center justify-center space-x-4 bg-gray-900/50 p-4 rounded-lg">
+              <div className={cn(
+                "flex items-center space-x-2 p-2 rounded-lg pulse-tab",
+                activeTab === 'settings' ? "bg-purple-500/20" : "opacity-50"
+              )}>
+                <Settings className="w-4 h-4" />
+                <span>1. Basic Settings</span>
+              </div>
+              <div className="h-px w-8 bg-gray-600" />
+              <div className={cn(
+                "flex items-center space-x-2 p-2 rounded-lg pulse-tab",
+                activeTab === 'security' ? "bg-purple-500/20" : "opacity-50"
+              )}>
+                <Shield className="w-4 h-4" />
+                <span>2. Security Features</span>
+              </div>
+              <div className="h-px w-8 bg-gray-600" />
+              <div className={cn(
+                "flex items-center space-x-2 p-2 rounded-lg pulse-tab",
+                activeTab === 'code' ? "bg-purple-500/20" : "opacity-50"
+              )}>
+                <Code className="w-4 h-4" />
+                <span>3. Generate Code</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-          <TabsContent value="settings" className="mt-0 border-none">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <Label>Token Name</Label>
-                  <Input
-                    value={settings.tokenName}
-                    onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
-                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                  />
-                </div>
-
-                <div>
-                  <Label>Token Symbol</Label>
-                  <Input
-                    value={settings.tokenSymbol}
-                    onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
-                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <Label>Total Supply</Label>
-                  <Input
-                    type="text"
-                    value={settings.totalSupply}
-                    onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
-                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                  />
-                </div>
-
-                <div>
-                  <Label>Decimals</Label>
-                  <Input
-                    type="number"
-                    value={settings.decimals}
-                    onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
-                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end mt-6">
-              <Button onClick={() => setActiveTab('security')} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
-                Next: Security Features
-              </Button>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="security" className="mt-0 border-none">
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Security Features</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
-                    <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg border border-purple-500/20">
-                      <Switch
-                        checked={enabled}
-                        onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
-                      />
-                      <div>
-                        <h3 className="font-medium">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
-                        <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label>Max Transaction Limit</Label>
-                        <span className="text-sm text-gray-400">{advancedSettings.maxTxLimit}% of supply</span>
-                      </div>
-                      <Slider
-                        value={[advancedSettings.maxTxLimit]}
-                        onValueChange={([value]) => handleAdvancedSettingChange('maxTxLimit', value)}
-                        min={0.1}
-                        max={5}
-                        step={0.1}
-                        className={cn(
-                          "w-full",
-                          !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
-                        )}
-                      />
-                      <p className="text-xs text-gray-500">Maximum tokens per transaction (as % of total supply)</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label>Max Wallet Limit</Label>
-                        <span className="text-sm text-gray-400">{advancedSettings.maxWalletLimit}% of supply</span>
-                      </div>
-                      <Slider
-                        value={[advancedSettings.maxWalletLimit]}
-                        onValueChange={([value]) => handleAdvancedSettingChange('maxWalletLimit', value)}
-                        min={0.1}
-                        max={5}
-                        step={0.1}
-                        className={cn(
-                          "w-full",
-                          !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
-                        )}
-                      />
-                      <p className="text-xs text-gray-500">Maximum tokens per wallet (as % of total supply)</p>
-                    </div>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+            <TabsContent value="settings" className="mt-0 border-none">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <Label>Token Name</Label>
+                    <Input
+                      value={settings.tokenName}
+                      onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
+                      className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                    />
                   </div>
 
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label>Trading Cooldown</Label>
-                        <span className="text-sm text-gray-400">{advancedSettings.tradingCooldown} seconds</span>
-                      </div>
-                      <Slider
-                        value={[advancedSettings.tradingCooldown]}
-                        onValueChange={([value]) => handleAdvancedSettingChange('tradingCooldown', value)}
-                        min={0}
-                        max={300}
-                        step={1}
-                      />
-                      <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
-                    </div>
+                  <div>
+                    <Label>Token Symbol</Label>
+                    <Input
+                      value={settings.tokenSymbol}
+                      onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
+                      className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <Label>Total Supply</Label>
+                    <Input
+                      type="text"
+                      value={settings.totalSupply}
+                      onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
+                      className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Decimals</Label>
+                    <Input
+                      type="number"
+                      value={settings.decimals}
+                      onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
+                      className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                    />
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-between mt-6">
-                <Button variant="outline" onClick={() => setActiveTab('settings')}>
-                  Back to Settings
-                </Button>
-                <Button onClick={() => setActiveTab('code')} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
-                  Next: Generate Code
+              <div className="flex justify-end mt-6">
+                <Button onClick={() => setActiveTab('security')} className="pulse-glow-btn">
+                  Next: Security Features
                 </Button>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="code" className="mt-0 border-none">
-            <div className="space-y-6">
-              <div className="flex justify-center mb-4">
-                <Button onClick={generateContract} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  Generate Smart Contract
-                </Button>
-              </div>
-
-              {generatedCode && (
-                <div className="relative">
-                  <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-purple-500/20">
-                    <code className="text-sm text-gray-300">{generatedCode}</code>
-                  </pre>
-                  <div className="absolute top-2 right-2 flex space-x-2">
-                    <Button
-                      onClick={copyToClipboard}
-                      variant="outline"
-                      size="icon"
-                      className="bg-black/50"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      onClick={downloadContract}
-                      variant="outline"
-                      size="icon"
-                      className="bg-black/50"
-                    >
-                      <Download className="w-4 h-4" />
-                    </Button>
+            <TabsContent value="security" className="mt-0 border-none">
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-lg font-semibold mb-4 pulse-tab">Security Features</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
+                      <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg pulse-feature">
+                        <Switch
+                          checked={enabled}
+                          onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
+                        />
+                        <div>
+                          <h3 className="font-medium pulse-tab">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
+                          <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              )}
 
-              <div className="flex justify-between">
-                <Button variant="outline" onClick={() => setActiveTab('security')}>
-                  Back to Security
-                </Button>
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <Label>Max Transaction Limit</Label>
+                          <span className="text-sm text-gray-400">{advancedSettings.maxTxLimit}% of supply</span>
+                        </div>
+                        <Slider
+                          value={[advancedSettings.maxTxLimit]}
+                          onValueChange={([value]) => handleAdvancedSettingChange('maxTxLimit', value)}
+                          min={0.1}
+                          max={5}
+                          step={0.1}
+                          className={cn(
+                            "w-full",
+                            !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
+                          )}
+                        />
+                        <p className="text-xs text-gray-500">Maximum tokens per transaction (as % of total supply)</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <Label>Max Wallet Limit</Label>
+                          <span className="text-sm text-gray-400">{advancedSettings.maxWalletLimit}% of supply</span>
+                        </div>
+                        <Slider
+                          value={[advancedSettings.maxWalletLimit]}
+                          onValueChange={([value]) => handleAdvancedSettingChange('maxWalletLimit', value)}
+                          min={0.1}
+                          max={5}
+                          step={0.1}
+                          className={cn(
+                            "w-full",
+                            !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
+                          )}
+                        />
+                        <p className="text-xs text-gray-500">Maximum tokens per wallet (as % of total supply)</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <Label>Trading Cooldown</Label>
+                          <span className="text-sm text-gray-400">{advancedSettings.tradingCooldown} seconds</span>
+                        </div>
+                        <Slider
+                          value={[advancedSettings.tradingCooldown]}
+                          onValueChange={([value]) => handleAdvancedSettingChange('tradingCooldown', value)}
+                          min={0}
+                          max={300}
+                          step={1}
+                        />
+                        <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-between mt-6">
+                  <Button variant="outline" onClick={() => setActiveTab('settings')}>
+                    Back to Settings
+                  </Button>
+                  <Button onClick={() => setActiveTab('code')} className="pulse-glow-btn">
+                    Next: Generate Code
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="code" className="mt-0 border-none">
+              <div className="space-y-6">
+                <div className="flex justify-center mb-4">
+                  <Button onClick={generateContract} className="pulse-glow-btn animate-pulse">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Generate Smart Contract
+                  </Button>
+                </div>
+
                 {generatedCode && (
-                  <div className="flex space-x-2">
-                    <Button variant="outline" onClick={copyToClipboard}>
-                      <Copy className="w-4 h-4 mr-2" />
-                      Copy Code
-                    </Button>
-                    <Button variant="outline" onClick={downloadContract}>
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Contract
-                    </Button>
+                  <div className="relative">
+                    <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-purple-500/20">
+                      <code className="text-sm text-gray-300 font-mono">{generatedCode}</code>
+                    </pre>
+                    <div className="absolute top-2 right-2 flex space-x-2">
+                      <Button
+                        onClick={copyToClipboard}
+                        variant="outline"
+                        size="icon"
+                        className="bg-black/50"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={downloadContract}
+                        variant="outline"
+                        size="icon"
+                        className="bg-black/50"
+                      >
+                        <Download className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 )}
+
+                <div className="flex justify-between">
+                  <Button variant="outline" onClick={() => setActiveTab('security')}>
+                    Back to Security
+                  </Button>
+                  {generatedCode && (
+                    <div className="flex space-x-2">
+                      <Button variant="outline" onClick={copyToClipboard}>
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy Code
+                      </Button>
+                      <Button variant="outline" onClick={downloadContract}>
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Contract
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -40,3 +40,81 @@
 .read-the-docs {
   color: #888;
 }
+
+/* --- PulseChain (Richard Heart) Style Enhancements --- */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+.pulse-gradient-border {
+  position: relative;
+  z-index: 0;
+}
+.pulse-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  border-radius: 1.25rem;
+  padding: 0;
+  background: linear-gradient(270deg, #a259ff, #ff6a00, #ff2992, #ffe600, #a259ff 90%);
+  background-size: 400% 400%;
+  animation: pulseBorderAnim 8s ease-in-out infinite;
+  filter: blur(2px) brightness(1.2);
+}
+@keyframes pulseBorderAnim {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.pulse-glass {
+  background: rgba(20, 10, 40, 0.7);
+  backdrop-filter: blur(12px) saturate(1.3);
+  border-radius: 1.25rem;
+  box-shadow: 0 0 32px 0 #a259ff33, 0 2px 24px 0 #ff6a0033;
+  border: 1.5px solid rgba(162,89,255,0.25);
+}
+
+.pulse-title {
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(90deg, #ffe600 10%, #ff2992 40%, #a259ff 70%, #ff6a00 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 8px #ffe60088, 0 0 16px #a259ff44;
+  animation: pulseTitleAnim 5s linear infinite alternate;
+}
+@keyframes pulseTitleAnim {
+  0% { filter: brightness(1.1) drop-shadow(0 0 8px #ffe60088); }
+  100% { filter: brightness(1.3) drop-shadow(0 0 16px #ff299288); }
+}
+
+.pulse-glow-btn {
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(90deg, #a259ff, #ff6a00, #ff2992, #ffe600);
+  background-size: 200% 200%;
+  color: #fff;
+  box-shadow: 0 0 16px 2px #a259ff88, 0 0 32px 4px #ff6a0088;
+  border: none;
+  animation: pulseBtnAnim 3s ease-in-out infinite;
+}
+@keyframes pulseBtnAnim {
+  0%, 100% { filter: brightness(1.1); }
+  50% { filter: brightness(1.4) drop-shadow(0 0 8px #ffe600); }
+}
+
+.pulse-tab {
+  font-family: 'Orbitron', sans-serif;
+  color: #ffe600;
+  text-shadow: 0 0 6px #a259ff99;
+}
+
+.pulse-feature {
+  border: 1.5px solid #a259ff55;
+  background: rgba(30, 0, 60, 0.5);
+  box-shadow: 0 0 8px #a259ff33;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #a259ff 0%, #ff6a00 100%);
+}
