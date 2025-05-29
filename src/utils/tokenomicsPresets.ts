@@ -5,6 +5,7 @@ export type TokenomicsPreset = {
   buyTax: string;
   sellTax: string;
   taxAllocation: {
+    burn: string;
     liquidity: string;
     marketing: string;
   };
@@ -25,6 +26,7 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     buyTax: "3",
     sellTax: "3",
     taxAllocation: {
+      burn: "0",
       liquidity: "60",
       marketing: "40"
     },
@@ -43,6 +45,7 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     buyTax: "5",
     sellTax: "5",
     taxAllocation: {
+      burn: "0",
       liquidity: "30",
       marketing: "70"
     },
@@ -61,6 +64,7 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     buyTax: "4",
     sellTax: "4",
     taxAllocation: {
+      burn: "0",
       liquidity: "50",
       marketing: "50"
     },
@@ -79,6 +83,7 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     buyTax: "6",
     sellTax: "6",
     taxAllocation: {
+      burn: "0",
       liquidity: "50",
       marketing: "50"
     },

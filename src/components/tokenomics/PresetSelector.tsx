@@ -20,7 +20,15 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
     setSelectedPreset(value);
     const preset = tokenomicsPresets.find(p => p.name === value);
     if (preset) {
-      onSelectPreset(preset);
+      // Ensure 'burn' property exists in taxAllocation
+      const presetWithBurn: TokenomicsData = {
+        ...preset,
+        taxAllocation: {
+          ...preset.taxAllocation,
+          burn: preset.taxAllocation.burn ?? "0",
+        },
+      };
+      onSelectPreset(presetWithBurn);
     }
   }
 

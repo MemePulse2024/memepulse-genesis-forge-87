@@ -61,6 +61,7 @@ interface ContractSettings {
   maxTxAmount: string;
   maxWalletAmount: string;
   autoLiquidity: boolean;
+  liquidityLockDays: number;
   owner: string;
   buyTax: number;
   sellTax: number;
@@ -85,7 +86,8 @@ const getFeatureDescription = (feature: string): string => {
     burnable: "Enable token burning mechanism",
     maxTxLimit: "Maximum tokens per transaction (% of total supply)",
     maxWalletLimit: "Maximum tokens per wallet (% of total supply)",
-    tradingCooldown: "Cooldown period between trades (seconds)"
+    tradingCooldown: "Cooldown period between trades (seconds)",
+    liquidityLockTime: "Time to lock initial liquidity (days)"
   };
   return descriptions[feature] || "";
 };
@@ -161,12 +163,12 @@ contract ${contractName} is ${inheritance} {
     ${settings.securityFeatures.blacklist ? 'event AddressBlacklisted(address account, bool isBlacklisted);' : ''}
     event TaxUpdated(string taxType, uint256 newValue);
     event TaxSharesUpdated(
+    event TaxSharesUpdated(
         uint256 liquidity,
         uint256 marketing,
         uint256 dev,
         ${settings.securityFeatures.burnable ? 'uint256 burn' : ''}
     );`;
-
   const constructor = `
     constructor(
         address _marketingWallet,
@@ -198,8 +200,7 @@ contract ${contractName} is ${inheritance} {
         marketingShare = ${settings.marketingShare || 30};
         devShare = ${settings.devShare || 10};
         ${settings.securityFeatures.burnable ? `burnShare = ${settings.burnShare || 10};` : ''}
-        
-        // Set initial trading cooldown
+        ${settings.securityFeatures.burnable ? `burnShare = ${settings.burnShare || 10};` : ''}
         tradeCooldown = 30 seconds;
         
         // Exclude contract deployer and essential addresses from fees and limits
@@ -359,6 +360,7 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     maxTxAmount: '1',
     maxWalletAmount: '2',
     autoLiquidity: true,
+    liquidityLockDays: 365,
     owner: '',
     buyTax: Number(tokenomics?.buyTax || '5'),
     sellTax: Number(tokenomics?.sellTax || '5'),
