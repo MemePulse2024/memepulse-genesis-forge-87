@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -130,7 +129,7 @@ const TokenAnalyticsDashboard = () => {
                     placeholder="0x..."
                   />
                 </div>
-                <div className="flex items-end">
+                <div className="flex flex-col items-end gap-2 justify-end">
                   <Button
                     onClick={fetchTokenMetrics}
                     disabled={isLoading}
@@ -147,6 +146,18 @@ const TokenAnalyticsDashboard = () => {
                         Fetch Metrics
                       </div>
                     )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-gray-600 hover:bg-gray-800 w-full"
+                    disabled={!contractAddress || contractAddress.length < 10}
+                    onClick={() => {
+                      if (contractAddress) {
+                        window.open(`https://midgard.wtf/token/${contractAddress}`, '_blank');
+                      }
+                    }}
+                  >
+                    View on Midgard
                   </Button>
                 </div>
               </div>
