@@ -469,139 +469,196 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     });
   };
 
+  const downloadContract = () => {
+    if (!generatedCode) return;
+    
+    const contractName = settings.tokenName.replace(/\s+/g, '');
+    const blob = new Blob([generatedCode], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${contractName}.sol`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Contract Downloaded! 💾",
+      description: `Saved as ${contractName}.sol`,
+    });
+  };
+
   return (
-    <div className="py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-screen backdrop-blur-3xl">
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center mb-16">
-          <h2 className="font-orbitron text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple bg-clip-text text-transparent">
-            Smart Contract Generator
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Generate a complete, feature-rich smart contract for your token
-          </p>
+    <Card className="w-full bg-black/50 border-purple-500/20">
+      <CardHeader>
+        <CardTitle className="text-xl font-bold">Smart Contract Generator</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-6">
+          <div className="flex items-center justify-center space-x-4 bg-gray-900/50 p-4 rounded-lg">
+            <div className={cn(
+              "flex items-center space-x-2 p-2 rounded-lg",
+              activeTab === 'settings' ? "bg-purple-500/20" : "opacity-50"
+            )}>
+              <Settings className="w-4 h-4" />
+              <span>1. Basic Settings</span>
+            </div>
+            <div className="h-px w-8 bg-gray-600" />
+            <div className={cn(
+              "flex items-center space-x-2 p-2 rounded-lg",
+              activeTab === 'security' ? "bg-purple-500/20" : "opacity-50"
+            )}>
+              <Shield className="w-4 h-4" />
+              <span>2. Security Features</span>
+            </div>
+            <div className="h-px w-8 bg-gray-600" />
+            <div className={cn(
+              "flex items-center space-x-2 p-2 rounded-lg",
+              activeTab === 'code' ? "bg-purple-500/20" : "opacity-50"
+            )}>
+              <Code className="w-4 h-4" />
+              <span>3. Generate Code</span>
+            </div>
+          </div>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <Card className={cn(
-            "bg-black/40 backdrop-blur-xl border-2 border-purple-500/20",
-            "shadow-[0_0_45px_-15px_rgba(147,51,234,0.3)] rounded-2xl"
-          )}>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="p-6">
-              <TabsList className="w-full">
-                <TabsTrigger value="settings" className="flex-1">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
-                </TabsTrigger>
-                <TabsTrigger value="security" className="flex-1">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Security Features
-                </TabsTrigger>
-                <TabsTrigger value="code" className="flex-1">
-                  <Code className="w-4 h-4 mr-2" />
-                  Contract Code
-                </TabsTrigger>
-              </TabsList>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+          <TabsContent value="settings" className="mt-0 border-none">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label>Token Name</Label>
+                  <Input
+                    value={settings.tokenName}
+                    onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
+                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                  />
+                </div>
 
-              <TabsContent value="settings" className="space-y-6 mt-4">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Token Name</Label>
-                      <Input
-                        value={settings.tokenName}
-                        onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
+                <div>
+                  <Label>Token Symbol</Label>
+                  <Input
+                    value={settings.tokenSymbol}
+                    onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
+                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                  />
+                </div>
+              </div>
 
-                    <div>
-                      <Label>Token Symbol</Label>
-                      <Input
-                        value={settings.tokenSymbol}
-                        onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
-                  </div>
+              <div className="space-y-4">
+                <div>
+                  <Label>Total Supply</Label>
+                  <Input
+                    type="text"
+                    value={settings.totalSupply}
+                    onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
+                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                  />
+                </div>
 
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Total Supply</Label>
-                      <Input
-                        type="text"
-                        value={settings.totalSupply}
-                        onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
+                <div>
+                  <Label>Decimals</Label>
+                  <Input
+                    type="number"
+                    value={settings.decimals}
+                    onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
+                    className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                  />
+                </div>
+              </div>
+            </div>
 
-                    <div>
-                      <Label>Decimals</Label>
-                      <Input
-                        type="number"
-                        value={settings.decimals}
-                        onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
-                        className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                      />
-                    </div>
+            <div className="flex justify-end mt-6">
+              <Button onClick={() => setActiveTab('security')} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
+                Next: Security Features
+              </Button>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="security" className="mt-0 border-none">
+            <div className="grid md:grid-cols-2 gap-6">
+              {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
+                <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg border border-purple-500/20">
+                  <Switch
+                    checked={enabled}
+                    onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
+                  />
+                  <div>
+                    <h3 className="font-medium">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
+                    <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
                   </div>
                 </div>
-              </TabsContent>
+              ))}
+            </div>
 
-              <TabsContent value="security" className="mt-4">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
-                    <div key={feature} className="flex items-center justify-between p-4 rounded-lg border border-purple-500/20">
-                      <div>
-                        <h3 className="font-medium">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
-                        <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
-                      </div>
-                      <Switch
-                        checked={enabled}
-                        onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
+            <div className="flex justify-between mt-6">
+              <Button variant="outline" onClick={() => setActiveTab('settings')}>
+                Back to Settings
+              </Button>
+              <Button onClick={() => setActiveTab('code')} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
+                Next: Generate Code
+              </Button>
+            </div>
+          </TabsContent>
 
-              <TabsContent value="code" className="mt-4">
-                <div className="space-y-4">
-                  <div className="relative">
-                    <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto">
-                      <code className="text-sm text-gray-300">{generatedCode || 'Generate contract to see code'}</code>
-                    </pre>
-                    {generatedCode && (
-                      <Button
-                        onClick={copyToClipboard}
-                        variant="outline"
-                        size="icon"
-                        className="absolute top-2 right-2"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    )}
-                  </div>
+          <TabsContent value="code" className="mt-0 border-none">
+            <div className="space-y-6">
+              <div className="flex justify-center mb-4">
+                <Button onClick={generateContract} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Generate Smart Contract
+                </Button>
+              </div>
 
-                  <div className="flex justify-end gap-4">
-                    <Button onClick={generateContract} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Generate Contract
+              {generatedCode && (
+                <div className="relative">
+                  <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto max-h-[60vh] scrollbar-thin scrollbar-thumb-purple-500/20">
+                    <code className="text-sm text-gray-300">{generatedCode}</code>
+                  </pre>
+                  <div className="absolute top-2 right-2 flex space-x-2">
+                    <Button
+                      onClick={copyToClipboard}
+                      variant="outline"
+                      size="icon"
+                      className="bg-black/50"
+                    >
+                      <Copy className="w-4 h-4" />
                     </Button>
-                    {generatedCode && (
-                      <Button variant="outline" onClick={copyToClipboard}>
-                        <Copy className="w-4 h-4 mr-2" />
-                        Copy Code
-                      </Button>
-                    )}
+                    <Button
+                      onClick={downloadContract}
+                      variant="outline"
+                      size="icon"
+                      className="bg-black/50"
+                    >
+                      <Download className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-              </TabsContent>
-            </Tabs>
-          </Card>
-        </div>
-      </div>
-    </div>
+              )}
+
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setActiveTab('security')}>
+                  Back to Security
+                </Button>
+                {generatedCode && (
+                  <div className="flex space-x-2">
+                    <Button variant="outline" onClick={copyToClipboard}>
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Code
+                    </Button>
+                    <Button variant="outline" onClick={downloadContract}>
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Contract
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 };
 
