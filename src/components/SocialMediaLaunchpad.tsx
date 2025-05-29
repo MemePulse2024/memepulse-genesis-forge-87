@@ -113,12 +113,14 @@ const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
             value={selectedPlatform}
             onValueChange={setSelectedPlatform}
           >
-            <SelectTrigger>
-              <SelectValue placeholder="Select Platform" />
+            <SelectTrigger className="bg-gray-800 border border-purple-500 text-white h-[50px]">
+              <span className="text-white">
+                {platforms.find(p => p.value === selectedPlatform)?.label || 'Select Platform'}
+              </span>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-gray-800 border-gray-600">
               {platforms.map((platform) => (
-                <SelectItem key={platform.value} value={platform.value}>
+                <SelectItem key={platform.value} value={platform.value} className="text-white hover:bg-gray-700 cursor-pointer font-normal">
                   {platform.label}
                 </SelectItem>
               ))}
