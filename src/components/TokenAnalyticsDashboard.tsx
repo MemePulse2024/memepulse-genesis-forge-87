@@ -131,23 +131,6 @@ const TokenAnalyticsDashboard = () => {
                 </div>
                 <div className="flex flex-col items-end gap-2 justify-end">
                   <Button
-                    onClick={fetchTokenMetrics}
-                    disabled={isLoading}
-                    className="bg-gradient-to-r from-pulse-purple to-pulse-orange hover:from-pulse-orange hover:to-pulse-purple"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Loading...
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <RefreshCw className="w-4 h-4" />
-                        Fetch Metrics
-                      </div>
-                    )}
-                  </Button>
-                  <Button
                     variant="outline"
                     className="border-gray-600 hover:bg-gray-800 w-full"
                     disabled={!contractAddress || contractAddress.length < 10}
