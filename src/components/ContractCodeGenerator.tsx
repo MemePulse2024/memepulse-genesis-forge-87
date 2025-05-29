@@ -1,3 +1,4 @@
+
 import { useState, ChangeEvent, useEffect } from 'react';
 import { Icon } from '@/components/ui/icon';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +17,28 @@ import { TokenomicsData } from '@/utils/tokenomicsValidation';
 interface ContractCodeGeneratorProps {
   tokenomics: TokenomicsData;
   coinIdea: any;
+}
+
+interface SecurityFeatures {
+  antiWhale: boolean;
+  blacklist: boolean;
+  pausable: boolean;
+  reflection: boolean;
+  burnable: boolean;
+}
+
+interface ContractSettings {
+  tokenName: string;
+  tokenSymbol: string;
+  initialSupply: number;
+  decimals: number;
+  totalSupply: string;
+  maxTxAmount: string;
+  maxWalletAmount: string;
+  autoLiquidity: boolean;
+  liquidityLockDays: number;
+  owner: string;
+  securityFeatures: SecurityFeatures;
 }
 
 const getFeatureDescription = (feature: string): string => {
@@ -112,46 +135,6 @@ ${imports}
 ${contractStart}${constructor}${securityFeatures}
 }`;
 };
-
-const TABS = [
-  {
-    value: "settings",
-    label: "Basic Settings",
-    icon: <Settings className="w-5 h-5" />,
-  },
-  {
-    value: "security",
-    label: "Security Features",
-    icon: <Shield className="w-5 h-5" />,
-  },
-  {
-    value: "preview",
-    label: "Contract Preview",
-    icon: <Code className="w-5 h-5" />,
-  },
-];
-
-interface SecurityFeatures {
-  antiWhale: boolean;
-  blacklist: boolean;
-  pausable: boolean;
-  reflection: boolean;
-  burnable: boolean;
-}
-
-interface ContractSettings {
-  tokenName: string;
-  tokenSymbol: string;
-  initialSupply: number;
-  decimals: number;
-  totalSupply: string;
-  maxTxAmount: string;
-  maxWalletAmount: string;
-  autoLiquidity: boolean;
-  liquidityLockDays: number;
-  owner: string;
-  securityFeatures: SecurityFeatures;
-}
 
 const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorProps) => {
   const { toast } = useToast();
@@ -285,151 +268,189 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
 
         <div className="max-w-6xl mx-auto">
           <Card className="bg-black/40 backdrop-blur-xl border-2 border-purple-500/20 shadow-[0_0_45px_-15px_rgba(147,51,234,0.3)] rounded-2xl">
-            <Tabs defaultValue="settings" className="p-6">
-              <TabsList className="grid grid-cols-3 w-full h-auto mb-8 bg-gray-800/50 backdrop-blur-md border-2 border-purple-500/20 rounded-xl p-3 gap-4">
-                {TABS.map((tab) => (
+            <div className="p-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid grid-cols-3 w-full h-16 mb-8 bg-gray-800/50 backdrop-blur-md border-2 border-purple-500/20 rounded-xl p-2 gap-2">
                   <TabsTrigger
-                    key={tab.value}
-                    value={tab.value}
-                    className="relative px-6 py-4 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20 data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5"
+                    value="settings"
+                    className="relative px-6 py-4 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20 data-[state=active]:to-blue-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5 flex flex-col items-center gap-2"
                   >
-                    <div className="flex flex-col items-center gap-2">
-                      {tab.icon}
-                      <span className="font-medium">{tab.label}</span>
-                    </div>
+                    <Settings className="w-5 h-5" />
+                    <span className="font-medium">Basic Settings</span>
                   </TabsTrigger>
-                ))}
-              </TabsList>
+                  <TabsTrigger
+                    value="security"
+                    className="relative px-6 py-4 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500/20 data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5 flex flex-col items-center gap-2"
+                  >
+                    <Shield className="w-5 h-5" />
+                    <span className="font-medium">Security Features</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="preview"
+                    className="relative px-6 py-4 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500/20 data-[state=active]:to-blue-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5 flex flex-col items-center gap-2"
+                  >
+                    <Code className="w-5 h-5" />
+                    <span className="font-medium">Contract Preview</span>
+                  </TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="settings" className="space-y-8">
-                <Card className="bg-black/30 rounded-xl p-6 border-2 border-blue-500/20 shadow-lg hover:border-blue-500/40 transition-all duration-200">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3">
-                      <Settings className="w-5 h-5 text-blue-400" />
-                      <CardTitle>Token Configuration</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="tokenName">Token Name</Label>
-                          <Input
-                            id="tokenName"
-                            value={settings.tokenName}
-                            onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
-                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                          />
+                <div className="mt-8">
+                  <TabsContent value="settings" className="space-y-8 mt-0">
+                    <Card className="bg-black/30 rounded-xl p-6 border-2 border-blue-500/20 shadow-lg hover:border-blue-500/40 transition-all duration-200">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center gap-3">
+                          <Settings className="w-5 h-5 text-blue-400" />
+                          <CardTitle>Token Configuration</CardTitle>
                         </div>
-                        <div>
-                          <Label htmlFor="tokenSymbol">Token Symbol</Label>
-                          <Input
-                            id="tokenSymbol"
-                            value={settings.tokenSymbol}
-                            onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
-                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="totalSupply">Total Supply</Label>
-                          <Input
-                            id="totalSupply"
-                            value={settings.totalSupply}
-                            onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
-                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="decimals">Decimals</Label>
-                          <Input
-                            id="decimals"
-                            type="number"
-                            value={settings.decimals}
-                            onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
-                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-black/30 rounded-xl p-6 border-2 border-red-500/20 shadow-lg hover:border-red-500/40 transition-all duration-200">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3">
-                      <Shield className="w-5 h-5 text-red-400" />
-                      <CardTitle>Security Features</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
-                        <div key={feature} className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
-                          <div>
-                            <Label className="font-medium">{feature.charAt(0).toUpperCase() + feature.slice(1)}</Label>
-                            <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-4">
+                            <div>
+                              <Label htmlFor="tokenName">Token Name</Label>
+                              <Input
+                                id="tokenName"
+                                value={settings.tokenName}
+                                onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
+                                className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="tokenSymbol">Token Symbol</Label>
+                              <Input
+                                id="tokenSymbol"
+                                value={settings.tokenSymbol}
+                                onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
+                                className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                              />
+                            </div>
                           </div>
-                          <Switch
-                            checked={enabled}
-                            onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
-                            className="data-[state=checked]:bg-red-500"
-                          />
+                          <div className="space-y-4">
+                            <div>
+                              <Label htmlFor="totalSupply">Total Supply</Label>
+                              <Input
+                                id="totalSupply"
+                                value={settings.totalSupply}
+                                onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
+                                className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="decimals">Decimals</Label>
+                              <Input
+                                id="decimals"
+                                type="number"
+                                value={settings.decimals}
+                                onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
+                                className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                              />
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <Label htmlFor="maxTxAmount">Max Transaction %</Label>
+                            <Input
+                              id="maxTxAmount"
+                              value={settings.maxTxAmount}
+                              onChange={(e) => handleSettingsChange('maxTxAmount', e.target.value)}
+                              className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="maxWalletAmount">Max Wallet %</Label>
+                            <Input
+                              id="maxWalletAmount"
+                              value={settings.maxWalletAmount}
+                              onChange={(e) => handleSettingsChange('maxWalletAmount', e.target.value)}
+                              className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
 
-              <TabsContent value="preview" className="space-y-6">
-                <Card className="bg-black/30 rounded-xl border-2 border-green-500/20">
-                  <CardContent className="p-6">
-                    <div className="bg-black/60 rounded-lg p-4 font-mono text-sm">
-                      <pre className="whitespace-pre-wrap break-words">
-                        {generatedContract || "// Your generated contract will appear here"}
-                      </pre>
-                    </div>
-                    <div className="flex justify-end gap-4 mt-6">
-                      <Button
-                        onClick={handleCopyCode}
-                        className="bg-purple-500/20 hover:bg-purple-500/30"
-                        disabled={!generatedContract}
-                      >
-                        <Copy className="w-4 h-4 mr-2" />
-                        {isCopied ? "Copied!" : "Copy Code"}
-                      </Button>
-                      <Button
-                        onClick={handleDownloadContract}
-                        className="bg-green-500/20 hover:bg-green-500/30"
-                        disabled={!generatedContract}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Button
-                  onClick={handleGenerateContract}
-                  disabled={isGenerating}
-                  className="w-full bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
-                >
-                  {isGenerating ? (
-                    <>
-                      <div className="animate-spin w-5 h-5 border-2 border-white/20 border-t-white rounded-full" />
-                      <span>Generating...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Zap className="w-5 h-5" />
-                      <span>Generate Smart Contract</span>
-                    </>
-                  )}
-                </Button>
-              </TabsContent>
-            </Tabs>
+                  <TabsContent value="security" className="space-y-8 mt-0">
+                    <Card className="bg-black/30 rounded-xl p-6 border-2 border-red-500/20 shadow-lg hover:border-red-500/40 transition-all duration-200">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center gap-3">
+                          <Shield className="w-5 h-5 text-red-400" />
+                          <CardTitle>Security Features</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
+                            <div key={feature} className="flex items-center justify-between p-4 bg-black/20 rounded-lg border border-gray-700/50">
+                              <div className="flex-1">
+                                <Label className="font-medium text-white capitalize">
+                                  {feature.charAt(0).toUpperCase() + feature.slice(1)}
+                                </Label>
+                                <p className="text-sm text-gray-400 mt-1">{getFeatureDescription(feature)}</p>
+                              </div>
+                              <Switch
+                                checked={enabled}
+                                onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
+                                className="data-[state=checked]:bg-red-500 ml-4"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+
+                  <TabsContent value="preview" className="space-y-6 mt-0">
+                    <Card className="bg-black/30 rounded-xl border-2 border-green-500/20">
+                      <CardContent className="p-6">
+                        <div className="bg-black/60 rounded-lg p-4 font-mono text-sm overflow-auto max-h-96">
+                          <pre className="whitespace-pre-wrap break-words text-gray-300">
+                            {generatedContract || "// Your generated contract will appear here"}
+                          </pre>
+                        </div>
+                        <div className="flex justify-end gap-4 mt-6">
+                          <Button
+                            onClick={handleCopyCode}
+                            className="bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/30"
+                            disabled={!generatedContract}
+                          >
+                            <Copy className="w-4 h-4 mr-2" />
+                            {isCopied ? "Copied!" : "Copy Code"}
+                          </Button>
+                          <Button
+                            onClick={handleDownloadContract}
+                            className="bg-green-500/20 hover:bg-green-500/30 border border-green-500/30"
+                            disabled={!generatedContract}
+                          >
+                            <Download className="w-4 h-4 mr-2" />
+                            Download
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Button
+                      onClick={handleGenerateContract}
+                      disabled={isGenerating}
+                      className="w-full bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <div className="animate-spin w-5 h-5 border-2 border-white/20 border-t-white rounded-full" />
+                          <span>Generating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="w-5 h-5" />
+                          <span>Generate Smart Contract</span>
+                        </>
+                      )}
+                    </Button>
+                  </TabsContent>
+                </div>
+              </Tabs>
+            </div>
           </Card>
         </div>
       </div>
