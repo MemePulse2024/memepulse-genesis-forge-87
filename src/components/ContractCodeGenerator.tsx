@@ -572,9 +572,9 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
       <span className="pulse-sparkle pulse-sparkle-3" />
       <span className="pulse-sparkle pulse-sparkle-4" />
       <span className="pulse-sparkle pulse-sparkle-5" />
-      {/* Animated logo or badge */}
+      {/* Animated logo or badge removed as requested */}
       <div className="flex flex-col items-center mb-4 animate-fade-in">
-        <img src="/favicon.ico" alt="PulseChain Logo" className="w-16 h-16 mb-2 drop-shadow-xl animate-spin-slow" />
+        {/* <img src="/favicon.ico" alt="PulseChain Logo" className="w-16 h-16 mb-2 drop-shadow-xl animate-spin-slow" /> */}
         <div className="pulse-title text-3xl font-extrabold tracking-wider mb-1">PulseChain Genesis Forge</div>
         <div className="text-lg font-medium text-purple-200 pulse-tab mb-2 animate-gradient-x">The Ultimate PRC20 Smart Contract Generator</div>
         <div className="flex items-center gap-2 text-xs text-purple-300 font-mono bg-black/40 px-3 py-1 rounded-full border border-purple-700/40 animate-fade-in">
@@ -797,13 +797,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
             </Tabs>
           </CardContent>
         </Card>
-        {/* Floating badge at the bottom for branding */}
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/70 border border-purple-700/40 shadow-lg pulse-tab text-xs">
-            <img src="/favicon.ico" alt="PulseChain" className="w-5 h-5 mr-1" />
-            Powered by PulseChain Genesis Forge &mdash; {new Date().getFullYear()}
-          </div>
-        </div>
       </div>
     </div>
   );
