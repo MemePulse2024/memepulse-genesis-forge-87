@@ -16,6 +16,7 @@ export type TokenomicsPreset = {
     marketing: string;
     burn: string;
   };
+  contractType: string; // NEW: e.g. 'noTax', 'deflationary', 'community', etc.
 };
 
 export const tokenomicsPresets: TokenomicsPreset[] = [
@@ -36,7 +37,8 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
       dev: "5",
       marketing: "5",
       burn: "5"
-    }
+    },
+    contractType: "community"
   },
   {
     name: "Marketing Heavy",
@@ -55,7 +57,8 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
       dev: "5",
       marketing: "20",
       burn: "5"
-    }
+    },
+    contractType: "marketing"
   },
   {
     name: "Balanced Growth",
@@ -74,7 +77,8 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
       dev: "5",
       marketing: "10",
       burn: "5"
-    }
+    },
+    contractType: "balanced"
   },
   {
     name: "Deflationary",
@@ -93,7 +97,8 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
       dev: "5",
       marketing: "10",
       burn: "20"
-    }
+    },
+    contractType: "deflationary"
   },
   {
     name: "No Tax (Standard PRC20)",
@@ -112,6 +117,7 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
       dev: "0",
       marketing: "0",
       burn: "0"
-    }
+    },
+    contractType: "noTax"
   }
 ];

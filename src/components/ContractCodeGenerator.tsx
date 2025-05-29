@@ -332,21 +332,25 @@ contract ${contractName} is ${inheritance} {
   ].join('\n\n');
 };
 
-// Tab configuration
-const TABS = [
-  {
-    value: "settings",
-    label: "Basic Settings",
-    icon: <Settings className="h-4 w-4" />,
-  },
-  {
-    value: "preview",
-    label: "Contract Preview",
-    icon: <Code className="h-4 w-4" />,
-  }
-];
+// --- CONTRACT TEMPLATE GENERATORS ---
+const generateStandardERC20 = (settings: ContractSettings): string => {
+  return [
+    'pragma solidity ^0.8.19;',
+    '',
+    'import "@openzeppelin/contracts/token/ERC20/ERC20.sol";',
+    'import "@openzeppelin/contracts/access/Ownable.sol";',
+    '',
+    `contract ${settings.tokenName.replace(/\s+/g, '')} is ERC20, Ownable {`,
+    '    constructor() ERC20("' + settings.tokenName + '", "' + settings.tokenSymbol + '") {',
+    '        _mint(msg.sender, ' + settings.totalSupply + ' * 10 ** decimals());',
+    '    }',
+    '}',
+  ].join('\n');
+};
 
-// Contract Generator Component
+const generateTaxedToken = generateContractCode; // Use the existing advanced generator for taxed tokens
+
+// --- MAIN COMPONENT ---
 const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorProps) => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('settings');
@@ -384,6 +388,8 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     maxWalletLimit: 2,
     tradingCooldown: 30
   });
+  // Add contractType state
+  const [contractType, setContractType] = useState<string>('');
 
   useEffect(() => {
     setSettings(prev => ({
@@ -406,6 +412,17 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
       tokenSymbol: coinIdea.ticker || coinIdea.name.substring(0, 4).toUpperCase()
     }));
   }, [coinIdea]);
+
+  useEffect(() => {
+    // Try to get contractType from tokenomics (preset)
+    // Fallback to 'noTax' if not present
+    // If user selected NoTaxStandalone, treat as 'noTax'
+    let type = (tokenomics as any).contractType || '';
+    if (!type && tokenomics.buyTax === '0' && tokenomics.sellTax === '0') {
+      type = 'noTax';
+    }
+    setContractType(type);
+  }, [tokenomics]);
 
   const handleSettingsChange = (field: keyof ContractSettings, value: any) => {
     setSettings(prev => ({
@@ -467,18 +484,23 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
 
   const generateContract = () => {
     try {
-      const code = generateContractCode(settings);
+      let code = '';
+      if (contractType === 'noTax') {
+        code = generateStandardERC20(settings);
+      } else {
+        code = generateTaxedToken(settings);
+      }
       setGeneratedCode(code);
       setActiveTab('code');
       toast({
-        title: "Contract Generated! 🎉",
-        description: "Your smart contract has been generated successfully.",
+        title: 'Contract Generated! 🎉',
+        description: `Your ${contractType === 'noTax' ? 'Standard PRC20 (no tax)' : 'Tokenomics'} contract has been generated successfully.`,
       });
     } catch (error) {
       toast({
-        title: "Error Generating Contract",
-        description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive"
+        title: 'Error Generating Contract',
+        description: error instanceof Error ? error.message : 'An error occurred',
+        variant: 'destructive',
       });
     }
   };
@@ -514,7 +536,12 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
   return (
     <Card className="w-full bg-black/50 border-purple-500/20">
       <CardHeader>
-        <CardTitle className="text-xl font-bold">Smart Contract Generator</CardTitle>
+        <CardTitle className="text-xl font-bold flex items-center gap-3">
+          Smart Contract Generator
+          <span className="text-xs px-3 py-1 rounded bg-purple-900/40 border border-purple-500/30 text-purple-200 font-mono">
+            {contractType === 'noTax' ? 'Standard PRC20 (No Tax)' : contractType ? contractType.charAt(0).toUpperCase() + contractType.slice(1) + ' Layout' : 'Custom'}
+          </span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-6">
