@@ -10,25 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, Code, Shield, Copy, Download, Sparkles, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
-
-interface TokenomicsData {
-  totalSupply: string;
-  buyTax: string;
-  sellTax: string;
-  taxAllocation: {
-    liquidity: string;
-    marketing: string;
-    reflection: string;
-    burn: string;
-  };
-  supplyAllocation: {
-    pulsex: string;
-    airdrop: string;
-    dev: string;
-    marketing: string;
-    burn: string;
-  };
-}
+import ResourcesSection from "./ResourcesSection";
+import { TokenomicsData } from '@/utils/tokenomicsValidation';
 
 interface ContractCodeGeneratorProps {
   tokenomics: TokenomicsData;
