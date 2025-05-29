@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData, validateAllocations } from '@/utils/tokenomicsValidation';
@@ -74,6 +73,7 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
   const taxChartData = [
     { name: 'Liquidity', value: parseFloat(tokenomics.taxAllocation.liquidity || '0'), color: '#6a0dad' },
     { name: 'Marketing', value: parseFloat(tokenomics.taxAllocation.marketing || '0'), color: '#ff5733' },
+    { name: 'Burn', value: parseFloat(tokenomics.taxAllocation.burn || '0'), color: '#ff3333' },
   ];
 
   const supplyChartData = [
