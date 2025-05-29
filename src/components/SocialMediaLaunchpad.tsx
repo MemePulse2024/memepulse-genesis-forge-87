@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { announcementPosts } from './socialPosts/announcementPosts';
 import { memePosts } from './socialPosts/memePosts';
+// Update the import to match the actual export from threadPosts.ts
 import { threadPosts } from './socialPosts/threadPosts';
 import { telegramPosts } from './socialPosts/telegramPosts';
 import { communityPosts } from './socialPosts/communityPosts';

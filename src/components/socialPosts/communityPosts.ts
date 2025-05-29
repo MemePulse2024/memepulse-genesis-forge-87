@@ -9,5 +9,15 @@ export const communityPosts = [
   `📈 {coinName} ({ticker}) is breaking records! {theme} #PulseChain #Success`,
   `🎊 {coinName} ({ticker}) - Community event this week! {theme} #PulseChain #Event`,
   `🌈 {coinName} ({ticker}) - Together we grow! {theme} #PulseChain #Together`,
-  `🚨 {coinName} ({ticker}) - Stay tuned for more updates! {theme} #PulseChain #News`
+  `🚨 {coinName} ({ticker}) - Stay tuned for more updates! {theme} #PulseChain #News`,
+  `🤝 {coinName} ({ticker}) - Collaboration incoming! {theme} #PulseChain #Collab`,
+  `🎁 {coinName} ({ticker}) - Giveaways for the community! {theme} #PulseChain #Giveaway`,
+  `🗳️ {coinName} ({ticker}) - Vote on our next steps! {theme} #PulseChain #Governance`,
+  `🏆 {coinName} ({ticker}) - Celebrating our top holders! {theme} #PulseChain #Champions`,
+  `🧑‍💻 {coinName} ({ticker}) - Dev update: progress report! {theme} #PulseChain #DevUpdate`,
+  `🎤 {coinName} ({ticker}) - Join our next AMA! {theme} #PulseChain #AMA`,
+  `🧩 {coinName} ({ticker}) - Community puzzle challenge! {theme} #PulseChain #Puzzle`,
+  `🎨 {coinName} ({ticker}) - Fan art contest! {theme} #PulseChain #Art`,
+  `🦄 {coinName} ({ticker}) - Unique community, unique coin! {theme} #PulseChain #Unique`,
+  `🛡️ {coinName} ({ticker}) - Safety tips for our community! {theme} #PulseChain #Safety`
 ];

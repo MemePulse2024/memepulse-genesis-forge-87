@@ -9,5 +9,15 @@ export const telegramPosts = [
   `📈 {coinName} ({ticker}) is trending!\n\n{theme}\n\nShare your memes and wins here. #PulseChain #Trending`,
   `🎊 {coinName} ({ticker}) community hub!\n\n{theme}\n\nLet's grow together. #PulseChain #Community`,
   `🌈 {coinName} ({ticker}) - The future is bright!\n\n{theme}\n\nStay active for rewards and news. #PulseChain #Future`,
-  `🚨 {coinName} ({ticker}) - Official updates only!\n\n{theme}\n\nBeware of scams. #PulseChain #Safety`
+  `🚨 {coinName} ({ticker}) - Official updates only!\n\n{theme}\n\nBeware of scams. #PulseChain #Safety`,
+  `🎤 AMA Alert: Join us for a live Q&A about {coinName} ({ticker})!\n\n{theme}\n\nBring your questions! #PulseChain #AMA`,
+  `🎁 Surprise airdrop for {coinName} ({ticker}) holders!\n\n{theme}\n\nStay tuned for details. #PulseChain #Airdrop`,
+  `🧩 Community challenge: Solve the {coinName} puzzle!\n\n{theme}\n\nPrizes await! #PulseChain #Challenge`,
+  `🦄 Share your {coinName} memes in the chat!\n\n{theme}\n\nBest meme wins! #PulseChain #MemeContest`,
+  `🛡️ Safety first! Tips for {coinName} ({ticker}) holders.\n\n{theme}\n\nStay safe and vigilant. #PulseChain #Safety`,
+  `🎨 Fan art contest: Show your {coinName} creativity!\n\n{theme}\n\nWinners get rewards. #PulseChain #Art`,
+  `🤝 Partnership announcement coming soon for {coinName} ({ticker})!\n\n{theme}\n\nStay tuned! #PulseChain #Partnership`,
+  `🏆 Leaderboard: Top {coinName} holders this week!\n\n{theme}\n\nCongrats to the winners! #PulseChain #Leaderboard`,
+  `🧑‍💻 Dev update: {coinName} ({ticker}) progress report.\n\n{theme}\n\nThanks for your support! #PulseChain #DevUpdate`,
+  `🎬 Watch our new {coinName} video!\n\n{theme}\n\nShare your thoughts in the chat. #PulseChain #Video`
 ];
