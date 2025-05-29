@@ -100,13 +100,13 @@ const Index = () => {
           <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-yellow-400 via-pulse-purple to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
         <section className="rounded-3xl bg-black/70 border-4 border-pulse-purple/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
-          <TokenAnalyticsDashboard />
+          <ResourcesSection />
         </section>
         <div className="w-full flex justify-center my-6">
           <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-pulse-purple via-yellow-400 to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
         <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
-          <ResourcesSection />
+          <TokenAnalyticsDashboard />
         </section>
       </main>
       <Footer />
