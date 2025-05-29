@@ -799,7 +799,11 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
             </div>
           </CardContent>
         </Card>
-        {/* Token Analytics section moved to the bottom for better flow */}
+        {/* Resources Section */}
+        <div className="mt-12">
+          <ResourcesSection />
+        </div>
+        {/* Token Analytics section moved directly below ResourcesSection for better flow */}
         <div className="mt-12">
           <div className="pulse-title text-xl font-bold mb-4 text-center">Token Analytics</div>
           <div className="pulse-glass p-6">
