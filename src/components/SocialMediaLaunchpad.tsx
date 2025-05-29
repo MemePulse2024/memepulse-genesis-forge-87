@@ -152,164 +152,75 @@ const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
           `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
           `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
           `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
-          `🚀 The moment we've all been waiting for: ${coinName} (${ticker}) has launched on PulseChain!\n\n${theme}\n\nJoin us and let's embark on an exciting journey to the moon and beyond.\n\n#${coinName} #PulseChain #Moment`,
-          `💥 Experience the groundbreaking impact of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a significant shift in the DeFi landscape.\n\n#${coinName} #PulseChain #Groundbreaking`,
-          `🌟 Be a part of the crypto revolution with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nTogether, we can reshape the future of finance and achieve extraordinary success.\n\n#${coinName} #PulseChain #Reshape`,
-          `📈 Navigate your way to success with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's chart a course to new heights in the DeFi world.\n\n#${coinName} #PulseChain #NavigateSuccess`,
-          `🎊 Join the grand fiesta: ${coinName} (${ticker}) is now part of the PulseChain ecosystem!\n\n${theme}\n\nLet's celebrate this momentous occasion with joy and enthusiasm.\n\n#${coinName} #PulseChain #Fiesta`,
-          `🚀 The future is now with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our forward-thinking project and let's achieve a prosperous and innovative future.\n\n#${coinName} #PulseChain #FutureIsNow`,
-          `💎 Discover the valuable opportunities with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's unearth the precious gems of the crypto world.\n\n#${coinName} #PulseChain #ValuableOpportunities`,
-          `🌈 A vibrant journey awaits with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nLet's create a colorful and prosperous DeFi ecosystem together.\n\n#${coinName} #PulseChain #VibrantJourney`,
-          `📢 Important Bulletin: ${coinName} (${ticker}) has officially launched on PulseChain!\n\n${theme}\n\nStay tuned for more updates and join our community discussions.\n\n#${coinName} #PulseChain #Bulletin`,
-          `🎉 Join the euphoric celebration: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nLet's rejoice in our shared success and community spirit.\n\n#${coinName} #PulseChain #Euphoria`,
-          `🚀 Prepare for an exhilarating expedition with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the uncharted territories of DeFi.\n\n#${coinName} #PulseChain #Expedition`,
-          `💥 Experience the dynamic energy of ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin our community and let's create a powerful impact in the crypto world.\n\n#${coinName} #PulseChain #DynamicEnergy`,
-          `🌟 Shine with us: ${coinName} (${ticker}) is now on PulseChain!\n\n${theme}\n\nTogether, we can illuminate the DeFi landscape and achieve greatness.\n\n#${coinName} #PulseChain #Illuminate`,
-          `📈 Elevate your crypto game with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's ascend to new levels of financial success.\n\n#${coinName} #PulseChain #ElevateCrypto`,
-          `🎊 Let's make magic happen: ${coinName} (${ticker}) is live on PulseChain!\n\n${theme}\n\nJoin our community and let's create some crypto magic together.\n\n#${coinName} #PulseChain #Magic`,
-          `🚀 Embark on an extraordinary journey with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nJoin us and let's explore the limitless possibilities of DeFi.\n\n#${coinName} #PulseChain #ExtraordinaryJourney`,
-          `💎 Join the ranks of the crypto elite with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nBe part of an exclusive community and let's achieve remarkable success.\n\n#${coinName} #PulseChain #CryptoElite`,
-          `🌈 A world of diversity and opportunity with ${coinName} (${ticker}) on PulseChain!\n\n${theme}\n\nDiscover the inclusive and vibrant world of DeFi with us.\n\n#${coinName} #PulseChain #Diversity`,
-          `📢 Hot off the press: ${coinName} (${ticker}) has officially joined the PulseChain family!\n\n${theme}\n\nStay updated and engage with our community.\n\n#${coinName} #PulseChain #HotOffThePress`,
-          `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`,
+                `🎉 Let's celebrate the power of unity: ${coinName} (${ticker}) is now live on PulseChain!\n\n${theme}\n\nJoin us in our community celebrations and let's grow stronger together.\n\n#${coinName} #PulseChain #Unity`
+              ]; // <-- Close the professionalPosts array here
+      
+              // You may want to add logic to select a random post or use the first one
+              post = professionalPosts[Math.floor(Math.random() * professionalPosts.length)];
+              break;
+            }
+                      // ... other cases for the switch statement
+                    }
+              // You can add more logic here if needed, such as trimming the post to maxLength
+              setGeneratedPost(post.length > maxLength ? post.slice(0, maxLength) : post);
+            };
+          
+            return (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Social Media Launchpad</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <Select
+                      value={selectedPlatform}
+                      onValueChange={setSelectedPlatform}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {platforms.map((platform) => (
+                          <SelectItem key={platform.value} value={platform.value}>
+                            {platform.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button onClick={generateAIPost} disabled={!selectedPlatform}>
+                      <RefreshCw className="mr-2 h-4 w-4" /> Generate Post
+                    </Button>
+                    <Textarea
+                      value={generatedPost}
+                      onChange={(e) => setGeneratedPost(e.target.value)}
+                      rows={8}
+                      maxLength={platforms.find(p => p.value === selectedPlatform)?.maxLength || 280}
+                      placeholder="Your AI-generated post will appear here..."
+                    />
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-muted-foreground">
+                        {charCount} / {platforms.find(p => p.value === selectedPlatform)?.maxLength || 280} characters
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          navigator.clipboard.writeText(generatedPost);
+                          toast({
+                            title: "Copied!",
+                            description: "Post copied to clipboard.",
+                          });
+                        }}
+                        disabled={!generatedPost}
+                      >
+                        <Copy className="mr-2 h-4 w-4" /> Copy
+                      </Button>
+                    </div>
+                    <Progress value={(charCount / (platforms.find(p => p.value === selectedPlatform)?.maxLength || 280)) * 100} />
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          };
+          
+          export default SocialMediaLaunchpad;
