@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import {
   Select,
@@ -25,18 +24,12 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
     }
   }
 
-  const selectedPresetData = tokenomicsPresets.find(p => p.name === selectedPreset);
-
   return (
     <div className="mb-6">
       <div className="w-full md:w-96 mx-auto">
         <Select value={selectedPreset} onValueChange={handlePresetChange}>
           <SelectTrigger className="bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
-            <SelectValue placeholder="Select a template">
-              {selectedPreset && (
-                <span className="text-white font-medium">{selectedPreset}</span>
-              )}
-            </SelectValue>
+            <SelectValue placeholder="Select a template" />
           </SelectTrigger>
           <SelectContent className="bg-gray-800 border-gray-600">
             {tokenomicsPresets.map((preset) => (
@@ -59,16 +52,9 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
         </div>
       </div>
       
-      {selectedPreset && selectedPresetData && (
-        <div className="bg-gradient-to-r from-purple-900/30 to-orange-900/30 border border-purple-500/30 rounded-lg mt-4 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-purple-400 text-lg">✨</span>
-            <h4 className="text-white font-orbitron font-bold text-lg">Selected Template</h4>
-          </div>
-          <div className="space-y-1">
-            <p className="text-pulse-orange font-semibold text-base">{selectedPreset}</p>
-            <p className="text-gray-300 text-sm">{selectedPresetData.description}</p>
-          </div>
+      {selectedPreset && (
+        <div className="bg-gradient-to-r from-purple-900/20 to-orange-900/20 rounded mt-2 p-2 text-xs text-gray-300">
+          <p>Selected: <span className="text-pulse-orange">{selectedPreset}</span> - {tokenomicsPresets.find(p => p.name === selectedPreset)?.description}</p>
         </div>
       )}
     </div>
