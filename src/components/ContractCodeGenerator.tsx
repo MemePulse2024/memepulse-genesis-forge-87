@@ -1,4 +1,3 @@
-
 import { useState, ChangeEvent, useEffect } from 'react';
 import { Icon } from '@/components/ui/icon';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -270,33 +269,52 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
           <Card className="bg-black/40 backdrop-blur-xl border-2 border-purple-500/20 shadow-[0_0_45px_-15px_rgba(147,51,234,0.3)] rounded-2xl overflow-hidden">
             <div className="p-8">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                {/* Fixed tabs list with proper spacing and no overlap */}
-                <TabsList className="grid grid-cols-3 w-full h-auto mb-12 bg-gray-800/50 backdrop-blur-md border-2 border-purple-500/20 rounded-xl p-3 gap-3">
-                  <TabsTrigger
-                    value="settings"
-                    className="relative px-4 py-6 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20 data-[state=active]:to-blue-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5 flex flex-col items-center gap-3 min-h-[80px]"
-                  >
-                    <Settings className="w-6 h-6 flex-shrink-0" />
-                    <span className="font-medium text-center text-sm leading-tight">Basic Settings</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="security"
-                    className="relative px-4 py-6 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500/20 data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5 flex flex-col items-center gap-3 min-h-[80px]"
-                  >
-                    <Shield className="w-6 h-6 flex-shrink-0" />
-                    <span className="font-medium text-center text-sm leading-tight">Security Features</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="preview"
-                    className="relative px-4 py-6 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500/20 data-[state=active]:to-blue-500/20 data-[state=active]:shadow-lg transition-all duration-200 hover:bg-white/5 flex flex-col items-center gap-3 min-h-[80px]"
-                  >
-                    <Code className="w-6 h-6 flex-shrink-0" />
-                    <span className="font-medium text-center text-sm leading-tight">Contract Preview</span>
-                  </TabsTrigger>
+                {/* Fixed tabs list with proper spacing and clear separation */}
+                <TabsList className="w-full h-auto mb-16 bg-gray-800/60 backdrop-blur-md border-2 border-purple-500/30 rounded-2xl p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                    <TabsTrigger
+                      value="settings"
+                      className="relative px-6 py-8 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/30 data-[state=active]:to-blue-500/30 data-[state=active]:shadow-xl data-[state=active]:border-2 data-[state=active]:border-purple-400/50 transition-all duration-300 hover:bg-white/10 flex flex-col items-center gap-4 min-h-[120px] group"
+                    >
+                      <div className="p-3 bg-purple-500/20 rounded-full group-data-[state=active]:bg-purple-500/40 transition-colors">
+                        <Settings className="w-8 h-8 flex-shrink-0" />
+                      </div>
+                      <div className="text-center">
+                        <span className="font-semibold text-base leading-tight block">Basic Settings</span>
+                        <span className="text-xs text-gray-400 mt-1 block">Configure token parameters</span>
+                      </div>
+                    </TabsTrigger>
+                    
+                    <TabsTrigger
+                      value="security"
+                      className="relative px-6 py-8 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500/30 data-[state=active]:to-orange-500/30 data-[state=active]:shadow-xl data-[state=active]:border-2 data-[state=active]:border-red-400/50 transition-all duration-300 hover:bg-white/10 flex flex-col items-center gap-4 min-h-[120px] group"
+                    >
+                      <div className="p-3 bg-red-500/20 rounded-full group-data-[state=active]:bg-red-500/40 transition-colors">
+                        <Shield className="w-8 h-8 flex-shrink-0" />
+                      </div>
+                      <div className="text-center">
+                        <span className="font-semibold text-base leading-tight block">Security Features</span>
+                        <span className="text-xs text-gray-400 mt-1 block">Enable protection mechanisms</span>
+                      </div>
+                    </TabsTrigger>
+                    
+                    <TabsTrigger
+                      value="preview"
+                      className="relative px-6 py-8 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500/30 data-[state=active]:to-blue-500/30 data-[state=active]:shadow-xl data-[state=active]:border-2 data-[state=active]:border-green-400/50 transition-all duration-300 hover:bg-white/10 flex flex-col items-center gap-4 min-h-[120px] group"
+                    >
+                      <div className="p-3 bg-green-500/20 rounded-full group-data-[state=active]:bg-green-500/40 transition-colors">
+                        <Code className="w-8 h-8 flex-shrink-0" />
+                      </div>
+                      <div className="text-center">
+                        <span className="font-semibold text-base leading-tight block">Contract Preview</span>
+                        <span className="text-xs text-gray-400 mt-1 block">Generate and view code</span>
+                      </div>
+                    </TabsTrigger>
+                  </div>
                 </TabsList>
 
                 {/* Tab content with proper spacing */}
-                <div className="mt-8 space-y-8">
+                <div className="space-y-8">
                   <TabsContent value="settings" className="space-y-8 mt-0">
                     <Card className="bg-black/30 rounded-xl border-2 border-blue-500/20 shadow-lg hover:border-blue-500/40 transition-all duration-200">
                       <CardHeader className="pb-6">
