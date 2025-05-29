@@ -663,15 +663,17 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
           <ResourcesSection />
         </div>
       </div>
-      {/* Token Analytics section - always at very bottom, outside main container */}
-      <div className="w-full max-w-2xl mx-auto mt-12 mb-8">
-        <div className="pulse-title text-xl font-bold mb-4 text-center">Token Analytics</div>
-        <div className="pulse-glass p-6">
-          {/* If you have a TokenAnalyticsDashboard component, render it here */}
-          {/* <TokenAnalyticsDashboard ...props /> */}
-          <p className="text-purple-200 text-center">Token analytics and charts will appear here after contract generation.</p>
+      {/* Token Analytics section - always at very bottom, outside ALL containers */}
+      <footer className="w-full flex flex-col items-center justify-center mt-16 mb-8">
+        <div className="w-full max-w-2xl">
+          <div className="pulse-title text-xl font-bold mb-4 text-center">Token Analytics</div>
+          <div className="pulse-glass p-6">
+            {/* If you have a TokenAnalyticsDashboard component, render it here */}
+            {/* <TokenAnalyticsDashboard ...props /> */}
+            <p className="text-purple-200 text-center">Token analytics and charts will appear here after contract generation.</p>
+          </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
