@@ -35,7 +35,7 @@ export const ActionButtons = ({ tokenomics, hasErrors }: ActionButtonsProps) => 
 💰 TAX ALLOCATION:
 • Liquidity: ${tokenomics.taxAllocation.liquidity}%
 • Marketing: ${tokenomics.taxAllocation.marketing}%
-• Reflection: ${tokenomics.taxAllocation.reflection}%
+• Burn: ${tokenomics.taxAllocation.burn}%
 
 🎯 SUPPLY ALLOCATION:
 • PulseX Liquidity: ${tokenomics.supplyAllocation.pulsex}% (${formatNumber((parseFloat(tokenomics.totalSupply) * parseFloat(tokenomics.supplyAllocation.pulsex) / 100).toString())} tokens)

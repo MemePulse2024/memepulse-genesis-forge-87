@@ -1,4 +1,3 @@
-
 export type TokenomicsPreset = {
   name: string;
   description: string;
@@ -8,7 +7,6 @@ export type TokenomicsPreset = {
   taxAllocation: {
     liquidity: string;
     marketing: string;
-    reflection: string;
   };
   supplyAllocation: {
     pulsex: string;
@@ -27,9 +25,8 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     buyTax: "3",
     sellTax: "3",
     taxAllocation: {
-      liquidity: "40",
-      marketing: "30",
-      reflection: "30"
+      liquidity: "60",
+      marketing: "40"
     },
     supplyAllocation: {
       pulsex: "70",
@@ -47,8 +44,7 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     sellTax: "5",
     taxAllocation: {
       liquidity: "30",
-      marketing: "60",
-      reflection: "10"
+      marketing: "70"
     },
     supplyAllocation: {
       pulsex: "65",
@@ -59,15 +55,14 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     }
   },
   {
-    name: "Reflection Rewards",
-    description: "Maximizes holder rewards through reflection mechanisms",
+    name: "Balanced Growth",
+    description: "Balanced approach with focus on sustainability",
     totalSupply: "1000000000",
-    buyTax: "7",
-    sellTax: "7",
+    buyTax: "4",
+    sellTax: "4",
     taxAllocation: {
-      liquidity: "20",
-      marketing: "20",
-      reflection: "60"
+      liquidity: "50",
+      marketing: "50"
     },
     supplyAllocation: {
       pulsex: "60",
@@ -84,9 +79,8 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
     buyTax: "6",
     sellTax: "6",
     taxAllocation: {
-      liquidity: "30",
-      marketing: "30",
-      reflection: "40"
+      liquidity: "50",
+      marketing: "50"
     },
     supplyAllocation: {
       pulsex: "55",

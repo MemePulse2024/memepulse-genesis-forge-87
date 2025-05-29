@@ -7,7 +7,7 @@ interface TaxAllocationFormProps {
   taxAllocation: {
     liquidity: string;
     marketing: string;
-    reflection: string;
+    burn: string;
   };
   error?: string;
   onUpdate: (field: string, value: string, subField: string) => void;
@@ -44,12 +44,12 @@ export const TaxAllocationForm = ({ taxAllocation, error, onUpdate }: TaxAllocat
           />
         </div>
         <div>
-          <Label htmlFor="reflection">Reflection (%)</Label>
+          <Label htmlFor="burn">Burn (%)</Label>
           <Input
-            id="reflection"
+            id="burn"
             type="number"
-            value={taxAllocation.reflection}
-            onChange={(e) => onUpdate('taxAllocation', e.target.value, 'reflection')}
+            value={taxAllocation.burn}
+            onChange={(e) => onUpdate('taxAllocation', e.target.value, 'burn')}
             className="bg-black/50 border-gray-600"
           />
         </div>

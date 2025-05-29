@@ -25,12 +25,7 @@ export const TokenUtilitySuggestions = () => {
       description: 'Token holders can vote on project decisions and proposals',
       complexity: 'Medium'
     },
-    {
-      id: 'staking',
-      name: 'Staking Rewards',
-      description: 'Lock tokens to earn passive rewards over time',
-      complexity: 'Medium'
-    },
+
     {
       id: 'access',
       name: 'Access Passes',

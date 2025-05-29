@@ -8,7 +8,7 @@ import { SupplyAllocationForm } from './tokenomics/SupplyAllocationForm';
 import { TokenomicsDistributionChart } from './tokenomics/TokenomicsDistributionChart';
 import { ActionButtons } from './tokenomics/ActionButtons';
 import { PresetSelector } from './tokenomics/PresetSelector';
-import { TokenLockSchedule } from './tokenomics/TokenLockSchedule';
+
 import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
@@ -74,7 +74,6 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
   const taxChartData = [
     { name: 'Liquidity', value: parseFloat(tokenomics.taxAllocation.liquidity || '0'), color: '#6a0dad' },
     { name: 'Marketing', value: parseFloat(tokenomics.taxAllocation.marketing || '0'), color: '#ff5733' },
-    { name: 'Reflection', value: parseFloat(tokenomics.taxAllocation.reflection || '0'), color: '#33ff57' },
   ];
 
   const supplyChartData = [
@@ -189,7 +188,6 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
             
             <TabsContent value="advanced" className="space-y-6">
               <div className="grid md:grid-cols-2 gap-8">
-                <TokenLockSchedule />
                 <TokenUtilitySuggestions />
               </div>
             </TabsContent>

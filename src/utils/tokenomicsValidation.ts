@@ -6,7 +6,7 @@ export interface TokenomicsData {
   taxAllocation: {
     liquidity: string;
     marketing: string;
-    reflection: string;
+    burn: string;
   };
   supplyAllocation: {
     pulsex: string;
