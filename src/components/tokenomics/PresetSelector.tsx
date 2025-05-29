@@ -36,8 +36,8 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
     <div className="mb-6">
       <div className="w-full md:w-96 mx-auto">
         <Select value={selectedPreset} onValueChange={handlePresetChange}>
-          <SelectTrigger className="bg-gray-800 border-purple-500 text-white h-[50px]">
-            <SelectValue placeholder="Select a template" />
+          <SelectTrigger className="bg-gray-800 border border-purple-500 text-white h-[50px]">
+            <SelectValue placeholder="Select a template" className="text-white" />
           </SelectTrigger>
           <SelectContent className="bg-gray-800 border-gray-600">
             {tokenomicsPresets.map((preset) => (
