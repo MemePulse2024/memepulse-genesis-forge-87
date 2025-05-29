@@ -13,6 +13,11 @@ import { Copy, Download, Code, Zap, Shield, Settings, AlertTriangle } from 'luci
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData } from '@/utils/tokenomicsValidation';
 
+interface ContractCodeGeneratorProps {
+  tokenomics: TokenomicsData;
+  coinIdea: any;
+}
+
 const getFeatureDescription = (feature: string): string => {
   const descriptions: Record<string, string> = {
     antiWhale: "Limit maximum transaction and wallet amounts",
@@ -148,18 +153,18 @@ interface ContractSettings {
   securityFeatures: SecurityFeatures;
 }
 
-const ContractCodeGenerator = () => {
+const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorProps) => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("settings");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   
   const [settings, setSettings] = useState<ContractSettings>({
-    tokenName: "",
-    tokenSymbol: "",
+    tokenName: coinIdea?.name || "",
+    tokenSymbol: coinIdea?.symbol || "",
     initialSupply: 1000000,
     decimals: 18,
-    totalSupply: "1000000000",
+    totalSupply: tokenomics.totalSupply || "1000000000",
     maxTxAmount: "2",
     maxWalletAmount: "4",
     autoLiquidity: true,
@@ -175,6 +180,16 @@ const ContractCodeGenerator = () => {
   });
 
   const [generatedContract, setGeneratedContract] = useState<string>("");
+
+  // Update settings when props change
+  useEffect(() => {
+    setSettings(prev => ({
+      ...prev,
+      tokenName: coinIdea?.name || prev.tokenName,
+      tokenSymbol: coinIdea?.symbol || prev.tokenSymbol,
+      totalSupply: tokenomics.totalSupply || prev.totalSupply
+    }));
+  }, [tokenomics, coinIdea]);
 
   const handleSettingsChange = (field: keyof ContractSettings, value: any) => {
     setSettings(prev => ({
