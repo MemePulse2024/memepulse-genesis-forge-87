@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, Code, Shield, Copy, Download, Zap, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Slider } from '@/components/ui/slider';
 
 interface TokenomicsData {
   totalSupply: string;
@@ -46,6 +47,13 @@ interface SecurityFeatures {
   burnable: boolean;
 }
 
+interface AdvancedSettings {
+  maxTxLimit: number;
+  maxWalletLimit: number;
+  tradingCooldown: number;
+  liquidityLockTime: number;
+}
+
 interface ContractSettings {
   tokenName: string;
   tokenSymbol: string;
@@ -77,7 +85,11 @@ const getFeatureDescription = (feature: string): string => {
     blacklist: "Block malicious addresses from trading",
     pausable: "Emergency pause functionality for trading",
     reflection: "Automatic rewards for token holders",
-    burnable: "Enable token burning mechanism"
+    burnable: "Enable token burning mechanism",
+    maxTxLimit: "Maximum tokens per transaction (% of total supply)",
+    maxWalletLimit: "Maximum tokens per wallet (% of total supply)",
+    tradingCooldown: "Cooldown period between trades (seconds)",
+    liquidityLockTime: "Time to lock initial liquidity (days)"
   };
   return descriptions[feature] || "";
 };
@@ -377,6 +389,12 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     initialLiquidity: 80,
     uniswapRouter: '0x...',
   });
+  const [advancedSettings, setAdvancedSettings] = useState<AdvancedSettings>({
+    maxTxLimit: 1,
+    maxWalletLimit: 2,
+    tradingCooldown: 30,
+    liquidityLockTime: 365
+  });
 
   useEffect(() => {
     setSettings(prev => ({
@@ -416,6 +434,24 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
         [feature]: !prev.securityFeatures[feature]
       }
     }));
+  };
+
+  const handleAdvancedSettingChange = (setting: keyof AdvancedSettings, value: number) => {
+    setAdvancedSettings(prev => ({
+      ...prev,
+      [setting]: value
+    }));
+    
+    // Update contract settings when advanced settings change
+    if (setting === 'maxTxLimit') {
+      handleSettingsChange('maxTxAmount', value.toString());
+    } else if (setting === 'maxWalletLimit') {
+      handleSettingsChange('maxWalletAmount', value.toString());
+    } else if (setting === 'tradingCooldown') {
+      handleSettingsChange('tradingCooldown', value);
+    } else if (setting === 'liquidityLockTime') {
+      handleSettingsChange('liquidityLockDays', value);
+    }
   };
 
   const handleAiNameSuggestion = async () => {
@@ -577,28 +613,110 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
           </TabsContent>
 
           <TabsContent value="security" className="mt-0 border-none">
-            <div className="grid md:grid-cols-2 gap-6">
-              {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
-                <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg border border-purple-500/20">
-                  <Switch
-                    checked={enabled}
-                    onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
-                  />
-                  <div>
-                    <h3 className="font-medium">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
-                    <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Security Features</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
+                    <div key={feature} className="flex items-center space-x-4 p-4 rounded-lg border border-purple-500/20">
+                      <Switch
+                        checked={enabled}
+                        onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
+                      />
+                      <div>
+                        <h3 className="font-medium">{feature.charAt(0).toUpperCase() + feature.slice(1)}</h3>
+                        <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Advanced Settings</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label>Max Transaction Limit</Label>
+                        <span className="text-sm text-gray-400">{advancedSettings.maxTxLimit}% of supply</span>
+                      </div>
+                      <Slider
+                        value={[advancedSettings.maxTxLimit]}
+                        onValueChange={([value]) => handleAdvancedSettingChange('maxTxLimit', value)}
+                        min={0.1}
+                        max={5}
+                        step={0.1}
+                        className={cn(
+                          "w-full",
+                          !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
+                        )}
+                      />
+                      <p className="text-xs text-gray-500">Maximum tokens per transaction (as % of total supply)</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label>Max Wallet Limit</Label>
+                        <span className="text-sm text-gray-400">{advancedSettings.maxWalletLimit}% of supply</span>
+                      </div>
+                      <Slider
+                        value={[advancedSettings.maxWalletLimit]}
+                        onValueChange={([value]) => handleAdvancedSettingChange('maxWalletLimit', value)}
+                        min={0.1}
+                        max={5}
+                        step={0.1}
+                        className={cn(
+                          "w-full",
+                          !settings.securityFeatures.antiWhale && "opacity-50 pointer-events-none"
+                        )}
+                      />
+                      <p className="text-xs text-gray-500">Maximum tokens per wallet (as % of total supply)</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label>Trading Cooldown</Label>
+                        <span className="text-sm text-gray-400">{advancedSettings.tradingCooldown} seconds</span>
+                      </div>
+                      <Slider
+                        value={[advancedSettings.tradingCooldown]}
+                        onValueChange={([value]) => handleAdvancedSettingChange('tradingCooldown', value)}
+                        min={0}
+                        max={300}
+                        step={1}
+                      />
+                      <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label>Liquidity Lock Time</Label>
+                        <span className="text-sm text-gray-400">{advancedSettings.liquidityLockTime} days</span>
+                      </div>
+                      <Slider
+                        value={[advancedSettings.liquidityLockTime]}
+                        onValueChange={([value]) => handleAdvancedSettingChange('liquidityLockTime', value)}
+                        min={30}
+                        max={730}
+                        step={30}
+                      />
+                      <p className="text-xs text-gray-500">Duration to lock initial liquidity</p>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <div className="flex justify-between mt-6">
-              <Button variant="outline" onClick={() => setActiveTab('settings')}>
-                Back to Settings
-              </Button>
-              <Button onClick={() => setActiveTab('code')} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
-                Next: Generate Code
-              </Button>
+              <div className="flex justify-between mt-6">
+                <Button variant="outline" onClick={() => setActiveTab('settings')}>
+                  Back to Settings
+                </Button>
+                <Button onClick={() => setActiveTab('code')} className="bg-gradient-to-r from-pulse-purple to-pulse-orange">
+                  Next: Generate Code
+                </Button>
+              </div>
             </div>
           </TabsContent>
 
