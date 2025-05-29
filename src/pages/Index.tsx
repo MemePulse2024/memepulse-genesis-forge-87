@@ -53,9 +53,6 @@ const Index = () => {
       {/* Hero Section */}
       <section className="w-full py-20 md:py-32 bg-gradient-to-br from-pulse-purple/60 via-black/80 to-yellow-400/10 flex flex-col items-center justify-center text-center relative z-10 border-b-4 border-yellow-400/30 shadow-[0_0_80px_10px_rgba(255,215,0,0.15)]">
         <div className="relative inline-block mb-6">
-          <span className="absolute -top-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-yellow-400 via-pulse-orange to-pulse-purple text-black font-extrabold rounded-full text-lg shadow-lg animate-pulse border-4 border-yellow-400/60 uppercase tracking-widest z-20">
-            LUXURY EDITION
-          </span>
           <h1 className="font-orbitron text-6xl md:text-8xl font-extrabold mb-4 bg-gradient-to-r from-yellow-400 via-pulse-orange to-pulse-purple bg-clip-text text-transparent drop-shadow-[0_0_40px_gold] animate-gradient-x">
             MemePulse Genesis Forge
           </h1>
@@ -69,56 +66,50 @@ const Index = () => {
         </div>
       </section>
       {/* Main Content Sections */}
-      <main className="max-w-6xl mx-auto px-2 md:px-0 space-y-24 relative z-10">
+      <main className="max-w-6xl mx-auto px-2 md:px-4 space-y-20 relative z-10">
         {/* Section Card Helper */}
         {/* Each section is a glassy, glowing card with gold/purple border and luxury shadow */}
-        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-8 md:p-14 mt-[-80px] backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <IdeaGenerator coinIdea={coinIdea} setCoinIdea={setCoinIdea} />
         </section>
-        <div className="w-full flex justify-center my-8">
-          <div className="h-2 w-48 bg-gradient-to-r from-yellow-400 via-pulse-purple to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
+        <div className="w-full flex justify-center my-6">
+          <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-yellow-400 via-pulse-purple to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
-        <section className="rounded-3xl bg-black/70 border-4 border-pulse-purple/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-8 md:p-14 backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-pulse-purple/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <TokenomicsEngine tokenomics={tokenomics} setTokenomics={setTokenomics} />
         </section>
-        <div className="w-full flex justify-center my-8">
-          <div className="h-2 w-48 bg-gradient-to-r from-pulse-purple via-yellow-400 to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
+        <div className="w-full flex justify-center my-6">
+          <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-pulse-purple via-yellow-400 to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
-        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-8 md:p-14 backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <ContractCodeGenerator tokenomics={tokenomics} coinIdea={coinIdea} />
         </section>
-        <div className="w-full flex justify-center my-8">
-          <div className="h-2 w-48 bg-gradient-to-r from-yellow-400 via-pulse-orange to-pulse-purple rounded-full opacity-80 shadow-lg animate-pulse" />
+        <div className="w-full flex justify-center my-6">
+          <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-yellow-400 via-pulse-orange to-pulse-purple rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
-        <section className="rounded-3xl bg-black/70 border-4 border-pulse-orange/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-8 md:p-14 backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-pulse-orange/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <SocialMediaLaunchpad coinIdea={coinIdea} />
         </section>
-        <div className="w-full flex justify-center my-8">
-          <div className="h-2 w-48 bg-gradient-to-r from-pulse-orange via-yellow-400 to-pulse-purple rounded-full opacity-80 shadow-lg animate-pulse" />
+        <div className="w-full flex justify-center my-6">
+          <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-pulse-orange via-yellow-400 to-pulse-purple rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
-        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-8 md:p-14 backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <LaunchChecklist />
         </section>
-        <div className="w-full flex justify-center my-8">
-          <div className="h-2 w-48 bg-gradient-to-r from-yellow-400 via-pulse-purple to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
+        <div className="w-full flex justify-center my-6">
+          <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-yellow-400 via-pulse-purple to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
-        <section className="rounded-3xl bg-black/70 border-4 border-pulse-purple/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-8 md:p-14 backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-pulse-purple/30 shadow-[0_0_60px_10px_rgba(255,215,0,0.18)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <TokenAnalyticsDashboard />
         </section>
-        <div className="w-full flex justify-center my-8">
-          <div className="h-2 w-48 bg-gradient-to-r from-pulse-purple via-yellow-400 to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
+        <div className="w-full flex justify-center my-6">
+          <div className="h-2 w-40 md:w-48 bg-gradient-to-r from-pulse-purple via-yellow-400 to-pulse-orange rounded-full opacity-80 shadow-lg animate-pulse" />
         </div>
-        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-8 md:p-14 backdrop-blur-2xl hover:scale-[1.015] transition-transform duration-300">
+        <section className="rounded-3xl bg-black/70 border-4 border-yellow-400/30 shadow-[0_0_60px_10px_rgba(147,51,234,0.25)] p-4 md:p-10 max-w-full overflow-hidden backdrop-blur-2xl flex flex-col items-stretch">
           <ResourcesSection />
         </section>
       </main>
       <Footer />
-      {/* Luxury floating badge */}
-      <div className="fixed bottom-8 right-8 z-50 animate-fade-in">
-        <span className="px-6 py-3 bg-gradient-to-r from-yellow-400 via-pulse-orange to-pulse-purple text-black font-extrabold rounded-full text-lg shadow-2xl border-4 border-yellow-400/80 uppercase tracking-widest animate-pulse">
-          RH MAXIMALIST
-        </span>
-      </div>
       {/* Animations */}
       <style
         dangerouslySetInnerHTML={{
