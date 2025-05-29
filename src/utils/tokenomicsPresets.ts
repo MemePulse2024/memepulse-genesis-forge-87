@@ -94,5 +94,24 @@ export const tokenomicsPresets: TokenomicsPreset[] = [
       marketing: "10",
       burn: "20"
     }
+  },
+  {
+    name: "No Tax (Standard PRC20)",
+    description: "A standard PRC20 token with zero buy/sell tax and no auto-distribution.",
+    totalSupply: "1000000000",
+    buyTax: "0",
+    sellTax: "0",
+    taxAllocation: {
+      burn: "0",
+      liquidity: "0",
+      marketing: "0"
+    },
+    supplyAllocation: {
+      pulsex: "100",
+      airdrop: "0",
+      dev: "0",
+      marketing: "0",
+      burn: "0"
+    }
   }
 ];

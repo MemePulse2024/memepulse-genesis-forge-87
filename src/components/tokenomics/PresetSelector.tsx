@@ -17,6 +17,27 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
 
   const handlePresetChange = (value: string) => {
     setSelectedPreset(value);
+    if (value === "NoTaxStandalone") {
+      const noTaxPreset: TokenomicsData = {
+        totalSupply: "1000000000",
+        buyTax: "0",
+        sellTax: "0",
+        taxAllocation: {
+          burn: "0",
+          liquidity: "0",
+          marketing: "0"
+        },
+        supplyAllocation: {
+          pulsex: "100",
+          airdrop: "0",
+          dev: "0",
+          marketing: "0",
+          burn: "0"
+        }
+      };
+      onSelectPreset(noTaxPreset);
+      return;
+    }
     const preset = tokenomicsPresets.find(p => p.name === value);
     if (preset) {
       // Ensure 'burn' property exists in taxAllocation
@@ -41,6 +62,13 @@ export const PresetSelector = ({ onSelectPreset }: PresetSelectorProps) => {
             </span>
           </SelectTrigger>
           <SelectContent className="bg-gray-800 border-gray-600">
+            <SelectItem
+              key="NoTaxStandalone"
+              value="NoTaxStandalone"
+              className="text-white hover:bg-gray-700 cursor-pointer font-normal"
+            >
+              No Tax (Standard PRC20)
+            </SelectItem>
             {tokenomicsPresets.map((preset) => (
               <SelectItem
                 key={preset.name}
