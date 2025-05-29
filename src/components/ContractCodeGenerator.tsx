@@ -50,7 +50,6 @@ interface AdvancedSettings {
   maxTxLimit: number;
   maxWalletLimit: number;
   tradingCooldown: number;
-  liquidityLockTime: number;
 }
 
 interface ContractSettings {
@@ -62,7 +61,6 @@ interface ContractSettings {
   maxTxAmount: string;
   maxWalletAmount: string;
   autoLiquidity: boolean;
-  liquidityLockDays: number;
   owner: string;
   buyTax: number;
   sellTax: number;
@@ -87,8 +85,7 @@ const getFeatureDescription = (feature: string): string => {
     burnable: "Enable token burning mechanism",
     maxTxLimit: "Maximum tokens per transaction (% of total supply)",
     maxWalletLimit: "Maximum tokens per wallet (% of total supply)",
-    tradingCooldown: "Cooldown period between trades (seconds)",
-    liquidityLockTime: "Time to lock initial liquidity (days)"
+    tradingCooldown: "Cooldown period between trades (seconds)"
   };
   return descriptions[feature] || "";
 };
@@ -142,7 +139,6 @@ contract ${contractName} is ${inheritance} {
     uint256 public liquidityShare;
     uint256 public marketingShare;
     uint256 public devShare;
-    ${settings.securityFeatures.reflection ? 'uint256 public reflectionShare;' : ''}
     ${settings.securityFeatures.burnable ? 'uint256 public burnShare;' : ''}
     
     // Wallets
@@ -168,7 +164,6 @@ contract ${contractName} is ${inheritance} {
         uint256 liquidity,
         uint256 marketing,
         uint256 dev,
-        ${settings.securityFeatures.reflection ? 'uint256 reflection,' : ''}
         ${settings.securityFeatures.burnable ? 'uint256 burn' : ''}
     );`;
 
@@ -202,7 +197,6 @@ contract ${contractName} is ${inheritance} {
         liquidityShare = ${settings.liquidityShare || 40};
         marketingShare = ${settings.marketingShare || 30};
         devShare = ${settings.devShare || 10};
-        ${settings.securityFeatures.reflection ? `reflectionShare = ${settings.reflectionShare || 10};` : ''}
         ${settings.securityFeatures.burnable ? `burnShare = ${settings.burnShare || 10};` : ''}
         
         // Set initial trading cooldown
@@ -365,7 +359,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     maxTxAmount: '1',
     maxWalletAmount: '2',
     autoLiquidity: true,
-    liquidityLockDays: 365,
     owner: '',
     buyTax: Number(tokenomics?.buyTax || '5'),
     sellTax: Number(tokenomics?.sellTax || '5'),
@@ -387,8 +380,7 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
   const [advancedSettings, setAdvancedSettings] = useState<AdvancedSettings>({
     maxTxLimit: 1,
     maxWalletLimit: 2,
-    tradingCooldown: 30,
-    liquidityLockTime: 365
+    tradingCooldown: 30
   });
 
   useEffect(() => {
@@ -443,8 +435,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
       handleSettingsChange('maxWalletAmount', value.toString());
     } else if (setting === 'tradingCooldown') {
       handleSettingsChange('tradingCooldown', value);
-    } else if (setting === 'liquidityLockTime') {
-      handleSettingsChange('liquidityLockDays', value);
     }
   };
 
@@ -683,21 +673,6 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
                         step={1}
                       />
                       <p className="text-xs text-gray-500">Time between trades for the same wallet</p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label>Liquidity Lock Time</Label>
-                        <span className="text-sm text-gray-400">{advancedSettings.liquidityLockTime} days</span>
-                      </div>
-                      <Slider
-                        value={[advancedSettings.liquidityLockTime]}
-                        onValueChange={([value]) => handleAdvancedSettingChange('liquidityLockTime', value)}
-                        min={30}
-                        max={730}
-                        step={30}
-                      />
-                      <p className="text-xs text-gray-500">Duration to lock initial liquidity</p>
                     </div>
                   </div>
                 </div>
