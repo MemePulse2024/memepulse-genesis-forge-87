@@ -8,8 +8,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { announcementPosts } from './socialPosts/announcementPosts';
 import { memePosts } from './socialPosts/memePosts';
-// Update the import to match the actual export from threadPosts.ts
-import { threadPosts } from './socialPosts/threadPosts';
 import { telegramPosts } from './socialPosts/telegramPosts';
 import { communityPosts } from './socialPosts/communityPosts';
 
@@ -34,7 +32,6 @@ const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
     { value: 'twitter-announcement', label: '🐦 Twitter Announcement', maxLength: 280 },
     { value: 'twitter-meme', label: '😂 Twitter Meme Post', maxLength: 280 },
     { value: 'telegram-pinned', label: '💬 Telegram Pinned Post', maxLength: 2000 },
-    { value: 'twitter-thread', label: '🧵 Twitter Thread', maxLength: 280 * 4 },
     { value: 'community-update', label: '📢 Community Update', maxLength: 2000 }
   ];
 
@@ -85,11 +82,6 @@ const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
       }
       case 'twitter-meme': {
         const arr = memePosts;
-        post = fillTemplate(arr[Math.floor(Math.random() * arr.length)]);
-        break;
-      }
-      case 'twitter-thread': {
-        const arr = threadPosts;
         post = fillTemplate(arr[Math.floor(Math.random() * arr.length)]);
         break;
       }
