@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Copy, Download, Code, Zap, Shield, Settings, Coins, AlertTriangle, Cog } from 'lucide-react';
+import { Copy, Download, Code, Zap, Shield, Settings, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData } from '@/utils/tokenomicsValidation';
 
@@ -112,17 +112,17 @@ const TABS = [
   {
     value: "settings",
     label: "Basic Settings",
-    icon: <Icon name="settings" className="w-5 h-5" />,
+    icon: <Settings className="w-5 h-5" />,
   },
   {
     value: "security",
     label: "Security Features",
-    icon: <Icon name="shield" className="w-5 h-5" />,
+    icon: <Shield className="w-5 h-5" />,
   },
   {
     value: "preview",
     label: "Contract Preview",
-    icon: <Icon name="code" className="w-5 h-5" />,
+    icon: <Code className="w-5 h-5" />,
   },
 ];
 
@@ -421,13 +421,5 @@ const ContractCodeGenerator = () => {
     </div>
   );
 };
-
-  const copyContract = () => {
-    navigator.clipboard.writeText(generatedContract);
-    toast({
-      title: "Contract Copied! 📋",
-      description: "Smart contract code copied to clipboard.",
-    });
-  };
 
 export default ContractCodeGenerator;
