@@ -21,15 +21,12 @@ const App = () => (
         </Routes>
       </BrowserRouter>
       {/* PulseNet Watermark - always floating bottom left */}
-      <div style={{ position: 'fixed', left: '0.5rem', bottom: '0.5rem', zIndex: 99999, width: 120, height: 120, pointerEvents: 'none', userSelect: 'none' }}>
-        <img
-          src="/PulseNet-watermark.svg"
-          alt="PulseNet Watermark"
-          className="pulsenet-watermark"
-          draggable="false"
-          style={{ display: 'block', width: '100%', height: '100%', verticalAlign: 'bottom' }}
-        />
-      </div>
+      <img
+        src="/favicon.ico"
+        alt="PulseNet Watermark"
+        className="pulsenet-watermark"
+        draggable="false"
+      />
     </TooltipProvider>
   </QueryClientProvider>
 );
