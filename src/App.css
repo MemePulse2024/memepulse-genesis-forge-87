@@ -230,23 +230,16 @@ body::after {
   left: 0.5rem;
   bottom: 0.5rem;
   z-index: 99999;
-  opacity: 1;
   width: 120px;
   height: auto;
-  filter: none;
   background: none;
   border: none;
-  border-radius: 0;
   padding: 0;
   box-sizing: content-box;
   pointer-events: none;
   user-select: none;
-  transition: none;
-}
-
-.pulsenet-watermark:hover {
   opacity: 1;
-  transform: scale(1.1);
+  display: block;
 }
 
 @media (max-width: 600px) {

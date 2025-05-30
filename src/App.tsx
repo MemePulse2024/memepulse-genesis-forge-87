@@ -21,12 +21,13 @@ const App = () => (
         </Routes>
       </BrowserRouter>
       {/* PulseNet Watermark - always floating bottom left */}
-      <img
-        src="/PulseNet-watermark.svg"
-        alt="PulseNet Watermark"
+      <object
+        data="/PulseNet-watermark.svg"
+        type="image/svg+xml"
         className="pulsenet-watermark"
-        draggable="false"
         aria-hidden="true"
+        tabIndex={-1}
+        style={{ pointerEvents: 'none' }}
       />
     </TooltipProvider>
   </QueryClientProvider>
