@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +17,7 @@ interface TokenomicsData {
   taxAllocation: {
     liquidity: string;
     marketing: string;
-    reflection: string;
+    burn: string;
   };
   supplyAllocation: {
     pulsex: string;
@@ -30,30 +31,6 @@ interface TokenomicsData {
 interface ContractCodeGeneratorProps {
   tokenomics?: TokenomicsData;
   coinIdea?: any;
-}
-
-// Helper functions and types
-interface TokenomicsData {
-  totalSupply: string;
-  buyTax: string;
-  sellTax: string;
-  taxAllocation: {
-    liquidity: string;
-    marketing: string;
-    reflection: string;
-  };
-  supplyAllocation: {
-    pulsex: string;
-    airdrop: string;
-    dev: string;
-    marketing: string;
-    burn: string;
-  };
-}
-
-interface ContractCodeGeneratorProps {
-  tokenomics: TokenomicsData;
-  coinIdea: any;
 }
 
 interface SecurityFeatures {
@@ -223,10 +200,9 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
         maxWalletAmount: tokenomics.sellTax,
         securityFeatures: {
           ...prev.securityFeatures,
-          reflection: tokenomics.taxAllocation.reflection !== "0",
+          reflection: false, // Set to false since reflection doesn't exist in taxAllocation
           burnable: tokenomics.taxAllocation.burn !== "0"
-        },
-        supplyAllocation: tokenomics.supplyAllocation
+        }
       }));
     }
   }, [tokenomics]);
@@ -385,8 +361,9 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
               <TabsContent value="settings" className="space-y-8">
                 <Card className="bg-black/30 rounded-xl p-6 border-2 border-blue-500/20 shadow-lg hover:border-blue-500/40 transition-all duration-200">
                   <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3">                      <Settings className="w-5 h-5 text-blue-400" />
-                        <CardTitle>Token Configuration</CardTitle>
+                    <div className="flex items-center gap-3">
+                      <Settings className="w-5 h-5 text-blue-400" />
+                      <CardTitle>Token Configuration</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -438,8 +415,9 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
 
                 <Card className="bg-black/30 rounded-xl p-6 border-2 border-red-500/20 shadow-lg hover:border-red-500/40 transition-all duration-200">
                   <CardHeader className="pb-4">
-                    <div className="flex items-center gap-3">                      <Shield className="w-5 h-5 text-red-400" />
-                        <CardTitle>Security Features</CardTitle>
+                    <div className="flex items-center gap-3">
+                      <Shield className="w-5 h-5 text-red-400" />
+                      <CardTitle>Security Features</CardTitle>
                     </div>
                   </CardHeader>
                   <CardContent>
