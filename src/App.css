@@ -227,24 +227,37 @@ body::after {
 /* PulseNet Watermark */
 .pulsenet-watermark {
   position: fixed;
-  left: 2vw;
-  bottom: 2vh;
+  left: 20px;
+  bottom: 20px;
   z-index: 9999;
-  opacity: 0.85;
+  opacity: 0.9;
   pointer-events: none;
   user-select: none;
   width: 120px;
-  height: auto;
-  filter: drop-shadow(0 2px 8px #0008);
+  height: 40px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 10px rgba(255,153,0,0.3));
   background: none;
   border-radius: 0;
   padding: 0;
   box-sizing: content-box;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  animation: watermarkPulse 3s ease-in-out infinite;
 }
 
 .pulsenet-watermark:hover {
   opacity: 1;
+  transform: scale(1.05);
+}
+
+@keyframes watermarkPulse {
+  0%, 100% { 
+    opacity: 0.9; 
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 10px rgba(255,153,0,0.3));
+  }
+  50% { 
+    opacity: 1; 
+    filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4)) drop-shadow(0 0 15px rgba(255,153,0,0.5));
+  }
 }
 
 @media (max-width: 600px) {
@@ -252,5 +265,23 @@ body::after {
     width: 70px;
     left: 1vw;
     bottom: 1vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .pulsenet-watermark {
+    width: 90px;
+    height: 30px;
+    left: 10px;
+    bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pulsenet-watermark {
+    width: 70px;
+    height: 25px;
+    left: 8px;
+    bottom: 8px;
   }
 }
