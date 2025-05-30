@@ -23,7 +23,7 @@ const App = () => (
       {/* PulseNet Watermark - always floating bottom left */}
       <div style={{ position: 'fixed', left: '0.5rem', bottom: '0.5rem', zIndex: 99999, width: 120, height: 120, pointerEvents: 'none', userSelect: 'none' }}>
         <img
-          src="/PulseNet.svg"
+          src="/PulseNet-watermark.svg"
           alt="PulseNet Watermark"
           className="pulsenet-watermark"
           draggable="false"
