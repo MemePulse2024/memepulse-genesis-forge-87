@@ -231,20 +231,20 @@ body::after {
   bottom: 0.5rem;
   z-index: 99999;
   width: 120px;
-  height: auto;
-  background: none;
-  border: none;
-  padding: 0;
-  box-sizing: content-box;
+  height: 120px;
+  background: #fffbe6;
+  border: 2px solid #ff9900;
+  box-sizing: border-box;
   pointer-events: none;
   user-select: none;
-  opacity: 1;
   display: block;
+  opacity: 1;
 }
 
 @media (max-width: 600px) {
   .pulsenet-watermark {
     width: 70px;
+    height: 70px;
     left: 0.25rem;
     bottom: 0.25rem;
   }
