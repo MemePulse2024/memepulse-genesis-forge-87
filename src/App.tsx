@@ -21,6 +21,14 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
+    {/* PulseNet Watermark */}
+    <img
+      src="/PulseNet-watermark.svg"
+      alt="PulseNet Watermark"
+      className="pulsenet-watermark"
+      draggable="false"
+      aria-hidden="true"
+    />
   </QueryClientProvider>
 );
 

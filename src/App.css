@@ -224,4 +224,24 @@ body::after {
 .pulse-sparkle-4 { bottom: 8%; right: 10%; animation-delay: 0.5s; }
 .pulse-sparkle-5 { top: 48%; left: 52%; animation-delay: 1.5s; }
 
-/* Add more sparkles dynamically in React for extra wow! */
+/* PulseNet Watermark */
+.pulsenet-watermark {
+  position: fixed;
+  left: 2vw;
+  bottom: 2vh;
+  z-index: 50;
+  opacity: 0.18;
+  pointer-events: none;
+  user-select: none;
+  width: 120px;
+  height: auto;
+  transition: opacity 0.3s;
+}
+
+@media (max-width: 600px) {
+  .pulsenet-watermark {
+    width: 70px;
+    left: 1vw;
+    bottom: 1vh;
+  }
+}
