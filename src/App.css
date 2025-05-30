@@ -226,48 +226,32 @@ body::after {
 
 /* PulseNet Watermark */
 .pulsenet-watermark {
-  position: fixed !important;
-  left: 20px !important;
-  bottom: 20px !important;
-  z-index: 99999 !important;
-  opacity: 0.8 !important;
-  pointer-events: none !important;
-  user-select: none !important;
-  width: 100px !important;
-  height: 100px !important;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)) drop-shadow(0 0 15px rgba(255,153,0,0.6)) !important;
-  background: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  box-sizing: content-box !important;
-  transition: opacity 0.3s ease, transform 0.3s ease !important;
-  animation: watermarkPulse 3s ease-in-out infinite !important;
-  display: block !important;
-  visibility: visible !important;
+  position: fixed;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 99999;
+  opacity: 1;
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(0 0 6px #000) drop-shadow(0 2px 8px #000);
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  box-sizing: content-box;
+  user-select: none;
+  transition: opacity 0.3s;
 }
 
 .pulsenet-watermark:hover {
-  opacity: 1 !important;
-  transform: scale(1.1) !important;
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-@keyframes watermarkPulse {
-  0%, 100% { 
-    opacity: 0.8; 
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)) drop-shadow(0 0 15px rgba(255,153,0,0.6));
-  }
-  50% { 
-    opacity: 1; 
-    filter: drop-shadow(0 2px 12px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(255,153,0,0.8));
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .pulsenet-watermark {
-    width: 80px !important;
-    height: 80px !important;
-    left: 15px !important;
-    bottom: 15px !important;
+    width: 70px;
+    left: 0.25rem;
+    bottom: 0.25rem;
   }
 }
 
