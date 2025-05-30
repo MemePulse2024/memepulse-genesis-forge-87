@@ -233,13 +233,15 @@ body::after {
   opacity: 1;
   width: 120px;
   height: auto;
-  filter: drop-shadow(0 0 6px #000) drop-shadow(0 2px 8px #000);
+  filter: none;
   background: none;
+  border: none;
   border-radius: 0;
   padding: 0;
   box-sizing: content-box;
+  pointer-events: none;
   user-select: none;
-  transition: opacity 0.3s;
+  transition: none;
 }
 
 .pulsenet-watermark:hover {
