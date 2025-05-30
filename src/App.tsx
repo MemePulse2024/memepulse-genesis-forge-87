@@ -20,15 +20,15 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      {/* PulseNet Watermark - always floating bottom left */}
+      <img
+        src="/PulseNet-watermark.svg"
+        alt="PulseNet Watermark"
+        className="pulsenet-watermark"
+        draggable="false"
+        aria-hidden="true"
+      />
     </TooltipProvider>
-    {/* PulseNet Watermark */}
-    <img
-      src="/PulseNet-watermark.svg"
-      alt="PulseNet Watermark"
-      className="pulsenet-watermark"
-      draggable="false"
-      aria-hidden="true"
-    />
   </QueryClientProvider>
 );
 
