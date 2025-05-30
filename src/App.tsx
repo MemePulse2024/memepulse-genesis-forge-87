@@ -22,8 +22,8 @@ const App = () => (
       </BrowserRouter>
       {/* PulseNet Watermark - always floating bottom left */}
       <img
-        src="/PulseNet-watermark.svg"
-        alt="PulseNet Watermark (debug: should see SVG here)"
+        src="/PulseNet.svg"
+        alt="PulseNet Watermark"
         className="pulsenet-watermark"
         draggable="false"
         aria-hidden="true"
