@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData, validateAllocations } from '@/utils/tokenomicsValidation';
@@ -7,12 +8,9 @@ import { SupplyAllocationForm } from './tokenomics/SupplyAllocationForm';
 import { TokenomicsDistributionChart } from './tokenomics/TokenomicsDistributionChart';
 import { ActionButtons } from './tokenomics/ActionButtons';
 import { PresetSelector } from './tokenomics/PresetSelector';
-
 import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
-import { useState as useTabState } from 'react';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface TokenomicsEngineProps {
   tokenomics: TokenomicsData;
@@ -20,7 +18,7 @@ interface TokenomicsEngineProps {
 }
 
 const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) => {
-  const [activeTab, setActiveTab] = useTabState('basic');
+  const [activeTab, setActiveTab] = useState('basic');
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const { toast } = useToast();
 
@@ -84,11 +82,6 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
     { name: 'Burn', value: parseFloat(tokenomics.supplyAllocation.burn || '0'), color: '#ff3333' },
   ];
 
-  // Handle tab changes
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-  };
-
   return (
     <section id="tokenomics" className="py-20 bg-gradient-to-br from-black to-gray-900">
       <div className="container mx-auto px-4">
@@ -106,40 +99,33 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
           
           {/* Mobile view: Show select dropdown */}
           <div className="md:hidden w-full mb-6">
-            <div className="w-full md:w-96 mx-auto">
-              <Select value={activeTab} onValueChange={setActiveTab}>
-                <SelectTrigger className="w-full bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
-                  <SelectValue placeholder="Select Section">
-                    {activeTab === 'basic' ? 'Basic Configuration' : 
-                     activeTab === 'advanced' ? 'Advanced Features' : 
-                     'Visualizations'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-600">
-                  <SelectItem value="basic" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
-                    Basic Configuration
-                  </SelectItem>
-                  <SelectItem value="advanced" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
-                    Advanced Features
-                  </SelectItem>
-                  <SelectItem value="visualization" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
-                    Visualizations
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <Select value={activeTab} onValueChange={setActiveTab}>
+              <SelectTrigger className="w-full bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
+                <SelectValue>
+                  {activeTab === 'basic' ? 'Basic Configuration' : 
+                   activeTab === 'advanced' ? 'Advanced Features' : 
+                   'Visualizations'}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="bg-gray-800 border-gray-600 z-50">
+                <SelectItem value="basic" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
+                  Basic Configuration
+                </SelectItem>
+                <SelectItem value="advanced" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
+                  Advanced Features
+                </SelectItem>
+                <SelectItem value="visualization" className="text-white hover:bg-gray-700 cursor-pointer font-normal">
+                  Visualizations
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
-          {/* Desktop view */}
+          {/* Desktop and Mobile shared content */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
               <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50">
-                <div className="flex items-center justify-between px-4 py-3 w-full">
-                  <span className="font-orbitron">Basic Configuration</span>
-                  <svg className="w-5 h-5 ml-2 text-purple-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
+                Basic Configuration
               </TabsTrigger>
               <TabsTrigger value="advanced" className="text-white data-[state=active]:bg-purple-800/50">
                 Advanced Features
@@ -187,9 +173,7 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
             </TabsContent>
             
             <TabsContent value="advanced" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-8">
-                <TokenUtilitySuggestions />
-              </div>
+              <TokenUtilitySuggestions />
             </TabsContent>
             
             <TabsContent value="visualization" className="space-y-6">
@@ -199,12 +183,10 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
                   supplyData={supplyChartData}
                 />
                 
-                <div className="space-y-6">
-                  <ActionButtons 
-                    tokenomics={tokenomics}
-                    hasErrors={Object.keys(errors).length > 0}
-                  />
-                </div>
+                <ActionButtons 
+                  tokenomics={tokenomics}
+                  hasErrors={Object.keys(errors).length > 0}
+                />
               </div>
             </TabsContent>
           </Tabs>
