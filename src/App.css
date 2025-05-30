@@ -229,19 +229,29 @@ body::after {
   position: fixed;
   left: 2vw;
   bottom: 2vh;
-  z-index: 50;
-  opacity: 0.18;
+  z-index: 1000;
+  opacity: 0.55;
   pointer-events: none;
   user-select: none;
-  width: 120px;
+  width: 160px;
   height: auto;
+  filter: drop-shadow(0 2px 8px #0008);
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+  padding: 8px;
+  box-sizing: content-box;
   transition: opacity 0.3s;
+}
+
+.pulsenet-watermark:hover {
+  opacity: 0.85;
 }
 
 @media (max-width: 600px) {
   .pulsenet-watermark {
-    width: 70px;
+    width: 90px;
     left: 1vw;
     bottom: 1vh;
+    padding: 4px;
   }
 }
