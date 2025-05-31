@@ -16,36 +16,6 @@ const Header = () => {
     <header className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-purple-900 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(106,13,173,0.1),transparent)] pointer-events-none" />
       
-      {/* PulseNet Watermark - top right of header */}
-      <a
-        href="https://pulsenet.xyz"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute top-4 right-4 z-50 flex items-center gap-3 bg-black/80 px-4 py-2 rounded-full border-2 border-yellow-400/30 backdrop-blur-md hover:bg-black/90 hover:border-yellow-400/50 transition-all duration-300"
-        style={{
-          textDecoration: "none",
-          cursor: "pointer",
-          boxShadow: "0 0 20px rgba(255, 215, 0, 0.2)",
-        }}
-      >
-        <span 
-          className="text-yellow-400 text-sm font-semibold font-orbitron"
-          style={{
-            textShadow: "0 0 10px rgba(255, 215, 0, 0.5)",
-          }}
-        >
-          Made by
-        </span>
-        <img
-          src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
-          alt="PulseNet Logo"
-          className="w-8 h-8 rounded-full"
-          style={{
-            filter: "brightness(1.3) contrast(1.2) drop-shadow(0 0 8px rgba(255,215,0,0.4))",
-          }}
-        />
-      </a>
-      
       <div className={`text-center z-10 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <h1 className="font-orbitron text-6xl md:text-8xl font-black text-white mb-4 animate-glow">
           MemePulse 🚀

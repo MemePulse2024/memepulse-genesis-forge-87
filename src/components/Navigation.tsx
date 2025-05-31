@@ -51,16 +51,49 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-white"
+          {/* Right side: PulseNet Watermark + Mobile Menu */}
+          <div className="flex items-center gap-3">
+            {/* PulseNet Watermark */}
+            <a
+              href="https://pulsenet.xyz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-black/80 px-3 py-1.5 rounded-full border border-yellow-400/30 backdrop-blur-md hover:bg-black/90 hover:border-yellow-400/50 transition-all duration-300"
+              style={{
+                textDecoration: "none",
+                cursor: "pointer",
+                boxShadow: "0 0 15px rgba(255, 215, 0, 0.15)",
+              }}
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+              <span 
+                className="text-yellow-400 text-xs font-semibold font-orbitron hidden sm:inline"
+                style={{
+                  textShadow: "0 0 8px rgba(255, 215, 0, 0.4)",
+                }}
+              >
+                Made by
+              </span>
+              <img
+                src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
+                alt="PulseNet Logo"
+                className="w-6 h-6 rounded-full"
+                style={{
+                  filter: "brightness(1.3) contrast(1.2) drop-shadow(0 0 6px rgba(255,215,0,0.3))",
+                }}
+              />
+            </a>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-white"
+              >
+                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
         </div>
 
