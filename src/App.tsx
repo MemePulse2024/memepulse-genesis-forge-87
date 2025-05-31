@@ -21,25 +21,50 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      {/* PulseNet Watermark - always floating bottom left */}
-      <img
-        src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
-        alt="PulseNet Logo"
-        className="pulsenet-watermark"
+      {/* PulseNet Watermark - bottom of page */}
+      <div 
+        className="pulsenet-watermark-container"
         style={{
           position: "fixed",
-          left: "1rem",
           bottom: "1rem",
+          left: "50%",
+          transform: "translateX(-50%)",
           zIndex: 99999,
-          width: "120px",
-          height: "120px",
           pointerEvents: "none",
           userSelect: "none",
-          display: "block",
-          mixBlendMode: "multiply",
-          filter: "drop-shadow(0 0 10px rgba(0,0,0,0.3))",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.75rem",
+          background: "rgba(0, 0, 0, 0.8)",
+          padding: "0.75rem 1.5rem",
+          borderRadius: "2rem",
+          border: "2px solid rgba(255, 215, 0, 0.3)",
+          backdropFilter: "blur(10px)",
+          boxShadow: "0 0 20px rgba(255, 215, 0, 0.2)",
         }}
-      />
+      >
+        <span 
+          style={{
+            color: "#FFD700",
+            fontSize: "1.1rem",
+            fontWeight: "600",
+            fontFamily: "Orbitron, sans-serif",
+            textShadow: "0 0 10px rgba(255, 215, 0, 0.5)",
+          }}
+        >
+          Made by
+        </span>
+        <img
+          src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
+          alt="PulseNet Logo"
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            filter: "brightness(1.3) contrast(1.2) drop-shadow(0 0 8px rgba(255,215,0,0.4))",
+          }}
+        />
+      </div>
     </TooltipProvider>
   </QueryClientProvider>
 );
