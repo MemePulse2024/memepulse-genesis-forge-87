@@ -22,7 +22,10 @@ const App = () => (
         </Routes>
       </BrowserRouter>
       {/* PulseNet Watermark - bottom of page */}
-      <div 
+      <a
+        href="https://pulsenet.xyz"
+        target="_blank"
+        rel="noopener noreferrer"
         className="pulsenet-watermark-container"
         style={{
           position: "fixed",
@@ -30,7 +33,7 @@ const App = () => (
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 99999,
-          pointerEvents: "none",
+          pointerEvents: "auto",
           userSelect: "none",
           display: "flex",
           alignItems: "center",
@@ -41,6 +44,8 @@ const App = () => (
           border: "2px solid rgba(255, 215, 0, 0.3)",
           backdropFilter: "blur(10px)",
           boxShadow: "0 0 20px rgba(255, 215, 0, 0.2)",
+          textDecoration: "none",
+          cursor: "pointer",
         }}
       >
         <span 
@@ -64,7 +69,7 @@ const App = () => (
             filter: "brightness(1.3) contrast(1.2) drop-shadow(0 0 8px rgba(255,215,0,0.4))",
           }}
         />
-      </div>
+      </a>
     </TooltipProvider>
   </QueryClientProvider>
 );
