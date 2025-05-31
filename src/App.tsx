@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,30 +22,24 @@ const App = () => (
         </Routes>
       </BrowserRouter>
       {/* PulseNet Watermark - always floating bottom left */}
-      <svg
+      <img
+        src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
+        alt="PulseNet Logo"
         className="pulsenet-watermark"
         style={{
           position: "fixed",
-          left: "0.5rem",
-          bottom: "0.5rem",
+          left: "1rem",
+          bottom: "1rem",
           zIndex: 99999,
-          width: 120,
-          height: 120,
+          width: "120px",
+          height: "120px",
           pointerEvents: "none",
           userSelect: "none",
           display: "block",
+          mixBlendMode: "multiply",
+          filter: "drop-shadow(0 0 10px rgba(0,0,0,0.3))",
         }}
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-label="PulseNet Watermark"
-      >
-        <path
-          d="M55.45 c-6.80 -1.40 -11.50 -3.5"
-          fill="none"
-          stroke="#FF9900"
-          strokeWidth="2"
-        />
-      </svg>
+      />
     </TooltipProvider>
   </QueryClientProvider>
 );
