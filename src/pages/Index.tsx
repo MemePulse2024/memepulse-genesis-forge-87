@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
 import Navigation from '@/components/Navigation';
+import PulseChainStats from '@/components/PulseChainStats';
 import IdeaGenerator from '@/components/IdeaGenerator';
 import TokenomicsEngine from '@/components/TokenomicsEngine';
 import ContractCodeGenerator from '@/components/ContractCodeGenerator';
@@ -52,37 +53,40 @@ const Index = () => {
       <Navigation />
       <Header />
       
-      {/* Enhanced Professional Hero Section */}
+      {/* PulseChain Excellence Section */}
       <section className="w-full py-20 md:py-32 relative z-10 flex flex-col items-center justify-center text-center bg-gradient-to-b from-slate-900/50 to-slate-900">
         <div className="container mx-auto px-4">
           <div className="animate-fade-in">
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-amber-400 bg-clip-text text-transparent">
-              The Richard Heart Standard
+              Built for PulseChain Excellence
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
-              Professional-grade meme coin creation with the same attention to detail and excellence 
-              that built HEX and PulseChain. No corners cut. No compromises.
+              Harness the power of the world's fastest blockchain with enterprise-grade tools 
+              designed for maximum efficiency and minimal costs.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-400/30 rounded-xl p-6 backdrop-blur-sm">
                 <div className="text-2xl mb-2">⚡</div>
-                <h3 className="font-bold text-white mb-2">Lightning Fast</h3>
-                <p className="text-gray-400 text-sm">Deploy your meme coin in minutes, not weeks</p>
+                <h3 className="font-bold text-white mb-2">Lightning Speed</h3>
+                <p className="text-gray-400 text-sm">3-second block times for instant deployment</p>
               </div>
               <div className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-400/30 rounded-xl p-6 backdrop-blur-sm">
-                <div className="text-2xl mb-2">🏆</div>
-                <h3 className="font-bold text-white mb-2">World Class</h3>
-                <p className="text-gray-400 text-sm">Professional tools used by the best in crypto</p>
+                <div className="text-2xl mb-2">💰</div>
+                <h3 className="font-bold text-white mb-2">Minimal Fees</h3>
+                <p className="text-gray-400 text-sm">Deploy for less than $1 in gas fees</p>
               </div>
               <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-400/30 rounded-xl p-6 backdrop-blur-sm">
-                <div className="text-2xl mb-2">💎</div>
-                <h3 className="font-bold text-white mb-2">Diamond Hands</h3>
-                <p className="text-gray-400 text-sm">Built for long-term success and sustainability</p>
+                <div className="text-2xl mb-2">🔥</div>
+                <h3 className="font-bold text-white mb-2">Deflationary</h3>
+                <p className="text-gray-400 text-sm">Built-in burn mechanics for token appreciation</p>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Live PulseChain Stats */}
+      <PulseChainStats />
       
       {/* Main Content Sections with enhanced styling */}
       <main className="max-w-6xl mx-auto px-4 space-y-16 relative z-10 pb-20">
