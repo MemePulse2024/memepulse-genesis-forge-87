@@ -11,12 +11,12 @@ const PulseChainStats = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Simulate real-time updates
-      setBlockNumber(prev => prev + Math.floor(Math.random() * 3) + 1);
+      // Simulate real-time updates with 12-second block times
+      setBlockNumber(prev => prev + 1); // One block every 12 seconds
       setGasPrice(prev => Math.max(0.5, prev + (Math.random() - 0.5) * 0.1));
       setTotalValueLocked(prev => prev + (Math.random() - 0.5) * 0.01);
       setActiveUsers(prev => prev + Math.floor(Math.random() * 10) - 5);
-    }, 3000);
+    }, 12000); // 12 second intervals for block updates
 
     return () => clearInterval(interval);
   }, []);
@@ -51,7 +51,7 @@ const PulseChainStats = () => {
             <CardContent>
               <div className="text-lg md:text-2xl font-bold text-white">{blockNumber.toLocaleString()}</div>
               <p className="text-xs text-gray-400 mt-1">
-                ⚡ 3 second blocks
+                ⏱️ 12 second blocks
               </p>
             </CardContent>
           </Card>
