@@ -25,7 +25,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="professional-nav fixed top-0 left-0 right-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -44,7 +44,7 @@ const Navigation = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => scrollToSection(item.href)}
-                className="professional-text hover:text-white hover:bg-white/10 transition-all duration-200 text-xs px-3 font-medium"
+                className="text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200 text-xs px-3 font-medium"
               >
                 {item.label}
               </Button>
@@ -52,21 +52,21 @@ const Navigation = () => {
           </div>
 
           {/* Right side: PulseNet Watermark + Mobile Menu */}
-          <div className="flex items-center gap-3">
-            {/* PulseNet Watermark */}
+          <div className="flex items-center gap-4">
+            {/* PulseNet Watermark - Now properly inside nav */}
             <a
               href="https://pulsenet.xyz"
               target="_blank"
               rel="noopener noreferrer"
-              className="professional-watermark flex items-center gap-2 professional-focus"
+              className="flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-400/30 rounded-lg px-3 py-1.5 hover:from-amber-500/30 hover:to-amber-600/30 hover:border-amber-400/50 transition-all duration-200 group"
             >
-              <span className="professional-watermark-text hidden sm:inline">
+              <span className="text-amber-400 text-xs font-medium hidden sm:inline">
                 Made by
               </span>
               <img
                 src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
                 alt="PulseNet Logo"
-                className="professional-watermark-logo"
+                className="w-5 h-5 rounded filter brightness-110 group-hover:brightness-125 transition-all duration-200"
               />
             </a>
 
@@ -76,7 +76,7 @@ const Navigation = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-white hover:bg-white/10 professional-focus"
+                className="text-white hover:bg-white/10"
               >
                 {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
@@ -86,7 +86,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className="md:hidden professional-animate-slide">
+          <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900/95 backdrop-blur-md border-t border-white/10 rounded-b-lg">
               {navItems.map((item) => (
                 <Button
@@ -94,7 +94,7 @@ const Navigation = () => {
                   variant="ghost"
                   size="sm"
                   onClick={() => scrollToSection(item.href)}
-                  className="w-full text-left professional-text hover:text-white hover:bg-white/10 transition-colors justify-start font-medium"
+                  className="w-full text-left text-gray-300 hover:text-white hover:bg-white/10 transition-colors justify-start font-medium"
                 >
                   {item.label}
                 </Button>

@@ -52,71 +52,77 @@ const Index = () => {
       <Navigation />
       <Header />
       
-      {/* Professional Hero Section */}
-      <section className="w-full py-20 md:py-32 relative z-10 flex flex-col items-center justify-center text-center">
+      {/* Enhanced Professional Hero Section */}
+      <section className="w-full py-20 md:py-32 relative z-10 flex flex-col items-center justify-center text-center bg-gradient-to-b from-slate-900/50 to-slate-900">
         <div className="container mx-auto px-4">
-          <div className="professional-animate-in">
-            <h1 className="professional-title mb-6">
-              MemePulse Genesis Forge
-            </h1>
-            <p className="professional-subtitle max-w-3xl mx-auto mb-8">
-              Create, launch, and promote your meme coin on PulseChain with zero coding required. 
-              Professional-grade tools designed for the next generation of crypto innovators.
+          <div className="animate-fade-in">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-400 to-amber-400 bg-clip-text text-transparent">
+              The Richard Heart Standard
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto mb-8 leading-relaxed">
+              Professional-grade meme coin creation with the same attention to detail and excellence 
+              that built HEX and PulseChain. No corners cut. No compromises.
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              <span className="px-4 py-2 bg-indigo-600/20 border border-indigo-400/30 text-indigo-300 font-medium rounded-full text-sm backdrop-blur-sm">
-                PulseChain Native
-              </span>
-              <span className="px-4 py-2 bg-amber-600/20 border border-amber-400/30 text-amber-300 font-medium rounded-full text-sm backdrop-blur-sm">
-                No Code Required
-              </span>
-              <span className="px-4 py-2 bg-blue-600/20 border border-blue-400/30 text-blue-300 font-medium rounded-full text-sm backdrop-blur-sm">
-                Professional Grade
-              </span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-400/30 rounded-xl p-6 backdrop-blur-sm">
+                <div className="text-2xl mb-2">⚡</div>
+                <h3 className="font-bold text-white mb-2">Lightning Fast</h3>
+                <p className="text-gray-400 text-sm">Deploy your meme coin in minutes, not weeks</p>
+              </div>
+              <div className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-400/30 rounded-xl p-6 backdrop-blur-sm">
+                <div className="text-2xl mb-2">🏆</div>
+                <h3 className="font-bold text-white mb-2">World Class</h3>
+                <p className="text-gray-400 text-sm">Professional tools used by the best in crypto</p>
+              </div>
+              <div className="bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-400/30 rounded-xl p-6 backdrop-blur-sm">
+                <div className="text-2xl mb-2">💎</div>
+                <h3 className="font-bold text-white mb-2">Diamond Hands</h3>
+                <p className="text-gray-400 text-sm">Built for long-term success and sustainability</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Main Content Sections */}
-      <main className="max-w-6xl mx-auto px-4 space-y-12 relative z-10 pb-20">
-        <section className="professional-card p-8 professional-animate-in">
+      {/* Main Content Sections with enhanced styling */}
+      <main className="max-w-6xl mx-auto px-4 space-y-16 relative z-10 pb-20">
+        <section id="generator" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <IdeaGenerator coinIdea={coinIdea} setCoinIdea={setCoinIdea} />
         </section>
         
-        <div className="professional-divider"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         
-        <section className="professional-card p-8 professional-animate-in">
+        <section id="tokenomics" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <TokenomicsEngine tokenomics={tokenomics} setTokenomics={setTokenomics} />
         </section>
         
-        <div className="professional-divider"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         
-        <section className="professional-card p-8 professional-animate-in">
+        <section id="contract" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <ContractCodeGenerator tokenomics={tokenomics} coinIdea={coinIdea} />
         </section>
         
-        <div className="professional-divider"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         
-        <section className="professional-card p-8 professional-animate-in">
+        <section id="social" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <SocialMediaLaunchpad coinIdea={coinIdea} />
         </section>
         
-        <div className="professional-divider"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         
-        <section className="professional-card p-8 professional-animate-in">
+        <section id="checklist" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <LaunchChecklist />
         </section>
         
-        <div className="professional-divider"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         
-        <section className="professional-card p-8 professional-animate-in">
+        <section id="resources" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <ResourcesSection />
         </section>
         
-        <div className="professional-divider"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
         
-        <section className="professional-card p-8 professional-animate-in">
+        <section id="analytics" className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <TokenAnalyticsDashboard />
         </section>
       </main>
