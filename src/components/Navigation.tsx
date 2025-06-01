@@ -25,14 +25,14 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-purple-500/20">
+    <nav className="professional-nav fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="font-orbitron text-xl font-bold text-white">
-              <span className="text-pulse-purple">Meme</span>
-              <span className="text-pulse-orange">Pulse</span>
+            <h1 className="font-inter text-xl font-bold text-white">
+              <span className="text-indigo-400">Meme</span>
+              <span className="text-amber-400">Pulse</span>
             </h1>
           </div>
 
@@ -44,7 +44,7 @@ const Navigation = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => scrollToSection(item.href)}
-                className="text-gray-300 hover:text-white hover:bg-purple-800/50 transition-colors text-xs px-3"
+                className="professional-text hover:text-white hover:bg-white/10 transition-all duration-200 text-xs px-3 font-medium"
               >
                 {item.label}
               </Button>
@@ -58,28 +58,15 @@ const Navigation = () => {
               href="https://pulsenet.xyz"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-black/80 px-3 py-1.5 rounded-full border border-yellow-400/30 backdrop-blur-md hover:bg-black/90 hover:border-yellow-400/50 transition-all duration-300"
-              style={{
-                textDecoration: "none",
-                cursor: "pointer",
-                boxShadow: "0 0 15px rgba(255, 215, 0, 0.15)",
-              }}
+              className="professional-watermark flex items-center gap-2 professional-focus"
             >
-              <span 
-                className="text-yellow-400 text-xs font-semibold font-orbitron hidden sm:inline"
-                style={{
-                  textShadow: "0 0 8px rgba(255, 215, 0, 0.4)",
-                }}
-              >
+              <span className="professional-watermark-text hidden sm:inline">
                 Made by
               </span>
               <img
                 src="/lovable-uploads/54f55a5b-da54-4019-9a4b-49ac99703e9c.png"
                 alt="PulseNet Logo"
-                className="w-6 h-6 rounded-full"
-                style={{
-                  filter: "brightness(1.3) contrast(1.2) drop-shadow(0 0 6px rgba(255,215,0,0.3))",
-                }}
+                className="professional-watermark-logo"
               />
             </a>
 
@@ -89,7 +76,7 @@ const Navigation = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-white"
+                className="text-white hover:bg-white/10 professional-focus"
               >
                 {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
@@ -99,15 +86,15 @@ const Navigation = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/95 backdrop-blur-md border-t border-purple-500/20">
+          <div className="md:hidden professional-animate-slide">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-slate-900/95 backdrop-blur-md border-t border-white/10 rounded-b-lg">
               {navItems.map((item) => (
                 <Button
                   key={item.href}
                   variant="ghost"
                   size="sm"
                   onClick={() => scrollToSection(item.href)}
-                  className="w-full text-left text-gray-300 hover:text-white hover:bg-purple-800/50 transition-colors justify-start"
+                  className="w-full text-left professional-text hover:text-white hover:bg-white/10 transition-colors justify-start font-medium"
                 >
                   {item.label}
                 </Button>
