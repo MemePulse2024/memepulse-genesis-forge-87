@@ -13,7 +13,7 @@ interface PulseChainStats {
 const PulseChainStats = () => {
   const [stats, setStats] = useState<PulseChainStats>({
     blockNumber: 18750324,
-    gasPrice: 1.2,
+    gasPrice: 1200000000000000,
     totalValueLocked: 2.45,
     activeUsers: 125847
   });
@@ -63,21 +63,17 @@ const PulseChainStats = () => {
       
       if (blockData.result && gasPriceData.result) {
         const blockNumber = parseInt(blockData.result, 16);
-        const gasPriceWei = parseInt(gasPriceData.result, 16);
-        
-        // PulseChain gas prices are typically much lower than Ethereum
-        // Convert Wei to a more reasonable display format (nano PLS or similar)
-        const gasPriceFormatted = gasPriceWei / 1e12; // Convert to a reasonable scale
+        const gasPriceBeats = parseInt(gasPriceData.result, 16);
         
         setStats(prev => ({
           blockNumber: blockNumber,
-          gasPrice: Math.max(0.1, gasPriceFormatted), // Ensure minimum display value
+          gasPrice: gasPriceBeats, // Store raw beats value
           totalValueLocked: prev.totalValueLocked + (Math.random() - 0.5) * 0.01, // Simulated TVL updates
           activeUsers: prev.activeUsers + Math.floor(Math.random() * 20) - 10 // Simulated user updates
         }));
         
         setError(null);
-        console.log('Successfully updated stats:', { blockNumber, gasPriceFormatted });
+        console.log('Successfully updated stats:', { blockNumber, gasPriceBeats });
       } else {
         throw new Error('Invalid response from RPC');
       }
@@ -89,7 +85,7 @@ const PulseChainStats = () => {
       // Fallback to simulated updates
       setStats(prev => ({
         blockNumber: prev.blockNumber + 1,
-        gasPrice: Math.max(0.1, prev.gasPrice + (Math.random() - 0.5) * 0.05),
+        gasPrice: Math.max(1000000000000, prev.gasPrice + (Math.random() - 0.5) * 100000000000),
         totalValueLocked: prev.totalValueLocked + (Math.random() - 0.5) * 0.01,
         activeUsers: prev.activeUsers + Math.floor(Math.random() * 10) - 5
       }));
@@ -117,6 +113,21 @@ const PulseChainStats = () => {
     return num.toFixed(decimals);
   };
 
+  const formatBeats = (beats: number) => {
+    if (beats >= 1e15) {
+      return (beats / 1e15).toFixed(1) + 'P'; // Peta-beats
+    } else if (beats >= 1e12) {
+      return (beats / 1e12).toFixed(1) + 'T'; // Tera-beats
+    } else if (beats >= 1e9) {
+      return (beats / 1e9).toFixed(1) + 'G'; // Giga-beats
+    } else if (beats >= 1e6) {
+      return (beats / 1e6).toFixed(1) + 'M'; // Mega-beats
+    } else if (beats >= 1e3) {
+      return (beats / 1e3).toFixed(1) + 'K'; // Kilo-beats
+    }
+    return beats.toString();
+  };
+
   return (
     <section className="py-12 md:py-16 bg-gradient-to-br from-slate-800/30 to-slate-900/30 backdrop-blur-sm">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -127,6 +138,9 @@ const PulseChainStats = () => {
           <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base px-4">
             Real-time metrics from the world's fastest and most efficient blockchain
             {error && <span className="text-amber-400"> (Displaying simulated data)</span>}
+          </p>
+          <p className="text-xs text-gray-500 mt-2 max-w-xl mx-auto">
+            💡 <span className="text-amber-300">Beats</span> are the smallest unit of PLS (like Wei on Ethereum). 1 PLS = 10¹⁸ beats
           </p>
         </div>
 
@@ -150,7 +164,7 @@ const PulseChainStats = () => {
               <Zap className={`h-4 w-4 text-amber-400 ${isLoading ? 'animate-pulse' : ''}`} />
             </CardHeader>
             <CardContent>
-              <div className="text-lg md:text-2xl font-bold text-white">{stats.gasPrice.toFixed(2)} nPLS</div>
+              <div className="text-lg md:text-2xl font-bold text-white">{formatBeats(stats.gasPrice)} beats</div>
               <p className="text-xs text-gray-400 mt-1">
                 💰 Ultra-low fees
               </p>
