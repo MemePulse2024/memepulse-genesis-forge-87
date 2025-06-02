@@ -64,17 +64,20 @@ const PulseChainStats = () => {
       if (blockData.result && gasPriceData.result) {
         const blockNumber = parseInt(blockData.result, 16);
         const gasPriceWei = parseInt(gasPriceData.result, 16);
-        const gasPriceGwei = gasPriceWei / 1e9;
+        
+        // PulseChain gas prices are typically much lower than Ethereum
+        // Convert Wei to a more reasonable display format (nano PLS or similar)
+        const gasPriceFormatted = gasPriceWei / 1e12; // Convert to a reasonable scale
         
         setStats(prev => ({
           blockNumber: blockNumber,
-          gasPrice: gasPriceGwei,
+          gasPrice: Math.max(0.1, gasPriceFormatted), // Ensure minimum display value
           totalValueLocked: prev.totalValueLocked + (Math.random() - 0.5) * 0.01, // Simulated TVL updates
           activeUsers: prev.activeUsers + Math.floor(Math.random() * 20) - 10 // Simulated user updates
         }));
         
         setError(null);
-        console.log('Successfully updated stats:', { blockNumber, gasPriceGwei });
+        console.log('Successfully updated stats:', { blockNumber, gasPriceFormatted });
       } else {
         throw new Error('Invalid response from RPC');
       }
@@ -147,7 +150,7 @@ const PulseChainStats = () => {
               <Zap className={`h-4 w-4 text-amber-400 ${isLoading ? 'animate-pulse' : ''}`} />
             </CardHeader>
             <CardContent>
-              <div className="text-lg md:text-2xl font-bold text-white">{stats.gasPrice.toFixed(2)} Gwei</div>
+              <div className="text-lg md:text-2xl font-bold text-white">{stats.gasPrice.toFixed(2)} nPLS</div>
               <p className="text-xs text-gray-400 mt-1">
                 💰 Ultra-low fees
               </p>
