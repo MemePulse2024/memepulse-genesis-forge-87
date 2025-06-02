@@ -67,8 +67,8 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto px-4">
               <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-400/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">
                 <div className="text-xl md:text-2xl mb-2">⚡</div>
-                <h3 className="font-bold text-white mb-2 text-sm md:text-base">Lightning Speed</h3>
-                <p className="text-gray-400 text-xs md:text-sm">3-second block times for instant deployment</p>
+                <h3 className="font-bold text-white mb-2 text-sm md:text-base">12 Second Block Times</h3>
+                <p className="text-gray-400 text-xs md:text-sm">Ultra-fast confirmation for instant deployment</p>
               </div>
               <div className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-400/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">
                 <div className="text-xl md:text-2xl mb-2">💰</div>

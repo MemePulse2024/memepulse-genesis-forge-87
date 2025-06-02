@@ -64,7 +64,7 @@ const Header = () => {
 
           <div className="flex flex-wrap justify-center gap-2 md:gap-3 max-w-3xl mx-auto px-4">
             <span className="px-3 md:px-4 py-2 bg-indigo-600/30 border border-indigo-400/50 text-indigo-300 font-semibold rounded-full text-xs md:text-sm backdrop-blur-sm">
-              ⚡ World's Fastest Chain
+              ⚡ 12 second block times
             </span>
             <span className="px-3 md:px-4 py-2 bg-amber-600/30 border border-amber-400/50 text-amber-300 font-semibold rounded-full text-xs md:text-sm backdrop-blur-sm">
               💰 Lowest Gas Fees
