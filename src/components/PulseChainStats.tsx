@@ -61,14 +61,12 @@ const PulseChainStats = () => {
         const blockNumber = parseInt(blockData.result, 16);
         const gasPriceWei = parseInt(gasPriceData.result, 16);
         
-        // Convert wei to beats properly
-        // On PulseChain, 1 PLS = 10^18 beats (same as wei)
-        // The RPC returns gas price in wei, so we need to convert to a readable format
-        // Based on typical PulseChain gas prices, we'll convert to show in millions of beats
-        const gasPriceBeats = gasPriceWei / 1e12; // Convert to millions of beats for display
+        // Convert wei to nPLS (nano PLS) - this is the standard way to display gas prices
+        // 1 PLS = 10^18 wei, so 1 nPLS = 10^9 wei
+        const gasPriceNanoPLS = gasPriceWei / 1e9;
         
         console.log('Raw gas price wei:', gasPriceWei);
-        console.log('Converted gas price beats (millions):', gasPriceBeats);
+        console.log('Converted gas price nPLS:', gasPriceNanoPLS);
         
         // For TVL and active users, we'll use realistic estimates based on known PulseChain data
         // TVL: Based on PulseX and major DeFi protocols on PulseChain
@@ -82,7 +80,7 @@ const PulseChainStats = () => {
         
         setStats({
           blockNumber: blockNumber,
-          gasPrice: gasPriceBeats,
+          gasPrice: gasPriceNanoPLS,
           totalValueLocked: estimatedTVL,
           activeUsers: estimatedActiveUsers
         });
@@ -90,7 +88,7 @@ const PulseChainStats = () => {
         setError(null);
         console.log('Successfully updated stats:', { 
           blockNumber, 
-          gasPrice: gasPriceBeats, 
+          gasPrice: gasPriceNanoPLS, 
           tvl: estimatedTVL,
           activeUsers: estimatedActiveUsers 
         });
@@ -106,8 +104,8 @@ const PulseChainStats = () => {
       setStats(prev => ({
         blockNumber: prev.blockNumber > 0 ? prev.blockNumber + 1 : 23632640, // Close to reference image
         gasPrice: prev.gasPrice > 0 ? 
-          prev.gasPrice + (Math.random() - 0.5) * 0.5 : 
-          4.47, // Start with reference value in millions
+          prev.gasPrice + (Math.random() - 0.5) * 100 : 
+          3500, // Reasonable nPLS value
         totalValueLocked: prev.totalValueLocked > 0 ? 
           prev.totalValueLocked + (Math.random() - 0.5) * 0.05 : 
           1.85,
@@ -139,9 +137,9 @@ const PulseChainStats = () => {
     return num.toFixed(decimals);
   };
 
-  const formatBeats = (beats: number) => {
-    // Format to show like the reference image: 4.47M beats
-    return beats.toFixed(2) + 'M';
+  const formatGasPrice = (nanoPLS: number) => {
+    // Format the gas price in nPLS with proper commas
+    return nanoPLS.toLocaleString(undefined, { maximumFractionDigits: 0 });
   };
 
   return (
@@ -156,7 +154,7 @@ const PulseChainStats = () => {
             {error && <span className="text-amber-400"> (Using fallback data)</span>}
           </p>
           <p className="text-xs text-gray-500 mt-2 max-w-xl mx-auto">
-            💡 <span className="text-amber-300">Beats</span> are the smallest unit of PLS (like Wei on Ethereum). 1 PLS = 10¹⁸ beats
+            💡 Gas prices shown in <span className="text-amber-300">nPLS</span> (nano PLS) - the standard unit for PulseChain gas pricing
           </p>
         </div>
 
@@ -171,7 +169,7 @@ const PulseChainStats = () => {
                 {stats.blockNumber > 0 ? stats.blockNumber.toLocaleString() : 'Loading...'}
               </div>
               <p className="text-xs text-gray-400 mt-1">
-                ⏱️ ~11 second blocks
+                ⏱️ ~12 second blocks
               </p>
             </CardContent>
           </Card>
@@ -183,7 +181,7 @@ const PulseChainStats = () => {
             </CardHeader>
             <CardContent>
               <div className="text-lg md:text-2xl font-bold text-white">
-                {stats.gasPrice > 0 ? `${formatBeats(stats.gasPrice)} beats` : 'Loading...'}
+                {stats.gasPrice > 0 ? `${formatGasPrice(stats.gasPrice)} nPLS` : 'Loading...'}
               </div>
               <p className="text-xs text-gray-400 mt-1">
                 💰 Ultra-low fees
