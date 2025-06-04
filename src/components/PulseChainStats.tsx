@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, Zap, DollarSign, Users } from 'lucide-react';
@@ -61,14 +62,10 @@ const PulseChainStats = () => {
         const blockNumber = parseInt(blockData.result, 16);
         const gasPriceWei = parseInt(gasPriceData.result, 16);
         
-        // The eth_gasPrice method returns the current average/standard gas price
-        // Convert wei to beats (1 PLS = 10^18 beats = 10^18 wei)
-        // For display purposes, show in millions of beats to match reference image format
-        const gasPriceBeats = gasPriceWei / 1e12; // Convert to millions of beats
-        
-        console.log('Raw gas price wei (average):', gasPriceWei);
-        console.log('Converted gas price (millions of beats):', gasPriceBeats);
-        console.log('Note: Using eth_gasPrice which returns network average gas price');
+        // Display the exact gas price as returned by RPC (in wei)
+        // No conversion - just show what PulseChain RPC returns
+        console.log('Gas price from RPC (wei):', gasPriceWei);
+        console.log('Displaying exact RPC value without conversion');
         
         // For TVL and active users, we'll use realistic estimates based on known PulseChain data
         // TVL: Based on PulseX and major DeFi protocols on PulseChain
@@ -82,15 +79,15 @@ const PulseChainStats = () => {
         
         setStats({
           blockNumber: blockNumber,
-          gasPrice: gasPriceBeats,
+          gasPrice: gasPriceWei,
           totalValueLocked: estimatedTVL,
           activeUsers: estimatedActiveUsers
         });
         
         setError(null);
-        console.log('Successfully updated stats (using average gas price):', { 
+        console.log('Successfully updated stats (exact RPC values):', { 
           blockNumber, 
-          gasPrice: gasPriceBeats, 
+          gasPrice: gasPriceWei, 
           tvl: estimatedTVL,
           activeUsers: estimatedActiveUsers 
         });
@@ -106,8 +103,8 @@ const PulseChainStats = () => {
       setStats(prev => ({
         blockNumber: prev.blockNumber > 0 ? prev.blockNumber + 1 : 23632640, // Close to reference image
         gasPrice: prev.gasPrice > 0 ? 
-          prev.gasPrice + (Math.random() - 0.5) * 0.1 : 
-          4.47, // Reference value in millions of beats (average)
+          prev.gasPrice + Math.floor((Math.random() - 0.5) * 1000000000000) : 
+          3000000000000, // Fallback wei value
         totalValueLocked: prev.totalValueLocked > 0 ? 
           prev.totalValueLocked + (Math.random() - 0.5) * 0.05 : 
           1.85,
@@ -139,9 +136,9 @@ const PulseChainStats = () => {
     return num.toFixed(decimals);
   };
 
-  const formatBeats = (beatsInMillions: number) => {
-    // Format to show like the reference image: 4.47M beats
-    return beatsInMillions.toFixed(2) + 'M';
+  const formatGasPrice = (weiValue: number) => {
+    // Display the exact wei value with commas for readability
+    return weiValue.toLocaleString();
   };
 
   return (
@@ -156,7 +153,7 @@ const PulseChainStats = () => {
             {error && <span className="text-amber-400"> (Using fallback data)</span>}
           </p>
           <p className="text-xs text-gray-500 mt-2 max-w-xl mx-auto">
-            💡 Gas prices shown are <span className="text-amber-300">average network rates</span> in beats (the smallest unit of PLS). 1 PLS = 10¹⁸ beats
+            💡 Gas price shown exactly as returned by PulseChain RPC in <span className="text-amber-300">wei</span>
           </p>
         </div>
 
@@ -178,15 +175,15 @@ const PulseChainStats = () => {
 
           <Card className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-400/30 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium text-gray-300">Gas Price (Avg)</CardTitle>
+              <CardTitle className="text-xs md:text-sm font-medium text-gray-300">Gas Price</CardTitle>
               <Zap className={`h-4 w-4 text-amber-400 ${isLoading ? 'animate-pulse' : ''}`} />
             </CardHeader>
             <CardContent>
               <div className="text-lg md:text-2xl font-bold text-white">
-                {stats.gasPrice > 0 ? `${formatBeats(stats.gasPrice)} beats` : 'Loading...'}
+                {stats.gasPrice > 0 ? `${formatGasPrice(stats.gasPrice)} wei` : 'Loading...'}
               </div>
               <p className="text-xs text-gray-400 mt-1">
-                💰 Average network rate
+                💰 Exact RPC value
               </p>
             </CardContent>
           </Card>
