@@ -62,10 +62,12 @@ const PulseChainStats = () => {
         const blockNumber = parseInt(blockData.result, 16);
         const gasPriceWei = parseInt(gasPriceData.result, 16);
         
-        // Display the exact gas price as returned by RPC (in wei)
-        // No conversion - just show what PulseChain RPC returns
+        // Convert wei to beats (1 wei = 1 million beats, so divide by 1,000,000)
+        const gasPriceBeats = gasPriceWei / 1000000;
+        
         console.log('Gas price from RPC (wei):', gasPriceWei);
-        console.log('Displaying exact RPC value without conversion');
+        console.log('Gas price converted to beats:', gasPriceBeats);
+        console.log('Conversion: 1 wei = 1 million beats');
         
         // For TVL and active users, we'll use realistic estimates based on known PulseChain data
         // TVL: Based on PulseX and major DeFi protocols on PulseChain
@@ -79,15 +81,15 @@ const PulseChainStats = () => {
         
         setStats({
           blockNumber: blockNumber,
-          gasPrice: gasPriceWei,
+          gasPrice: gasPriceBeats,
           totalValueLocked: estimatedTVL,
           activeUsers: estimatedActiveUsers
         });
         
         setError(null);
-        console.log('Successfully updated stats (exact RPC values):', { 
+        console.log('Successfully updated stats (converted to beats):', { 
           blockNumber, 
-          gasPrice: gasPriceWei, 
+          gasPrice: gasPriceBeats, 
           tvl: estimatedTVL,
           activeUsers: estimatedActiveUsers 
         });
@@ -103,8 +105,8 @@ const PulseChainStats = () => {
       setStats(prev => ({
         blockNumber: prev.blockNumber > 0 ? prev.blockNumber + 1 : 23632640, // Close to reference image
         gasPrice: prev.gasPrice > 0 ? 
-          prev.gasPrice + Math.floor((Math.random() - 0.5) * 1000000000000) : 
-          3000000000000, // Fallback wei value
+          prev.gasPrice + (Math.random() - 0.5) * 100000 : 
+          4963161, // Fallback beats value similar to reference
         totalValueLocked: prev.totalValueLocked > 0 ? 
           prev.totalValueLocked + (Math.random() - 0.5) * 0.05 : 
           1.85,
@@ -136,9 +138,12 @@ const PulseChainStats = () => {
     return num.toFixed(decimals);
   };
 
-  const formatGasPrice = (weiValue: number) => {
-    // Display the exact wei value with commas for readability
-    return weiValue.toLocaleString();
+  const formatBeats = (beats: number) => {
+    // Format exactly like the reference image: 4,963,161.08
+    return beats.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
   };
 
   return (
@@ -153,7 +158,7 @@ const PulseChainStats = () => {
             {error && <span className="text-amber-400"> (Using fallback data)</span>}
           </p>
           <p className="text-xs text-gray-500 mt-2 max-w-xl mx-auto">
-            💡 Gas price shown exactly as returned by PulseChain RPC in <span className="text-amber-300">wei</span>
+            💡 Gas price converted from wei to <span className="text-amber-300">beats</span> (1 wei = 1 million beats)
           </p>
         </div>
 
@@ -175,15 +180,15 @@ const PulseChainStats = () => {
 
           <Card className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-400/30 backdrop-blur-sm">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs md:text-sm font-medium text-gray-300">Gas Price</CardTitle>
+              <CardTitle className="text-xs md:text-sm font-medium text-gray-300">Gas Tracker</CardTitle>
               <Zap className={`h-4 w-4 text-amber-400 ${isLoading ? 'animate-pulse' : ''}`} />
             </CardHeader>
             <CardContent>
               <div className="text-lg md:text-2xl font-bold text-white">
-                {stats.gasPrice > 0 ? `${formatGasPrice(stats.gasPrice)} wei` : 'Loading...'}
+                {stats.gasPrice > 0 ? formatBeats(stats.gasPrice) : 'Loading...'}
               </div>
               <p className="text-xs text-gray-400 mt-1">
-                💰 Exact RPC value
+                💰 Beats
               </p>
             </CardContent>
           </Card>
