@@ -3,7 +3,6 @@ import { useState } from 'react';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
 import Navigation from '@/components/Navigation';
-import PulseChainStats from '@/components/PulseChainStats';
 import IdeaGenerator from '@/components/IdeaGenerator';
 import TokenomicsEngine from '@/components/TokenomicsEngine';
 import ContractCodeGenerator from '@/components/ContractCodeGenerator';
@@ -84,9 +83,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* Live PulseChain Stats */}
-      <PulseChainStats />
       
       {/* Main Content Sections with proper containment */}
       <div className="w-full">
