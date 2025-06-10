@@ -2,16 +2,16 @@
 import { useState, useEffect } from 'react';
 
 const BlockTimeDisplay = () => {
-  const [blockTime, setBlockTime] = useState<string>('Loading...');
-  const [lastBlockTime, setLastBlockTime] = useState<Date | null>(null);
+  const [averageBlockTime, setAverageBlockTime] = useState<string>('Loading...');
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchBlockData = async () => {
       try {
-        console.log('Fetching latest block data from PulseChain...');
+        console.log('Fetching recent blocks to calculate average block time...');
         
-        const response = await fetch('https://rpc.pulsechain.com', {
+        // Fetch the latest block first
+        const latestResponse = await fetch('https://rpc.pulsechain.com', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -24,78 +24,85 @@ const BlockTimeDisplay = () => {
           }),
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (!latestResponse.ok) {
+          throw new Error(`HTTP error! status: ${latestResponse.status}`);
         }
 
-        const data = await response.json();
-        console.log('Block data received:', data);
+        const latestData = await latestResponse.json();
+        console.log('Latest block data received:', latestData);
 
-        if (data.result && data.result.timestamp) {
-          const timestamp = parseInt(data.result.timestamp, 16) * 1000;
-          const blockDate = new Date(timestamp);
-          setLastBlockTime(blockDate);
-          setError(false);
-          
-          // Calculate time difference
-          const now = new Date();
-          const secondsAgo = Math.floor((now.getTime() - blockDate.getTime()) / 1000);
-          
-          console.log(`Block timestamp: ${blockDate.toISOString()}, ${secondsAgo}s ago`);
-          
-          if (secondsAgo < 60) {
-            setBlockTime(`${secondsAgo}s ago`);
-          } else if (secondsAgo < 3600) {
-            const minutesAgo = Math.floor(secondsAgo / 60);
-            setBlockTime(`${minutesAgo}m ago`);
-          } else {
-            const hoursAgo = Math.floor(secondsAgo / 3600);
-            setBlockTime(`${hoursAgo}h ago`);
-          }
-        } else {
-          throw new Error('Invalid response format');
+        if (!latestData.result || !latestData.result.number) {
+          throw new Error('Invalid latest block response');
         }
+
+        const latestBlockNumber = parseInt(latestData.result.number, 16);
+        const blocksToFetch = 10; // Get last 10 blocks for average
+        const blockPromises = [];
+
+        // Fetch the last 10 blocks
+        for (let i = 0; i < blocksToFetch; i++) {
+          const blockNumber = `0x${(latestBlockNumber - i).toString(16)}`;
+          blockPromises.push(
+            fetch('https://rpc.pulsechain.com', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'eth_getBlockByNumber',
+                params: [blockNumber, false],
+                id: i + 2,
+              }),
+            }).then(res => res.json())
+          );
+        }
+
+        const blockResponses = await Promise.all(blockPromises);
+        const validBlocks = blockResponses
+          .filter(response => response.result && response.result.timestamp)
+          .map(response => ({
+            number: parseInt(response.result.number, 16),
+            timestamp: parseInt(response.result.timestamp, 16)
+          }))
+          .sort((a, b) => a.number - b.number);
+
+        if (validBlocks.length < 2) {
+          throw new Error('Not enough valid blocks to calculate average');
+        }
+
+        // Calculate average block time
+        const timeDifferences = [];
+        for (let i = 1; i < validBlocks.length; i++) {
+          const timeDiff = validBlocks[i].timestamp - validBlocks[i - 1].timestamp;
+          timeDifferences.push(timeDiff);
+        }
+
+        const averageSeconds = timeDifferences.reduce((sum, diff) => sum + diff, 0) / timeDifferences.length;
+        
+        console.log(`Average block time calculated: ${averageSeconds.toFixed(1)}s`);
+        setAverageBlockTime(`${averageSeconds.toFixed(1)}s blocks`);
+        setError(false);
+
       } catch (error) {
         console.error('Block data fetch error:', error);
         setError(true);
-        setBlockTime('~12s blocks');
+        setAverageBlockTime('~12s blocks');
       }
     };
 
     // Initial fetch
     fetchBlockData();
     
-    // Update every 10 seconds for more accurate timing
-    const interval = setInterval(fetchBlockData, 10000);
+    // Update every 30 seconds since we're showing average, not real-time
+    const interval = setInterval(fetchBlockData, 30000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Update the display every second when we have real data
-  useEffect(() => {
-    if (!lastBlockTime || error) return;
-
-    const updateTimer = setInterval(() => {
-      const now = new Date();
-      const secondsAgo = Math.floor((now.getTime() - lastBlockTime.getTime()) / 1000);
-      
-      if (secondsAgo < 60) {
-        setBlockTime(`${secondsAgo}s ago`);
-      } else if (secondsAgo < 3600) {
-        const minutesAgo = Math.floor(secondsAgo / 60);
-        setBlockTime(`${minutesAgo}m ago`);
-      } else {
-        const hoursAgo = Math.floor(secondsAgo / 3600);
-        setBlockTime(`${hoursAgo}h ago`);
-      }
-    }, 1000);
-
-    return () => clearInterval(updateTimer);
-  }, [lastBlockTime, error]);
-
   return (
     <span className="px-3 md:px-4 py-2 bg-indigo-600/30 border border-indigo-400/50 text-indigo-300 font-semibold rounded-full text-xs md:text-sm backdrop-blur-sm">
-      ⚡ {blockTime}
+      ⚡ {averageBlockTime}
     </span>
   );
 };
