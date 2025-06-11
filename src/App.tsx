@@ -37,25 +37,7 @@ function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={
-              <div>
-                <ContractCodeGenerator 
-                  tokenomics={tokenomics}
-                  coinIdea={{
-                    name: "",
-                    ticker: "",
-                    theme: "",
-                    logoIdea: ""
-                  }}
-                />
-                <img
-                  src="/PulseNet-watermark.svg"
-                  alt="PulseNet Watermark"
-                  className="pulsenet-watermark"
-                  draggable="false"
-                />
-              </div>
-            } />
+            <Route path="/" element={<Index />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
