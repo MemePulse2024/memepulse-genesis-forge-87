@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import ParticleBackground from '@/components/ParticleBackground';
 import Header from '@/components/Header';
@@ -8,6 +7,7 @@ import ContractCodeGenerator from '@/components/ContractCodeGenerator';
 import SocialMediaLaunchpad from '@/components/SocialMediaLaunchpad';
 import LaunchChecklist from '@/components/LaunchChecklist';
 import TokenomicsEngine from '@/components/TokenomicsEngine';
+import BlockTimeDisplay from '@/components/BlockTimeDisplay';
 
 import ResourcesSection from '@/components/ResourcesSection';
 import Footer from '@/components/Footer';
@@ -65,9 +65,11 @@ const Index = () => {
               designed for maximum efficiency and minimal costs.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto px-4">
-              <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-400/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+              <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-400/30 rounded-xl p-4 md:p-6 backdrop-blur-sm flex flex-col items-center">
                 <div className="text-xl md:text-2xl mb-2">⚡</div>
-                <h3 className="font-bold text-white mb-2 text-sm md:text-base">12 Second Block Times</h3>
+                <h3 className="font-bold text-white mb-2 text-sm md:text-base flex items-center gap-2">
+                  <BlockTimeDisplay />
+                </h3>
                 <p className="text-gray-400 text-xs md:text-sm">Ultra-fast confirmation for instant deployment</p>
               </div>
               <div className="bg-gradient-to-br from-amber-600/20 to-orange-600/20 border border-amber-400/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">

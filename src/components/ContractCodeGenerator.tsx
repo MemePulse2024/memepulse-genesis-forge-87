@@ -207,7 +207,7 @@ const getFeatureDescription = (feature: string): string => {
     rewardToken: "Distribute rewards in different tokens to holders",
     maxTxPercent: "Maximum tokens per transaction (% of total supply)",
     maxWalletPercent: "Maximum tokens per wallet (% of total supply)",
-    tradingCooldown: "Cooldown period between trades in seconds",
+    tradingCooldown: "Cooldown period between trades (measured in seconds; PulseChain average block time is ~2 seconds)",
     liquidityLockTime: "Time to lock initial liquidity in days"
   };
   return descriptions[feature] || "";
