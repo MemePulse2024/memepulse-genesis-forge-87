@@ -913,35 +913,6 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
           {aiExplain && <span className="ml-4 text-pulse-purple animate-pulse">✨ {aiExplain}</span>}
           {aiTip && <span className="ml-4 text-green-400 animate-pulse">🎲 {aiTip}</span>}
         </div>
-        {/* Settings Card */}
-        <Card className="bg-black/40 border-2 border-purple-500/20 rounded-2xl shadow-xl">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5 text-blue-400" /> Token Settings
-            </CardTitle>
-            <Button size="sm" variant="outline" onClick={handleRandomize} className="border-pulse-orange/40 text-pulse-orange hover:bg-pulse-orange/10">🎲 Randomize</Button>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="tokenName">Token Name</Label>
-                <Input id="tokenName" value={settings.tokenName} onChange={e => handleSettingsChange('tokenName', e.target.value)} />
-              </div>
-              <div>
-                <Label htmlFor="tokenSymbol">Token Symbol</Label>
-                <Input id="tokenSymbol" value={settings.tokenSymbol} onChange={e => handleSettingsChange('tokenSymbol', e.target.value)} />
-              </div>
-              <div>
-                <Label htmlFor="totalSupply">Total Supply</Label>
-                <Input id="totalSupply" value={settings.totalSupply} onChange={e => handleSettingsChange('totalSupply', e.target.value)} />
-              </div>
-              <div>
-                <Label htmlFor="decimals">Decimals</Label>
-                <Input id="decimals" type="number" value={settings.decimals} onChange={e => handleSettingsChange('decimals', parseInt(e.target.value))} />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div> {/* end container */}
     </div>
   );
