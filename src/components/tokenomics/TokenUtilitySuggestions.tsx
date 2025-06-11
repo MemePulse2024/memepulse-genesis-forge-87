@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
-import { Lightbulb, Copy } from 'lucide-react';
+import { Lightbulb, Copy, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface UtilityOption {
@@ -17,6 +16,7 @@ interface UtilityOption {
 export const TokenUtilitySuggestions = () => {
   const { toast } = useToast();
   const [selectedUtilities, setSelectedUtilities] = useState<string[]>([]);
+  const [aiUtilityTip, setAiUtilityTip] = useState('');
 
   const utilityOptions: UtilityOption[] = [
     {
@@ -103,12 +103,32 @@ export const TokenUtilitySuggestions = () => {
     });
   };
 
+  const handleAISuggestUtilities = () => {
+    const tips = [
+      "NFT integration is all the rage—add it for instant hype!",
+      "Governance voting = community power!",
+      "Games & contests keep your holders engaged.",
+      "Launchpad access is a true degen flex.",
+      "Buyback & burn for spicy deflationary vibes.",
+      "Access passes make your token exclusive.",
+      "Merch discounts? Meme coin fashion incoming!",
+      "Mix easy and advanced utilities for max appeal.",
+      "The more creative, the more viral!",
+      "Remember: utility is the new meme!"
+    ];
+    setAiUtilityTip(tips[Math.floor(Math.random()*tips.length)]);
+  };
+
   return (
     <Card className="bg-card/80 backdrop-blur-md border-purple-500/20">
       <CardHeader>
         <CardTitle className="font-orbitron flex items-center gap-2">
           <Lightbulb className="h-5 w-5" />
           Token Utility Ideas
+          <Button size="sm" variant="outline" onClick={handleAISuggestUtilities} className="ml-2 border-pulse-orange/40 text-pulse-orange hover:bg-pulse-orange/10">
+            <Wand2 className="w-4 h-4 mr-1" />AI Suggest
+          </Button>
+          {aiUtilityTip && <span className="ml-4 text-pulse-orange animate-pulse">💡 {aiUtilityTip}</span>}
         </CardTitle>
       </CardHeader>
       <CardContent>

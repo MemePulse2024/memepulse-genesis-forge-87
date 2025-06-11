@@ -20,61 +20,154 @@ const IdeaGenerator = ({ coinIdea, setCoinIdea }: { coinIdea: CoinIdea, setCoinI
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
 
+  // Enhanced meme coin idea generator logic
   const themeVariations = {
-    animal: ['frog', 'dog', 'cat', 'hamster', 'monkey', 'shark', 'whale', 'dolphin', 'penguin', 'tiger'],
-    space: ['galaxy', 'mars', 'moon', 'stars', 'rocket', 'astronaut', 'alien', 'comet', 'nebula', 'planet'],
-    food: ['pizza', 'burger', 'taco', 'donut', 'cake', 'cookie', 'banana', 'apple', 'coffee', 'beer'],
-    object: ['diamond', 'crown', 'sword', 'shield', 'key', 'lamp', 'chair', 'phone', 'car', 'house'],
-    emotion: ['happy', 'angry', 'sleepy', 'excited', 'confused', 'surprised', 'cool', 'silly', 'brave', 'chill']
+    animal: ['frog', 'doge', 'cat', 'hamster', 'monkey', 'shark', 'whale', 'dolphin', 'penguin', 'tiger', 'lion', 'bear', 'owl', 'fox', 'wolf', 'goose', 'duck', 'sloth', 'koala', 'giraffe', 'alpaca', 'llama', 'crab', 'octopus', 'bee', 'unicorn', 'gorilla', 'ape', 'panda', 'sheep', 'goat', 'snail', 'turtle', 'parrot', 'raccoon', 'otter', 'hedgehog', 'kangaroo', 'bat', 'squirrel', 'rabbit', 'moose', 'deer', 'elephant', 'rhino', 'hippo', 'crocodile', 'lizard', 'snake', 'spider', 'ant', 'butterfly', 'dragonfly', 'starfish', 'jellyfish', 'shrimp', 'lobster', 'clam', 'snail', 'worm'],
+    space: ['galaxy', 'mars', 'moon', 'stars', 'rocket', 'astronaut', 'alien', 'comet', 'nebula', 'planet', 'satellite', 'asteroid', 'blackhole', 'supernova', 'cosmos', 'spaceship', 'ufo', 'meteor', 'eclipse', 'starlight', 'gravity', 'quasar', 'pulsar', 'wormhole'],
+    food: ['pizza', 'burger', 'taco', 'donut', 'cake', 'cookie', 'banana', 'apple', 'coffee', 'beer', 'sushi', 'ramen', 'burrito', 'fries', 'steak', 'cheese', 'bacon', 'waffle', 'pancake', 'cereal', 'avocado', 'grape', 'lemon', 'lime', 'orange', 'peach', 'pear', 'plum', 'berry', 'mango', 'kiwi', 'pineapple', 'coconut', 'cherry', 'carrot', 'broccoli', 'corn', 'egg', 'shrimp', 'lobster'],
+    object: ['diamond', 'crown', 'sword', 'shield', 'key', 'lamp', 'chair', 'phone', 'car', 'house', 'robot', 'computer', 'tv', 'camera', 'drone', 'watch', 'ring', 'coin', 'safe', 'vault', 'rocket', 'ship', 'boat', 'train', 'plane', 'bike', 'skateboard', 'scooter', 'ball', 'bat', 'glove', 'helmet', 'mask', 'cape', 'wand', 'book', 'scroll', 'map', 'flag', 'trophy', 'medal', 'star', 'cloud', 'rainbow', 'umbrella', 'hat', 'shoe', 'sock', 'glasses', 'bag', 'wallet', 'purse', 'belt', 'tie', 'scarf', 'jacket', 'coat', 'shirt', 'pants', 'shorts', 'dress', 'skirt', 'suit', 'armor', 'shield', 'gauntlet', 'boot', 'slipper', 'sandals'],
+    emotion: ['happy', 'angry', 'sleepy', 'excited', 'confused', 'surprised', 'cool', 'silly', 'brave', 'chill', 'greedy', 'fearless', 'lucky', 'zen', 'wild', 'crazy', 'funny', 'serious', 'mysterious', 'hype', 'degen', 'legend', 'epic', 'hero', 'villain', 'dreamy', 'moody', 'spooky', 'sassy', 'bossy', 'witty', 'quirky', 'loyal', 'bold', 'shy', 'proud', 'humble', 'grumpy', 'cheerful', 'optimistic', 'pessimistic', 'hopeful', 'determined', 'ambitious', 'lazy', 'energetic', 'focused', 'relaxed', 'stressed', 'calm', 'nervous', 'confident', 'inspired', 'creative', 'innovative', 'classic', 'retro', 'futuristic']
   };
 
-  const prefixes = ['Pulse', 'Chain', 'Mega', 'Super', 'Ultra', 'Crypto', 'Degen', 'Moon', 'Rocket', 'Turbo'];
-  const suffixes = ['Coin', 'Token', 'Pulse', 'Chain', 'X', 'Finance', 'Swap', 'Protocol', 'DAO', 'Network'];
+  const prefixes = ['Pulse', 'Chain', 'Mega', 'Super', 'Ultra', 'Crypto', 'Degen', 'Moon', 'Rocket', 'Turbo', 'Space', 'Meta', 'Meme', 'Pepe', 'Shiba', 'Astro', 'Cosmo', 'Fomo', 'Hype', 'Wen', 'Pump', 'Dump', 'Laser', 'Diamond', 'Golden', 'Lucky', 'Magic', 'Pixel', 'Quantum', 'Neon', 'Cyber', 'Viral', 'Funky', 'Sonic', 'Hyper', 'Flash', 'Stellar', 'Nova', 'Ape', 'Dog', 'Cat', 'Frog', 'Duck', 'Hamster', 'Whale', 'Bull', 'Bear', 'Tiger', 'Lion', 'Wolf', 'Fox', 'Owl', 'Bat', 'Dragon', 'Phoenix', 'Unicorn', 'Gorilla', 'Panda', 'Sloth', 'Koala', 'Llama', 'Alpaca', 'Crab', 'Octopus', 'Bee', 'Butterfly', 'Star', 'Cloud', 'Rainbow', 'Rocket', 'Ship', 'Boat', 'Train', 'Plane', 'Bike', 'Skate', 'Scooter', 'Ball', 'Bat', 'Glove', 'Helmet', 'Mask', 'Cape', 'Wand', 'Book', 'Scroll', 'Map', 'Flag', 'Trophy', 'Medal', 'Star', 'Cloud', 'Rainbow', 'Umbrella', 'Hat', 'Shoe', 'Sock', 'Glasses', 'Bag', 'Wallet', 'Purse', 'Belt', 'Tie', 'Scarf', 'Jacket', 'Coat', 'Shirt', 'Pants', 'Shorts', 'Dress', 'Skirt', 'Suit', 'Armor', 'Shield', 'Gauntlet', 'Boot', 'Slipper', 'Sandals'];
+  const suffixes = ['Coin', 'Token', 'Pulse', 'Chain', 'X', 'Finance', 'Swap', 'Protocol', 'DAO', 'Network', 'Labs', 'Club', 'Army', 'Squad', 'Gang', 'Crew', 'Verse', 'World', 'Land', 'City', 'Ville', 'Town', 'Zone', 'Planet', 'Moon', 'Mars', 'Rocket', 'Star', 'Galaxy', 'Nebula', 'Astro', 'Cosmo', 'Fomo', 'Hype', 'Degen', 'Legend', 'Epic', 'Hero', 'Dream', 'Moon', 'Pump', 'Dump', 'Wen', 'Wagmi', 'Lambo', 'Stonks', 'Stonk', 'Staker', 'Farmer', 'Miner', 'Builder', 'Trader', 'Whale', 'Shark', 'Bull', 'Bear', 'Tiger', 'Lion', 'Wolf', 'Fox', 'Owl', 'Bat', 'Dragon', 'Phoenix', 'Unicorn', 'Gorilla', 'Panda', 'Sloth', 'Koala', 'Llama', 'Alpaca', 'Crab', 'Octopus', 'Bee', 'Butterfly', 'Star', 'Cloud', 'Rainbow', 'Rocket', 'Ship', 'Boat', 'Train', 'Plane', 'Bike', 'Skate', 'Scooter', 'Ball', 'Bat', 'Glove', 'Helmet', 'Mask', 'Cape', 'Wand', 'Book', 'Scroll', 'Map', 'Flag', 'Trophy', 'Medal', 'Star', 'Cloud', 'Rainbow', 'Umbrella', 'Hat', 'Shoe', 'Sock', 'Glasses', 'Bag', 'Wallet', 'Purse', 'Belt', 'Tie', 'Scarf', 'Jacket', 'Coat', 'Shirt', 'Pants', 'Shorts', 'Dress', 'Skirt', 'Suit', 'Armor', 'Shield', 'Gauntlet', 'Boot', 'Slipper', 'Sandals'];
+
+  function getThemeCategory(input: string) {
+    const lower = input.toLowerCase();
+    for (const [cat, arr] of Object.entries(themeVariations)) {
+      if (arr.some(word => lower.includes(word))) return cat;
+    }
+    // Fallback: guess by keyword
+    if (/dog|shiba|inu|doge|puppy/.test(lower)) return 'animal';
+    if (/moon|star|galaxy|astro|space|planet|rocket|alien/.test(lower)) return 'space';
+    if (/pizza|burger|taco|food|snack|cake|cookie|banana|apple|beer|sushi|ramen/.test(lower)) return 'food';
+    if (/diamond|crown|sword|shield|object|item|thing|robot|car|phone|computer/.test(lower)) return 'object';
+    if (/happy|angry|sleepy|excited|emotion|mood|vibe|hype|degen|legend/.test(lower)) return 'emotion';
+    return null;
+  }
+
+  function capitalize(word: string) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  function randomFrom(arr: string[]) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
 
   const generateIdea = (inputTheme?: string) => {
     setIsGenerating(true);
-    
     setTimeout(() => {
       let selectedTheme = inputTheme || theme;
-      
-      // If no theme provided, pick random
-      if (!selectedTheme) {
-        const categories = Object.values(themeVariations).flat();
-        selectedTheme = categories[Math.floor(Math.random() * categories.length)];
+      let category = getThemeCategory(selectedTheme);
+      let baseWord = selectedTheme;
+      if (!category) {
+        // Try to match to a category or pick random
+        const cats = Object.keys(themeVariations);
+        category = randomFrom(cats);
+        baseWord = randomFrom(themeVariations[category]);
+      } else {
+        // If user input matches a word in the category, use it, else pick random from that category
+        const arr = themeVariations[category];
+        baseWord = arr.find(word => selectedTheme.toLowerCase().includes(word)) || randomFrom(arr);
       }
-      
-      const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-      const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-      
-      const capitalizedTheme = selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1);
-      const coinName = Math.random() > 0.5 ? `${prefix}${capitalizedTheme}` : `${capitalizedTheme}${suffix}`;
-      const ticker = `$${coinName.toUpperCase().substring(0, 6)}`;
-      
+      // Build name
+      const prefix = randomFrom(prefixes);
+      const suffix = randomFrom(suffixes);
+      const capitalizedTheme = capitalize(baseWord);
+      // More randomization: sometimes double prefix, sometimes double suffix, sometimes both
+      let coinName = '';
+      const roll = Math.random();
+      if (roll < 0.2) {
+        coinName = `${prefix}${capitalizedTheme}${suffix}`;
+      } else if (roll < 0.4) {
+        coinName = `${prefix}${capitalize(randomFrom(prefixes))}${capitalizedTheme}`;
+      } else if (roll < 0.6) {
+        coinName = `${capitalizedTheme}${capitalize(randomFrom(suffixes))}${suffix}`;
+      } else if (roll < 0.8) {
+        coinName = `${prefix}${capitalizedTheme}`;
+      } else {
+        coinName = `${capitalizedTheme}${suffix}`;
+      }
+      // Ticker: 3-5 uppercase letters from name, sometimes with a number
+      let ticker = coinName.replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, Math.floor(3 + Math.random()*3));
+      if (Math.random() > 0.7) ticker += Math.floor(Math.random()*100);
+      ticker = `$${ticker}`;
+      // Logo idea
       const logoIdeas = [
-        `A cartoon ${selectedTheme} wearing a PulseChain crown`,
-        `A futuristic ${selectedTheme} with laser eyes and purple aura`,
-        `A ${selectedTheme} surfing on blockchain waves`,
-        `A minimalist ${selectedTheme} icon with pulse heartbeat lines`,
-        `A ${selectedTheme} astronaut floating in purple space`,
-        `A geometric ${selectedTheme} with gradient purple-to-orange colors`
+        `A cartoon ${baseWord} with a ${randomFrom(['PulseChain', 'crypto', 'meme', 'futuristic', 'retro', 'pixel', 'neon', 'cyber', 'rainbow', 'golden', 'diamond', 'laser', 'space', 'galaxy', 'blockchain'])} theme`,
+        `A ${baseWord} riding a rocket to the moon`,
+        `A ${baseWord} with laser eyes and a crown`,
+        `A ${baseWord} surfing on blockchain waves`,
+        `A ${baseWord} astronaut floating in space`,
+        `A geometric ${baseWord} with gradient purple-to-orange colors`,
+        `A ${baseWord} with meme sunglasses and a gold chain`,
+        `A ${baseWord} in a retro 80s synthwave style`,
+        `A ${baseWord} with a holographic effect`,
+        `A ${baseWord} made of pixel art`,
+        `A ${baseWord} with a rainbow aura`,
+        `A ${baseWord} holding a bag of coins`,
+        `A ${baseWord} with a rocket backpack`,
+        `A ${baseWord} in a superhero costume`,
+        `A ${baseWord} with a DAO flag`,
+        `A ${baseWord} with a burning fuse`,
+        `A ${baseWord} with a diamond background`,
+        `A ${baseWord} with a stonks arrow`,
+        `A ${baseWord} with a meme face overlay`,
+        `A ${baseWord} with a party hat and confetti`,
+        `A ${baseWord} with a blockchain QR code`,
+        `A ${baseWord} with a futuristic visor`,
+        `A ${baseWord} with a moon in the background`,
+        `A ${baseWord} with a pile of gold coins`,
+        `A ${baseWord} with a meme frog friend`,
+        `A ${baseWord} with a Pepe face`,
+        `A ${baseWord} with a Shiba Inu friend`,
+        `A ${baseWord} with a pixel crown`,
+        `A ${baseWord} with a hologram effect`,
+        `A ${baseWord} with a rainbow trail`,
+        `A ${baseWord} with a blockchain circuit pattern`,
+        `A ${baseWord} with a meme rocket`,
+        `A ${baseWord} with a laser sword`,
+        `A ${baseWord} with a meme coin logo`,
+        `A ${baseWord} with a DAO logo`,
+        `A ${baseWord} with a meme face and sunglasses`,
+        `A ${baseWord} with a meme face and a gold chain`,
+        `A ${baseWord} with a meme face and a crown`,
+        `A ${baseWord} with a meme face and a rocket`,
+        `A ${baseWord} with a meme face and a moon`,
+        `A ${baseWord} with a meme face and a diamond`,
+        `A ${baseWord} with a meme face and a stonks arrow`,
+        `A ${baseWord} with a meme face and a party hat`,
+        `A ${baseWord} with a meme face and a blockchain QR code`,
+        `A ${baseWord} with a meme face and a futuristic visor`,
+        `A ${baseWord} with a meme face and a moon in the background`,
+        `A ${baseWord} with a meme face and a pile of gold coins`,
+        `A ${baseWord} with a meme face and a meme frog friend`,
+        `A ${baseWord} with a meme face and a Pepe face`,
+        `A ${baseWord} with a meme face and a Shiba Inu friend`,
+        `A ${baseWord} with a meme face and a pixel crown`,
+        `A ${baseWord} with a meme face and a hologram effect`,
+        `A ${baseWord} with a meme face and a rainbow trail`,
+        `A ${baseWord} with a meme face and a blockchain circuit pattern`,
+        `A ${baseWord} with a meme face and a meme rocket`,
+        `A ${baseWord} with a meme face and a laser sword`,
+        `A ${baseWord} with a meme face and a meme coin logo`,
+        `A ${baseWord} with a meme face and a DAO logo`,
       ];
-      
-      const newIdea: CoinIdea = {
+      const logoIdea = randomFrom(logoIdeas);
+      // Theme summary
+      const themeSummary = `A ${baseWord}-themed meme coin with ${randomFrom(['community vibes', 'degen energy', 'moon potential', 'viral meme power', 'PulseChain speed', 'diamond hands', 'fun and utility', 'unstoppable hype', 'legendary status', 'epic memes', 'crypto culture', 'web3 innovation', 'meme magic', 'pumpamentals', 'hodl spirit', 'fomo energy', 'meme synergy', 'blockchain tech', 'deflationary mechanics', 'airdrops', 'staking', 'DAO governance', 'NFT integration', 'liquidity farming', 'token burns', 'reflection rewards', 'community voting', 'airdrops', 'staking', 'NFTs', 'airdrops', 'airdrops'])}.`;
+      const newIdea = {
         name: coinName,
         ticker: ticker,
-        theme: `A ${selectedTheme}-themed meme coin bringing fun and community to PulseChain.`,
-        logoIdea: logoIdeas[Math.floor(Math.random() * logoIdeas.length)]
+        theme: themeSummary,
+        logoIdea: logoIdea
       };
-      
       setGeneratedIdea(newIdea);
       setIsGenerating(false);
       setShowConfetti(true);
       setCoinIdea(newIdea); // sync with parent
-      // Save to localStorage
       localStorage.setItem('lastGeneratedIdea', JSON.stringify(newIdea));
-      
       setTimeout(() => setShowConfetti(false), 3000);
-      
       toast({
         title: "Meme Coin Idea Generated! 🎉",
         description: `Generated ${newIdea.name} (${newIdea.ticker})`,

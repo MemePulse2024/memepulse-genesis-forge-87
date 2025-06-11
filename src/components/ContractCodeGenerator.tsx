@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Settings, Code, Shield, Copy, Download, Zap, DollarSign, Users, Lock, AlertTriangle, TrendingUp, Wallet, Bot, Timer, Flame, RefreshCw, Eye, Target, Sliders, ChevronRight, Star, Sparkles } from 'lucide-react';
+import { Settings, Code, Shield, Copy, Download, Zap, DollarSign, Users, Lock, AlertTriangle, TrendingUp, Wallet, Bot, Timer, Flame, RefreshCw, Eye, Target, Sliders, ChevronRight, Star, Sparkles, Wand2, Lightbulb } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
 import ParticleBackground from "./ParticleBackground";
@@ -438,6 +438,11 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
     burn: 10
   });
 
+  // AI state
+  const [aiSuggestion, setAiSuggestion] = useState('');
+  const [aiExplain, setAiExplain] = useState('');
+  const [aiTip, setAiTip] = useState('');
+
   // Sync taxSettings state with settings.taxSettings (which is set by Basic Configuration)
   useEffect(() => {
     setTaxSettings({
@@ -521,6 +526,95 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
       burn: 5+Math.floor(Math.random()*20)
     });
     setQuote(memeQuotes[Math.floor(Math.random()*memeQuotes.length)]);
+  };
+
+  // AI-powered features
+  const handleAISuggest = () => {
+    const tips = [
+      "Try enabling anti-whale and anti-bot for max security!",
+      "A spicy 0% buy tax attracts degens, but 5-10% is safer for project growth.",
+      "Reflection rewards = happy holders!",
+      "Burnable + deflationary = moon math.",
+      "Snapshot + voting = instant DAO vibes.",
+      "Auto liquidity helps stabilize price and memes.",
+      "Mix advanced features for a legendary meme coin.",
+      "Don't forget to set your marketing wallet!",
+      "Launch protection is great for fair launches.",
+      "The more fun, the more viral!"
+    ];
+    setAiSuggestion(tips[Math.floor(Math.random()*tips.length)]);
+  };
+
+  const handleAIExplain = () => {
+    setAiExplain(
+      `Your contract is set up as a ${Object.entries(settings.securityFeatures).filter(([k,v])=>v).map(([k])=>k).join(', ') || 'basic'} token with a total supply of ${settings.totalSupply}. Taxes are split for liquidity, marketing, dev, and burn. Security features like ${Object.entries(settings.securityFeatures).filter(([k,v])=>v).map(([k])=>k).join(', ') || 'none'} are enabled. This setup is ${settings.taxSettings.buyTax + settings.taxSettings.sellTax > 15 ? 'degen and spicy' : 'balanced and friendly'}! 🚀`
+    );
+  };
+
+  const handleAIRandomize = () => {
+    // AI-powered randomization for fun, balanced contract settings
+    const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+    setSettings(prev => ({
+      ...prev,
+      tokenName: `Meme${random(100,999)}`,
+      tokenSymbol: `MEME${random(10,99)}`,
+      totalSupply: String(10**(6 + Math.floor(Math.random()*4))),
+      decimals: 18,
+      securityFeatures: {
+        antiWhale: Math.random() > 0.2,
+        blacklist: Math.random() > 0.5,
+        pausable: Math.random() > 0.3,
+        reflection: Math.random() > 0.7,
+        burnable: Math.random() > 0.1,
+        mintable: Math.random() > 0.8,
+        snapshot: Math.random() > 0.7,
+        voting: Math.random() > 0.8,
+        deflationary: Math.random() > 0.6,
+        rewardToken: Math.random() > 0.85
+      },
+      taxSettings: {
+        buyTax: random(0, 10),
+        sellTax: random(0, 10),
+        transferTax: random(0, 5),
+        maxTax: 25,
+        liquidityShare: random(10, 60),
+        marketingShare: random(10, 60),
+        devShare: random(5, 20),
+        burnShare: random(0, 20),
+        reflectionShare: random(0, 10),
+        charityShare: random(0, 10)
+      },
+      walletSettings: {
+        marketingWallet: '',
+        devWallet: '',
+        autoLiquidityWallet: '',
+        charityWallet: '',
+        treasuryWallet: ''
+      },
+      limitSettings: {
+        maxTxPercent: random(10, 100),
+        maxWalletPercent: random(10, 100),
+        maxSellPercent: random(10, 100),
+        tradingCooldown: random(0, 60),
+        launchProtection: Math.random() > 0.5,
+        antiSnipe: Math.random() > 0.7,
+        antiBotEnabled: Math.random() > 0.7
+      },
+      routerAddress: '',
+      autoLiquidity: Math.random() > 0.5,
+      liquidityLockDays: random(0, 90)
+    }));
+    setTaxSettings({
+      buy: random(0, 10),
+      sell: random(0, 10),
+      transfer: random(0, 5),
+      liquidity: random(10, 60),
+      marketing: random(10, 60),
+      dev: random(5, 20),
+      burn: random(0, 20)
+    });
+    setQuote(memeQuotes[Math.floor(Math.random()*memeQuotes.length)]);
+    setAiTip('AI randomized your contract for max meme potential!');
   };
 
   // Confetti on contract generation
@@ -810,6 +904,44 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
             </Card>
           </div>
         </div>
+        {/* AI Suggestions, Explain, Randomize Buttons */}
+        <div className="flex flex-wrap gap-4 mb-4">
+          <Button size="sm" variant="outline" onClick={handleAISuggest} className="border-pulse-orange/40 text-pulse-orange hover:bg-pulse-orange/10"><Lightbulb className="w-4 h-4 mr-1" />AI Suggest</Button>
+          <Button size="sm" variant="outline" onClick={handleAIExplain} className="border-pulse-purple/40 text-pulse-purple hover:bg-pulse-purple/10"><Wand2 className="w-4 h-4 mr-1" />AI Explain</Button>
+          <Button size="sm" variant="outline" onClick={handleAIRandomize} className="border-green-400/40 text-green-400 hover:bg-green-900/10"><Sparkles className="w-4 h-4 mr-1" />AI Randomize</Button>
+          {aiSuggestion && <span className="ml-4 text-pulse-orange animate-pulse">💡 {aiSuggestion}</span>}
+          {aiExplain && <span className="ml-4 text-pulse-purple animate-pulse">✨ {aiExplain}</span>}
+          {aiTip && <span className="ml-4 text-green-400 animate-pulse">🎲 {aiTip}</span>}
+        </div>
+        {/* Settings Card */}
+        <Card className="bg-black/40 border-2 border-purple-500/20 rounded-2xl shadow-xl">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="flex items-center gap-2">
+              <Settings className="w-5 h-5 text-blue-400" /> Token Settings
+            </CardTitle>
+            <Button size="sm" variant="outline" onClick={handleRandomize} className="border-pulse-orange/40 text-pulse-orange hover:bg-pulse-orange/10">🎲 Randomize</Button>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="tokenName">Token Name</Label>
+                <Input id="tokenName" value={settings.tokenName} onChange={e => handleSettingsChange('tokenName', e.target.value)} />
+              </div>
+              <div>
+                <Label htmlFor="tokenSymbol">Token Symbol</Label>
+                <Input id="tokenSymbol" value={settings.tokenSymbol} onChange={e => handleSettingsChange('tokenSymbol', e.target.value)} />
+              </div>
+              <div>
+                <Label htmlFor="totalSupply">Total Supply</Label>
+                <Input id="totalSupply" value={settings.totalSupply} onChange={e => handleSettingsChange('totalSupply', e.target.value)} />
+              </div>
+              <div>
+                <Label htmlFor="decimals">Decimals</Label>
+                <Input id="decimals" type="number" value={settings.decimals} onChange={e => handleSettingsChange('decimals', parseInt(e.target.value))} />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

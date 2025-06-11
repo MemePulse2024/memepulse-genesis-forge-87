@@ -11,6 +11,8 @@ import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Wand2, Lightbulb, Sparkles } from 'lucide-react';
 
 interface TokenomicsEngineProps {
   tokenomics: TokenomicsData;
@@ -20,6 +22,9 @@ interface TokenomicsEngineProps {
 const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) => {
   const [activeTab, setActiveTab] = useState('basic');
   const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [aiSuggestion, setAiSuggestion] = useState<string>('');
+  const [aiExplain, setAiExplain] = useState<string>('');
+  const [aiTip, setAiTip] = useState<string>('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -82,6 +87,55 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
     { name: 'Burn', value: parseFloat(tokenomics.supplyAllocation.burn || '0'), color: '#ff3333' },
   ];
 
+  // AI-powered suggestion logic
+  const handleAISuggest = () => {
+    // Fun, context-aware suggestions for allocations
+    const tips = [
+      "Try a 4/4/4/4/4/4/4/4/4/4 split for ultimate fairness!",
+      "Consider a higher marketing allocation for viral potential.",
+      "Airdrop more to the community for instant hype!",
+      "Burn tokens for that spicy deflationary meme magic.",
+      "Balance taxes for both moon and utility!",
+      "Add more to liquidity for smoother trading.",
+      "Dev team needs snacks too—don't forget a small dev allocation!",
+      "Try a wild 0% buy tax for instant degen appeal!",
+      "Mix it up: high burn, low marketing, or vice versa!",
+      "Remember: meme coins are about fun, not just numbers!"
+    ];
+    setAiSuggestion(tips[Math.floor(Math.random()*tips.length)]);
+  };
+
+  const handleAIExplain = () => {
+    // Playful explanation of current tokenomics
+    setAiExplain(
+      `Your meme coin has a total supply of ${tokenomics.totalSupply} tokens, with a buy tax of ${tokenomics.buyTax}% and sell tax of ${tokenomics.sellTax}%. Taxes are split for liquidity, marketing, and burn. The supply is distributed across PulseX, airdrop, dev, marketing, and burn. This setup is ${parseFloat(tokenomics.buyTax) + parseFloat(tokenomics.sellTax) > 10 ? 'degen and spicy' : 'balanced and friendly'}! 🚀`
+    );
+  };
+
+  const handleAIRandomize = () => {
+    // AI-powered randomization for fun, balanced tokenomics
+    const random = (min: number, max: number) => (Math.floor(Math.random() * (max - min + 1)) + min).toString();
+    setTokenomics({
+      ...tokenomics,
+      totalSupply: (10 ** (6 + Math.floor(Math.random() * 4))).toString(),
+      buyTax: random(0, 10),
+      sellTax: random(0, 10),
+      taxAllocation: {
+        liquidity: random(10, 60),
+        marketing: random(10, 60),
+        burn: random(0, 30)
+      },
+      supplyAllocation: {
+        pulsex: random(10, 60),
+        airdrop: random(5, 40),
+        dev: random(1, 20),
+        marketing: random(5, 30),
+        burn: random(0, 20)
+      }
+    });
+    setAiTip('AI randomized your tokenomics for max meme potential!');
+  };
+
   return (
     <section id="tokenomics" className="relative py-16 md:py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-[60vh] backdrop-blur-3xl">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -130,6 +184,14 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
               </TabsTrigger>
             </TabsList>
             <TabsContent value="basic" className="space-y-6">
+              <div className="flex flex-wrap gap-4 mb-4">
+                <Button size="sm" variant="outline" onClick={handleAISuggest} className="border-pulse-orange/40 text-pulse-orange hover:bg-pulse-orange/10"><Lightbulb className="w-4 h-4 mr-1" />AI Suggest</Button>
+                <Button size="sm" variant="outline" onClick={handleAIExplain} className="border-pulse-purple/40 text-pulse-purple hover:bg-pulse-purple/10"><Wand2 className="w-4 h-4 mr-1" />AI Explain</Button>
+                <Button size="sm" variant="outline" onClick={handleAIRandomize} className="border-green-400/40 text-green-400 hover:bg-green-900/10"><Sparkles className="w-4 h-4 mr-1" />AI Randomize</Button>
+                {aiSuggestion && <span className="ml-4 text-pulse-orange animate-pulse">💡 {aiSuggestion}</span>}
+                {aiExplain && <span className="ml-4 text-pulse-purple animate-pulse">✨ {aiExplain}</span>}
+                {aiTip && <span className="ml-4 text-green-400 animate-pulse">🎲 {aiTip}</span>}
+              </div>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <Card className="bg-black/40 border-2 border-purple-500/20 rounded-2xl shadow-xl">
@@ -170,6 +232,14 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
               </div>
             </TabsContent>
             <TabsContent value="advanced" className="space-y-6">
+              <div className="flex flex-wrap gap-4 mb-4">
+                <Button size="sm" variant="outline" onClick={handleAISuggest} className="border-pulse-orange/40 text-pulse-orange hover:bg-pulse-orange/10"><Lightbulb className="w-4 h-4 mr-1" />AI Suggest</Button>
+                <Button size="sm" variant="outline" onClick={handleAIExplain} className="border-pulse-purple/40 text-pulse-purple hover:bg-pulse-purple/10"><Wand2 className="w-4 h-4 mr-1" />AI Explain</Button>
+                <Button size="sm" variant="outline" onClick={handleAIRandomize} className="border-green-400/40 text-green-400 hover:bg-green-900/10"><Sparkles className="w-4 h-4 mr-1" />AI Randomize</Button>
+                {aiSuggestion && <span className="ml-4 text-pulse-orange animate-pulse">💡 {aiSuggestion}</span>}
+                {aiExplain && <span className="ml-4 text-pulse-purple animate-pulse">✨ {aiExplain}</span>}
+                {aiTip && <span className="ml-4 text-green-400 animate-pulse">🎲 {aiTip}</span>}
+              </div>
               <TokenUtilitySuggestions />
             </TabsContent>
             <TabsContent value="visualization" className="space-y-6">
