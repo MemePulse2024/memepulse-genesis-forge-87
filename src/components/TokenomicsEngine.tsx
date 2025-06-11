@@ -139,14 +139,7 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
   return (
     <section id="tokenomics" className="relative py-16 md:py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-[60vh] backdrop-blur-3xl">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-10 md:mb-14">
-          <h2 className="font-orbitron text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple bg-clip-text text-transparent">
-            ⚙️ Tokenomics Engine
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Configure your meme coin's tokenomics with built-in validation and visual charts
-          </p>
-        </div>
+        {/* Removed internal header and description to avoid duplication */}
         <div className="max-w-6xl mx-auto space-y-8">
           <PresetSelector onSelectPreset={setTokenomicsData} />
           <div className="md:hidden w-full mb-6">
