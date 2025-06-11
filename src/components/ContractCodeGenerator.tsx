@@ -724,6 +724,27 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
     { name: 'Burn', value: taxSettings.burn, color: '#f87171' }
   ];
 
+  // Auto-clear AI suggestion after 7 seconds
+  useEffect(() => {
+    if (!aiSuggestion) return;
+    const timeout = setTimeout(() => setAiSuggestion(''), 7000);
+    return () => clearTimeout(timeout);
+  }, [aiSuggestion]);
+
+  // Auto-clear AI explain after 7 seconds
+  useEffect(() => {
+    if (!aiExplain) return;
+    const timeout = setTimeout(() => setAiExplain(''), 7000);
+    return () => clearTimeout(timeout);
+  }, [aiExplain]);
+
+  // Auto-clear AI tip after 7 seconds
+  useEffect(() => {
+    if (!aiTip) return;
+    const timeout = setTimeout(() => setAiTip(''), 7000);
+    return () => clearTimeout(timeout);
+  }, [aiTip]);
+
   return (
     <div className="relative py-12 md:py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-screen backdrop-blur-3xl">
       {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={200} />}
