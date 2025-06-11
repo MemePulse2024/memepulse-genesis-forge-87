@@ -942,7 +942,7 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> {/* end container */}
     </div>
   );
 }

@@ -12,6 +12,9 @@ import BlockTimeDisplay from '@/components/BlockTimeDisplay';
 import ResourcesSection from '@/components/ResourcesSection';
 import Footer from '@/components/Footer';
 import TokenAnalyticsDashboard from '@/components/TokenAnalyticsDashboard';
+import { Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface CoinIdea {
   name: string;
@@ -46,6 +49,8 @@ const Index = () => {
       burn: '2'
     }
   });
+
+  const { toast } = useToast();
 
   return (
     <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden font-inter">
@@ -132,8 +137,23 @@ const Index = () => {
             </section>
           </main>
         </div>
-        <Footer />
       </div>
+      {/* Donation Section at absolute bottom of page */}
+      <div className="mt-16 mb-8 flex flex-col items-center justify-center w-full">
+        <div className="bg-black/50 border-2 border-pulse-orange/30 rounded-2xl shadow-xl px-6 py-5 flex flex-col items-center max-w-xl w-full">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="w-5 h-5 text-pulse-orange animate-bounce" />
+            <span className="font-orbitron text-lg text-pulse-orange font-bold">Love MemePulse Genesis Forge?</span>
+          </div>
+          <p className="text-gray-300 text-center mb-2">If you enjoy what we're building, consider donating to support more meme magic and open-source tools!</p>
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-xs text-gray-400">Donation Address (PLS/ETH):</span>
+            <span className="font-mono text-green-400 text-sm bg-black/70 px-3 py-1 rounded-lg select-all border border-green-500/20">0x53696A21d45D22d84F1299622fE1070251706dB6</span>
+            <Button size="sm" variant="outline" className="border-green-400/40 text-green-400 hover:bg-green-900/10 mt-2" onClick={() => {navigator.clipboard.writeText('0x53696A21d45D22d84F1299622fE1070251706dB6'); toast({title: 'Donation Address Copied!', description: 'Thank you for your support! 💚', duration: 2000});}}>Copy Address</Button>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };
