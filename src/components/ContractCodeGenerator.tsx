@@ -221,6 +221,7 @@ const generateContractCode = (settings: ContractSettings): string => {
     'import "@openzeppelin/contracts/security/Pausable.sol";',
     'import "@openzeppelin/contracts/access/Ownable.sol";',
     settings.securityFeatures.burnable ? 'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";' : '',
+    settings.securityFeatures.mintable ? 'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Mintable.sol";' : '',
     settings.securityFeatures.reflection ? 'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";' : '',
   ].filter(Boolean).join('\n');
 
@@ -230,57 +231,106 @@ const generateContractCode = (settings: ContractSettings): string => {
     'Pausable',
     'Ownable',
     settings.securityFeatures.burnable ? 'ERC20Burnable' : '',
+    settings.securityFeatures.mintable ? 'ERC20Mintable' : '',
     settings.securityFeatures.reflection ? 'ERC20Votes' : ''
   ].filter(Boolean).join(', ');
 
-  const contractStart = `
-contract ${contractName} is ${inheritance} {
-    bool public tradingEnabled;
-    ${settings.securityFeatures.blacklist ? 'mapping(address => bool) private _blacklist;' : ''}
-    ${settings.autoLiquidity ? 'uint256 public liquidityFee = 300; // 3%' : ''}
-`;
+  // Variables for all settings
+  const variables = `
+    // Tax settings
+    uint256 public buyTax = ${settings.taxSettings.buyTax};
+    uint256 public sellTax = ${settings.taxSettings.sellTax};
+    uint256 public transferTax = ${settings.taxSettings.transferTax};
+    uint256 public liquidityShare = ${settings.taxSettings.liquidityShare};
+    uint256 public marketingShare = ${settings.taxSettings.marketingShare};
+    uint256 public devShare = ${settings.taxSettings.devShare};
+    uint256 public burnShare = ${settings.taxSettings.burnShare};
+    // Wallets
+    address public marketingWallet = ${settings.walletSettings.marketingWallet || 'address(0)'};
+    address public devWallet = ${settings.walletSettings.devWallet || 'address(0)'};
+    address public autoLiquidityWallet = ${settings.walletSettings.autoLiquidityWallet || 'address(0)'};
+    address public charityWallet = ${settings.walletSettings.charityWallet || 'address(0)'};
+    address public treasuryWallet = ${settings.walletSettings.treasuryWallet || 'address(0)'};
+    // Limits
+    uint256 public maxTxPercent = ${settings.limitSettings.maxTxPercent};
+    uint256 public maxWalletPercent = ${settings.limitSettings.maxWalletPercent};
+    uint256 public maxSellPercent = ${settings.limitSettings.maxSellPercent};
+    uint256 public tradingCooldown = ${settings.limitSettings.tradingCooldown};
+    bool public launchProtection = ${settings.limitSettings.launchProtection};
+    bool public antiSnipe = ${settings.limitSettings.antiSnipe};
+    bool public antiBotEnabled = ${settings.limitSettings.antiBotEnabled};
+    // Misc
+    bool public autoLiquidity = ${settings.autoLiquidity};
+    uint256 public liquidityLockDays = ${settings.liquidityLockDays};
+  `;
 
-  const constructor = `
-    constructor() ERC20("${settings.tokenName}", "${settings.tokenSymbol}") {
-        _mint(msg.sender, ${settings.totalSupply} * 10 ** decimals());
-    }
-`;
-
+  // Security features logic
   const securityFeatures = [
     settings.securityFeatures.antiWhale ? `
-    function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual override {
-        super._beforeTokenTransfer(from, to, amount);
-        require(amount <= maxTxAmount || from == owner() || to == owner(), "Transfer amount exceeds maximum");
-        if (to != owner() && from != owner()) {
-            require(balanceOf(to) + amount <= maxWalletAmount, "Wallet amount exceeds maximum");
-        }
-    }` : '',
-    
+    // Anti-whale logic
+    modifier antiWhale(address from, address to, uint256 amount) {
+      require(amount <= (totalSupply() * maxTxPercent) / 10000, "Exceeds max tx");
+      require(balanceOf(to) + amount <= (totalSupply() * maxWalletPercent) / 10000, "Exceeds max wallet");
+      _;
+    }
+    ` : '',
     settings.securityFeatures.blacklist ? `
+    // Blacklist logic
+    mapping(address => bool) private _blacklist;
+    modifier notBlacklisted(address account) {
+      require(!_blacklist[account], "Blacklisted");
+      _;
+    }
     function blacklistAddress(address account, bool value) external onlyOwner {
-        _blacklist[account] = value;
+      _blacklist[account] = value;
     }
-
     function isBlacklisted(address account) public view returns (bool) {
-        return _blacklist[account];
-    }` : '',
-    
-    settings.securityFeatures.pausable ? `
-    function pause() public onlyOwner {
-        _pause();
+      return _blacklist[account];
     }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }` : '',
-    
-    settings.autoLiquidity ? `
-    function setLiquidityFee(uint256 fee) external onlyOwner {
-        require(fee <= 1000, "Fee cannot exceed 10%");
-        liquidityFee = fee;
-    }` : ''
+    ` : '',
+    settings.securityFeatures.pausable ? `
+    // Pausable logic
+    function pause() public onlyOwner { _pause(); }
+    function unpause() public onlyOwner { _unpause(); }
+    ` : '',
+    settings.securityFeatures.burnable ? `
+    // Burnable logic (handled by ERC20Burnable)
+    ` : '',
+    settings.securityFeatures.mintable ? `
+    // Mintable logic (handled by ERC20Mintable)
+    ` : '',
+    settings.securityFeatures.reflection ? `
+    // Reflection logic (handled by ERC20Votes)
+    ` : '',
+    settings.limitSettings.tradingCooldown > 0 ? `
+    // Trading cooldown logic
+    mapping(address => uint256) private _lastTrade;
+    modifier cooldown(address from) {
+      require(block.timestamp - _lastTrade[from] >= tradingCooldown, "Cooldown");
+      _;
+    }
+    ` : '',
+    settings.limitSettings.launchProtection ? `
+    // Launch protection logic
+    bool public launchProtected = true;
+    function disableLaunchProtection() external onlyOwner { launchProtected = false; }
+    ` : '',
+    settings.limitSettings.antiSnipe ? `
+    // Anti-snipe logic (placeholder)
+    ` : '',
+    settings.limitSettings.antiBotEnabled ? `
+    // Anti-bot logic (placeholder)
+    ` : '',
   ].filter(Boolean).join('\n');
 
+  // Constructor
+  const constructor = `
+    constructor() ERC20(\"${settings.tokenName}\", \"${settings.tokenSymbol}\") {
+        _mint(msg.sender, ${settings.totalSupply} * 10 ** decimals());
+    }
+  `;
+
+  // Main contract
   return `// SPDX-License-Identifier: MIT
 ${imports}
 
@@ -288,7 +338,11 @@ ${imports}
  * @title ${settings.tokenName}
  * @dev Generated by MemePulse Genesis Forge
  */
-${contractStart}${constructor}${securityFeatures}
+contract ${contractName} is ${inheritance} {
+${variables}
+${securityFeatures}
+${constructor}
+// ...additional logic for taxes, fees, and custom features should be implemented here...
 }`;
 };
 

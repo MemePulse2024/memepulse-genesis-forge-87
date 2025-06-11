@@ -11,6 +11,7 @@ import { memePosts } from './socialPosts/memePosts';
 import { telegramPosts } from './socialPosts/telegramPosts';
 import { communityPosts } from './socialPosts/communityPosts';
 import Confetti from 'react-confetti';
+import { nanoid } from 'nanoid';
 
 interface CoinIdea {
   name: string;
@@ -39,6 +40,8 @@ const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
 
   const toneVariations = ['degen', 'professional', 'hype', 'community', 'mysterious'];
 
+  const getRandomElement = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
   const generateAIPost = () => {
     if (!selectedPlatform) {
       toast({
@@ -53,54 +56,55 @@ const SocialMediaLaunchpad = ({ coinIdea }: { coinIdea: CoinIdea | null }) => {
     const ticker = coinIdea?.ticker || '$MEME';
     const theme = coinIdea?.theme || 'An amazing meme coin on PulseChain';
     const logoIdea = coinIdea?.logoIdea || '';
-    
-    // AI-powered tone selection based on theme
-    const themeWords = theme.toLowerCase().split(' ');
-    let suggestedTone = 'hype';
-    
-    if (themeWords.some(word => ['funny', 'meme', 'joke', 'laugh'].includes(word))) {
-      suggestedTone = 'degen';
-    } else if (themeWords.some(word => ['serious', 'defi', 'protocol'].includes(word))) {
-      suggestedTone = 'professional';
-    } else if (themeWords.some(word => ['community', 'together', 'people'].includes(word))) {
-      suggestedTone = 'community';
-    } else if (themeWords.some(word => ['secret', 'hidden', 'mystery'].includes(word))) {
-      suggestedTone = 'mysterious';
-    }
-    
-    const tone = suggestedTone;
-    const selectedPlatformConfig = platforms.find(p => p.value === selectedPlatform);
-    const maxLength = selectedPlatformConfig?.maxLength || 280;
-    
-    let post = '';
+
+    // Add more randomization for uniqueness
+    const emojis = ['🚀', '🔥', '💎', '🐸', '😂', '🌕', '🦄', '💰', '🎉', '🤖', '🧬', '🦍', '👑', '✨', '🥳'];
+    const hashtags = [
+      '#PulseChain', '#MemeCoin', '#Crypto', '#DeFi', '#Viral', '#Launch', '#Degen', '#Moon', '#HODL', '#Trending', '#Token', '#Airdrop', '#Liquidity', '#Community', '#Innovation'
+    ];
+    const randomEmoji = getRandomElement(emojis);
+    const randomHashtags = Array.from({length: 2 + Math.floor(Math.random()*2)}, () => getRandomElement(hashtags)).join(' ');
+    const uniqueId = nanoid(6);
+
     function fillTemplate(template: string) {
-      return template.replace(/\{coinName\}/g, coinName).replace(/\{ticker\}/g, ticker).replace(/\{theme\}/g, theme);
+      return template
+        .replace(/\{coinName\}/g, coinName)
+        .replace(/\{ticker\}/g, ticker)
+        .replace(/\{theme\}/g, theme)
+        .replace(/\{logoIdea\}/g, logoIdea)
+        .replace(/\{emoji\}/g, randomEmoji)
+        .replace(/\{hashtags\}/g, randomHashtags)
+        .replace(/\{uniqueId\}/g, uniqueId);
     }
+
+    let post = '';
     switch (selectedPlatform) {
       case 'twitter-announcement': {
         const arr = announcementPosts;
-        post = fillTemplate(arr[Math.floor(Math.random() * arr.length)]);
+        post = fillTemplate(getRandomElement(arr));
         break;
       }
       case 'twitter-meme': {
         const arr = memePosts;
-        post = fillTemplate(arr[Math.floor(Math.random() * arr.length)]);
+        post = fillTemplate(getRandomElement(arr));
         break;
       }
       case 'telegram-pinned': {
         const arr = telegramPosts;
-        post = fillTemplate(arr[Math.floor(Math.random() * arr.length)]);
+        post = fillTemplate(getRandomElement(arr));
         break;
       }
       case 'community-update': {
         const arr = communityPosts;
-        post = fillTemplate(arr[Math.floor(Math.random() * arr.length)]);
+        post = fillTemplate(getRandomElement(arr));
         break;
       }
       default: {
         post = 'No post template available.';
       }
     }
+    // Add extra randomization at the end
+    post += `\n${randomEmoji} ${randomHashtags} [${uniqueId}]`;
     setGeneratedPost(post);
     setShowConfetti(true);
     setTimeout(() => setShowConfetti(false), 2000);
