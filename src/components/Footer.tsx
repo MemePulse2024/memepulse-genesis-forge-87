@@ -4,7 +4,9 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black border-t border-gray-800 py-12">
+    <footer className="bg-black/60 border-t border-purple-500/30 py-12 backdrop-blur-2xl shadow-2xl relative">
+      {/* Confetti on scroll to bottom (playful touch) */}
+      {/* Optionally, you can add a confetti trigger here if desired */}
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Logo and Description */}
@@ -99,6 +101,10 @@ const Footer = () => {
               </a>
             </div>
           </div>
+        </div>
+        {/* Animated divider for flow */}
+        <div className="w-full flex justify-center my-8">
+          <div className="h-2 w-32 rounded-full bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple animate-pulse" />
         </div>
 
         {/* Disclaimer */}

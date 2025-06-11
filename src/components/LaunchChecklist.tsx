@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, Circle, Rocket, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import Confetti from 'react-confetti';
 
 interface ChecklistItem {
   id: string;
@@ -19,6 +19,7 @@ interface ChecklistItem {
 const LaunchChecklist = () => {
   const { toast } = useToast();
   const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const checklistItems: ChecklistItem[] = [
     // Preparation Phase
@@ -158,10 +159,14 @@ const LaunchChecklist = () => {
       newCompleted.delete(itemId);
     } else {
       newCompleted.add(itemId);
-      toast({
-        title: "Progress Updated! ✅",
-        description: "Checklist item marked as complete.",
-      });
+      if (newCompleted.size === checklistItems.length) {
+        setShowConfetti(true);
+        toast({
+          title: "All Steps Complete! 🎉",
+          description: "You finished the meme coin launch checklist!",
+        });
+        setTimeout(() => setShowConfetti(false), 2500);
+      }
     }
     setCompletedItems(newCompleted);
   };
@@ -195,140 +200,51 @@ const LaunchChecklist = () => {
   const categories = ['preparation', 'development', 'testing', 'launch', 'marketing'];
 
   return (
-    <section id="checklist" className="py-20 bg-gradient-to-br from-gray-900 to-black">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4">
-            📋 Launch Checklist
+    <section id="checklist" className="relative py-16 md:py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-[60vh] backdrop-blur-3xl">
+      {showConfetti && (
+        <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={120} />
+      )}
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="font-orbitron text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple bg-clip-text text-transparent">
+            📝 Meme Coin Launch Checklist
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Complete step-by-step guide to successfully launch your PulseChain meme coin
+          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Track your progress and launch your meme coin with confidence!
           </p>
         </div>
-
-        <div className="max-w-6xl mx-auto">
-          {/* Progress Overview */}
-          <Card className="bg-card/80 backdrop-blur-md border-purple-500/20 shadow-2xl mb-8">
-            <CardHeader>
-              <CardTitle className="text-2xl font-orbitron text-center flex items-center justify-center gap-2">
-                <Rocket className="w-6 h-6" />
-                Launch Progress
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-white font-semibold">Overall Progress</span>
-                  <span className="text-pulse-orange font-bold">{completionPercentage}%</span>
-                </div>
-                <Progress value={completionPercentage} className="h-3" />
-                <div className="grid grid-cols-3 gap-4 text-center">
+        <Card className="bg-black/40 border-2 border-purple-500/20 rounded-2xl shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-2xl font-orbitron text-center">Checklist</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {checklistItems.map((item) => (
+                <div key={item.id} className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all duration-300 ${completedItems.has(item.id) ? 'bg-gradient-to-r from-pulse-purple/30 to-pulse-orange/20 border-pulse-orange/40 scale-105' : 'bg-black/30 border-purple-500/10 hover:border-pulse-orange/30'}`}>
+                  <button
+                    onClick={() => toggleItem(item.id)}
+                    className={`w-8 h-8 flex items-center justify-center rounded-full border-2 ${completedItems.has(item.id) ? 'bg-pulse-orange border-pulse-orange text-white animate-bounce' : 'bg-black border-purple-500 text-purple-300'}`}
+                    aria-label="Toggle complete"
+                  >
+                    {completedItems.has(item.id) ? <CheckCircle className="w-6 h-6" /> : <Circle className="w-6 h-6" />}
+                  </button>
                   <div>
-                    <div className="text-2xl font-bold text-green-400">{completedItems.size}</div>
-                    <div className="text-sm text-gray-400">Completed</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-yellow-400">{checklistItems.length - completedItems.size}</div>
-                    <div className="text-sm text-gray-400">Remaining</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-blue-400">{checklistItems.length}</div>
-                    <div className="text-sm text-gray-400">Total Tasks</div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Checklist by Category */}
-          <div className="space-y-6">
-            {categories.map((category) => {
-              const categoryItems = getCategoryItems(category);
-              const categoryCompleted = categoryItems.filter(item => completedItems.has(item.id)).length;
-              const categoryProgress = Math.round((categoryCompleted / categoryItems.length) * 100);
-
-              return (
-                <Card key={category} className="bg-card/80 backdrop-blur-md border-purple-500/20">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl font-orbitron flex items-center gap-2 capitalize">
-                        <span className="text-2xl">{getCategoryIcon(category)}</span>
-                        {category} Phase
-                      </CardTitle>
-                      <div className="text-right">
-                        <div className="text-sm text-gray-400">
-                          {categoryCompleted}/{categoryItems.length} complete
-                        </div>
-                        <div className="text-pulse-orange font-bold">{categoryProgress}%</div>
-                      </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-orbitron text-lg font-bold text-pulse-orange">{item.title}</span>
+                      {item.priority === 'high' && <span className="text-xs bg-pulse-orange/20 text-pulse-orange px-2 py-1 rounded-full">High</span>}
                     </div>
-                    <Progress value={categoryProgress} className="h-2" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {categoryItems.map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex items-start space-x-3 p-4 rounded-lg bg-gray-800/50 hover:bg-gray-800/70 transition-colors"
-                        >
-                          <Checkbox
-                            id={item.id}
-                            checked={completedItems.has(item.id)}
-                            onCheckedChange={() => toggleItem(item.id)}
-                            className="mt-1"
-                          />
-                          <div className="flex-1 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <label
-                                htmlFor={item.id}
-                                className="text-white font-medium cursor-pointer"
-                              >
-                                {completedItems.has(item.id) ? (
-                                  <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-green-400" />
-                                    <span className="line-through">{item.title}</span>
-                                  </div>
-                                ) : (
-                                  <div className="flex items-center gap-2">
-                                    <Circle className="w-4 h-4 text-gray-400" />
-                                    <span>{item.title}</span>
-                                  </div>
-                                )}
-                              </label>
-                              <div className="flex items-center gap-2 text-xs">
-                                <span className={getPriorityColor(item.priority)}>
-                                  {item.priority.toUpperCase()}
-                                </span>
-                                <span className="text-gray-400">⏱️ {item.estimated_time}</span>
-                              </div>
-                            </div>
-                            <p className="text-sm text-gray-400">{item.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Completion Celebration */}
-          {completionPercentage === 100 && (
-            <Card className="bg-gradient-to-r from-green-900/50 to-blue-900/50 border-green-500/30 mt-8">
-              <CardContent className="pt-6">
-                <div className="text-center space-y-4">
-                  <div className="text-6xl">🎉</div>
-                  <h3 className="text-2xl font-orbitron font-bold text-white">
-                    Congratulations! 🚀
-                  </h3>
-                  <p className="text-lg text-gray-300">
-                    You've completed all launch tasks! Your meme coin is ready to moon! 🌙
-                  </p>
+                    <p className="text-gray-300 text-sm mb-1">{item.description}</p>
+                    <span className="text-xs text-gray-500">{item.estimated_time} • {item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              ))}
+              <Progress value={(completedItems.size / checklistItems.length) * 100} className="h-3 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple rounded-full" />
+            </div>
+          </CardContent>
+        </Card>
+        {/* Animated divider for flow */}
+        <div className="w-full flex justify-center mt-12">
+          <div className="h-2 w-32 rounded-full bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple animate-pulse" />
         </div>
       </div>
     </section>

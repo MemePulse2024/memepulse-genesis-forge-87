@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { TokenomicsData, validateAllocations } from '@/utils/tokenomicsValidation';
@@ -11,6 +10,7 @@ import { PresetSelector } from './tokenomics/PresetSelector';
 import { TokenUtilitySuggestions } from './tokenomics/TokenUtilitySuggestions';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface TokenomicsEngineProps {
   tokenomics: TokenomicsData;
@@ -83,21 +83,18 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
   ];
 
   return (
-    <section id="tokenomics" className="py-20 bg-gradient-to-br from-black to-gray-900">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4">
+    <section id="tokenomics" className="relative py-16 md:py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-[60vh] backdrop-blur-3xl">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="font-orbitron text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple bg-clip-text text-transparent">
             ⚙️ Tokenomics Engine
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
             Configure your meme coin's tokenomics with built-in validation and visual charts
           </p>
         </div>
-        
         <div className="max-w-6xl mx-auto space-y-8">
           <PresetSelector onSelectPreset={setTokenomicsData} />
-          
-          {/* Mobile view: Show select dropdown */}
           <div className="md:hidden w-full mb-6">
             <Select value={activeTab} onValueChange={setActiveTab}>
               <SelectTrigger className="w-full bg-gray-800/70 border-purple-500/20 text-white h-[50px]">
@@ -120,8 +117,6 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
               </SelectContent>
             </Select>
           </div>
-          
-          {/* Desktop and Mobile shared content */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="hidden md:grid md:grid-cols-3 mb-8 bg-gray-800/70 backdrop-blur-md border-purple-500/20">
               <TabsTrigger value="basic" className="text-white data-[state=active]:bg-purple-800/50">
@@ -134,36 +129,39 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
                 Visualizations
               </TabsTrigger>
             </TabsList>
-            
             <TabsContent value="basic" className="space-y-6">
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
-                  <BasicSettingsForm 
-                    totalSupply={tokenomics.totalSupply}
-                    buyTax={tokenomics.buyTax}
-                    sellTax={tokenomics.sellTax}
-                    onUpdate={updateTokenomics}
-                  />
-                  
-                  <TaxAllocationForm 
-                    taxAllocation={tokenomics.taxAllocation}
-                    error={errors.taxAllocation}
-                    onUpdate={updateTokenomics}
-                  />
-                  
-                  <SupplyAllocationForm 
-                    supplyAllocation={tokenomics.supplyAllocation}
-                    error={errors.supplyAllocation}
-                    onUpdate={updateTokenomics}
-                  />
+                  <Card className="bg-black/40 border-2 border-purple-500/20 rounded-2xl shadow-xl">
+                    <CardContent className="space-y-6">
+                      <BasicSettingsForm 
+                        totalSupply={tokenomics.totalSupply}
+                        buyTax={tokenomics.buyTax}
+                        sellTax={tokenomics.sellTax}
+                        onUpdate={updateTokenomics}
+                      />
+                      <TaxAllocationForm 
+                        taxAllocation={tokenomics.taxAllocation}
+                        error={errors.taxAllocation}
+                        onUpdate={updateTokenomics}
+                      />
+                      <SupplyAllocationForm 
+                        supplyAllocation={tokenomics.supplyAllocation}
+                        error={errors.supplyAllocation}
+                        onUpdate={updateTokenomics}
+                      />
+                    </CardContent>
+                  </Card>
                 </div>
-                
                 <div className="space-y-6">
-                  <TokenomicsDistributionChart 
-                    taxData={taxChartData}
-                    supplyData={supplyChartData}
-                  />
-                  
+                  <Card className="bg-black/40 border-2 border-green-500/20 rounded-2xl shadow-xl">
+                    <CardContent>
+                      <TokenomicsDistributionChart 
+                        taxData={taxChartData}
+                        supplyData={supplyChartData}
+                      />
+                    </CardContent>
+                  </Card>
                   <ActionButtons 
                     tokenomics={tokenomics}
                     hasErrors={Object.keys(errors).length > 0}
@@ -171,11 +169,9 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
                 </div>
               </div>
             </TabsContent>
-            
             <TabsContent value="advanced" className="space-y-6">
               <TokenUtilitySuggestions />
             </TabsContent>
-            
             <TabsContent value="visualization" className="space-y-6">
               <div className="grid md:grid-cols-2 gap-8">
                 <TokenomicsDistributionChart 
@@ -190,6 +186,10 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
               </div>
             </TabsContent>
           </Tabs>
+        </div>
+        {/* Animated divider for flow */}
+        <div className="w-full flex justify-center mt-12">
+          <div className="h-2 w-32 rounded-full bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple animate-pulse" />
         </div>
       </div>
     </section>

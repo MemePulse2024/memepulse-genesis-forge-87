@@ -1,8 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, BookOpen, Zap, Shield } from 'lucide-react';
+import Confetti from 'react-confetti';
+import { useState } from 'react';
 
 const ResourcesSection = () => {
+  const [showConfetti, setShowConfetti] = useState(false);
+
   const resources = [
     {
       icon: <Zap className="w-6 h-6" />,
@@ -44,10 +48,13 @@ const ResourcesSection = () => {
   const categories = ["All", "Development", "DeFi", "Tools", "Legal", "Education"];
 
   return (
-    <section id="resources" className="py-20 bg-gradient-to-br from-black to-gray-900">
+    <section id="resources" className="relative py-20 bg-gradient-to-br from-black to-gray-900 min-h-[60vh] backdrop-blur-3xl">
+      {showConfetti && (
+        <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={80} />
+      )}
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4">
+          <h2 className="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple bg-clip-text text-transparent">
             📚 PulseChain Resources
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
@@ -110,6 +117,11 @@ const ResourcesSection = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Animated divider for flow */}
+          <div className="w-full flex justify-center mt-16">
+            <div className="h-2 w-32 rounded-full bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple animate-pulse" />
           </div>
 
           {/* Additional Info */}
