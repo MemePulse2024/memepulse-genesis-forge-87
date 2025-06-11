@@ -1,446 +1,714 @@
+
 import { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
-import ParticleBackground from "./ParticleBackground";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Settings, Code, Shield, Copy, Download, Sparkles, Star } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Settings, Code, Shield, Copy, Download, Zap, DollarSign, Users, Lock, AlertTriangle, TrendingUp, Wallet, Bot, Timer, Flame, RefreshCw, Eye, Target, Sliders, ChevronRight, Star, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
+import ParticleBackground from "./ParticleBackground";
 import ResourcesSection from "./ResourcesSection";
-import { TokenomicsData } from '@/utils/tokenomicsValidation';
+
+interface TokenomicsData {
+  totalSupply: string;
+  buyTax: string;
+  sellTax: string;
+  taxAllocation: {
+    liquidity: string;
+    marketing: string;
+    burn: string;
+  };
+  supplyAllocation: {
+    pulsex: string;
+    airdrop: string;
+    dev: string;
+    marketing: string;
+    burn: string;
+  };
+}
 
 interface ContractCodeGeneratorProps {
-  tokenomics: TokenomicsData;
-  coinIdea: {
-    name: string;
-    ticker: string;
-    theme: string;
-    logoIdea: string;
-  };
+  tokenomics?: TokenomicsData;
+  coinIdea?: any;
 }
 
 interface SecurityFeatures {
   antiWhale: boolean;
   blacklist: boolean;
   pausable: boolean;
+  reflection: boolean;
   burnable: boolean;
+  mintable: boolean;
+  snapshot: boolean;
+  voting: boolean;
+  deflationary: boolean;
+  rewardToken: boolean;
 }
 
-interface AdvancedSettings {
-  maxTxLimit: number;
-  maxWalletLimit: number;
+interface TaxSettings {
+  buyTax: number;
+  sellTax: number;
+  transferTax: number;
+  maxTax: number;
+  liquidityShare: number;
+  marketingShare: number;
+  devShare: number;
+  burnShare: number;
+  reflectionShare: number;
+  charityShare: number;
+}
+
+interface WalletSettings {
+  marketingWallet: string;
+  devWallet: string;
+  autoLiquidityWallet: string;
+  charityWallet: string;
+  treasuryWallet: string;
+}
+
+interface LimitSettings {
+  maxTxPercent: number;
+  maxWalletPercent: number;
+  maxSellPercent: number;
   tradingCooldown: number;
+  launchProtection: boolean;
+  antiSnipe: boolean;
+  antiBotEnabled: boolean;
+}
+
+interface ContractType {
+  id: string;
+  name: string;
+  description: string;
+  icon: any;
+  features: string[];
+  complexity: 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
+  gasEstimate: string;
 }
 
 interface ContractSettings {
   tokenName: string;
   tokenSymbol: string;
-  initialSupply: number;
-  decimals: number;
   totalSupply: string;
-  maxTxAmount: string;
-  maxWalletAmount: string;
+  decimals: number;
+  contractType: string;
+  networkId: number;
+  securityFeatures: SecurityFeatures;
+  taxSettings: TaxSettings;
+  walletSettings: WalletSettings;
+  limitSettings: LimitSettings;
+  routerAddress: string;
   autoLiquidity: boolean;
   liquidityLockDays: number;
-  owner: string;
-  buyTax: number;
-  sellTax: number;
-  transferTax: number;
-  liquidityShare: number;
-  marketingShare: number;
-  devShare: number;
-
-  burnShare: number;
-  securityFeatures: SecurityFeatures;
-  tradingCooldown: number; // in seconds
-  initialLiquidity: number; // percentage of total supply
-  uniswapRouter: string;
 }
+
+const CONTRACT_TYPES: ContractType[] = [
+  {
+    id: 'standard',
+    name: 'Standard PRC20',
+    description: 'Basic token with essential features',
+    icon: Zap,
+    features: ['ERC20 Compliant', 'Owner Functions', 'Basic Security'],
+    complexity: 'Basic',
+    gasEstimate: '~2M gas'
+  },
+  {
+    id: 'tax',
+    name: 'Tax Token',
+    description: 'Token with customizable buy/sell taxes',
+    icon: DollarSign,
+    features: ['Buy/Sell Taxes', 'Auto Liquidity', 'Fee Distribution', 'Wallet Management'],
+    complexity: 'Intermediate',
+    gasEstimate: '~3.5M gas'
+  },
+  {
+    id: 'reflection',
+    name: 'Reflection Token',
+    description: 'Holders earn passive rewards',
+    icon: TrendingUp,
+    features: ['Holder Rewards', 'Auto Distribution', 'Reflection Mechanism', 'Dividend Tracker'],
+    complexity: 'Advanced',
+    gasEstimate: '~4.5M gas'
+  },
+  {
+    id: 'deflationary',
+    name: 'Deflationary Token',
+    description: 'Burns tokens on transactions',
+    icon: Flame,
+    features: ['Auto Burn', 'Supply Reduction', 'Burn Events', 'Deflationary Mechanics'],
+    complexity: 'Intermediate',
+    gasEstimate: '~3M gas'
+  },
+  {
+    id: 'liquidity-gen',
+    name: 'Liquidity Generator',
+    description: 'Automatically generates liquidity',
+    icon: RefreshCw,
+    features: ['Auto LP Generation', 'Liquidity Lock', 'LP Rewards', 'Price Stability'],
+    complexity: 'Advanced',
+    gasEstimate: '~4M gas'
+  },
+  {
+    id: 'governance',
+    name: 'Governance Token',
+    description: 'DAO voting and governance features',
+    icon: Users,
+    features: ['Voting Rights', 'Proposal System', 'DAO Functions', 'Snapshot Integration'],
+    complexity: 'Expert',
+    gasEstimate: '~5M gas'
+  },
+  {
+    id: 'utility',
+    name: 'Utility Token',
+    description: 'Advanced features for dApps',
+    icon: Settings,
+    features: ['Staking', 'Rewards System', 'Multi-Use Cases', 'Integration Ready'],
+    complexity: 'Advanced',
+    gasEstimate: '~4.2M gas'
+  },
+  {
+    id: 'meme-advanced',
+    name: 'Advanced Meme Token',
+    description: 'All features for maximum customization',
+    icon: Star,
+    features: ['All Features', 'Anti-Bot', 'Launch Protection', 'Maximum Customization'],
+    complexity: 'Expert',
+    gasEstimate: '~5.5M gas'
+  }
+];
+
+const NETWORK_OPTIONS = [
+  { id: 369, name: 'PulseChain Mainnet', symbol: 'PLS', router: '0x165C3410fC91EF562C50559f7d2289fEbed552d9' },
+  { id: 943, name: 'PulseChain Testnet', symbol: 'tPLS', router: '0x165C3410fC91EF562C50559f7d2289fEbed552d9' },
+  { id: 1, name: 'Ethereum Mainnet', symbol: 'ETH', router: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D' },
+  { id: 56, name: 'BSC Mainnet', symbol: 'BNB', router: '0x10ED43C718714eb63d5aA57B78B54704E256024E' },
+  { id: 137, name: 'Polygon', symbol: 'MATIC', router: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff' }
+];
 
 const getFeatureDescription = (feature: string): string => {
   const descriptions: Record<string, string> = {
-    antiWhale: "Limit maximum transaction and wallet amounts",
-    blacklist: "Block malicious addresses from trading",
-    pausable: "Emergency pause functionality for trading",
-    reflection: "Automatic rewards for token holders",
-    burnable: "Enable token burning mechanism",
-    maxTxLimit: "Maximum tokens per transaction (% of total supply)",
-    maxWalletLimit: "Maximum tokens per wallet (% of total supply)",
-    tradingCooldown: "Cooldown period between trades (seconds)",
-    liquidityLockTime: "Time to lock initial liquidity (days)"
+    antiWhale: "Limit maximum transaction and wallet amounts to prevent whale manipulation",
+    blacklist: "Block malicious addresses from trading your token",
+    pausable: "Emergency pause functionality for trading in critical situations",
+    reflection: "Automatic rewards distribution to token holders based on holdings",
+    burnable: "Enable token burning mechanism to reduce total supply",
+    mintable: "Allow owner to mint new tokens (use carefully for tokenomics)",
+    snapshot: "Take snapshots for airdrops and governance voting",
+    voting: "Enable on-chain voting for DAO governance and proposals",
+    deflationary: "Automatic token burn on each transaction to reduce supply",
+    rewardToken: "Distribute rewards in different tokens to holders",
+    maxTxPercent: "Maximum tokens per transaction (% of total supply)",
+    maxWalletPercent: "Maximum tokens per wallet (% of total supply)",
+    tradingCooldown: "Cooldown period between trades in seconds",
+    liquidityLockTime: "Time to lock initial liquidity in days"
   };
   return descriptions[feature] || "";
 };
 
 const generateContractCode = (settings: ContractSettings): string => {
-  // Only include necessary imports based on enabled features
-  const imports = [
-    'pragma solidity ^0.8.19;',
-    '',
-    'import "@openzeppelin/contracts/token/ERC20/ERC20.sol";',
-    settings.securityFeatures.burnable ? 'import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";' : '',
-    settings.securityFeatures.pausable ? 'import "@openzeppelin/contracts/security/Pausable.sol";' : '',
-    'import "@openzeppelin/contracts/access/Ownable.sol";',
-    'import "@openzeppelin/contracts/utils/math/SafeMath.sol";'
-  ].filter(Boolean).join('\n');
-
   const contractName = settings.tokenName.replace(/\s+/g, '');
+  const network = NETWORK_OPTIONS.find(n => n.id === settings.networkId);
+  const contractTypeInfo = CONTRACT_TYPES.find(t => t.id === settings.contractType);
   
-  // Only include enabled features in inheritance
-  const inheritance = [
-    'ERC20',
-    settings.securityFeatures.burnable ? 'ERC20Burnable' : '',
-    settings.securityFeatures.pausable ? 'Pausable' : '',
-    'Ownable'
-  ].filter(Boolean).join(', ');
+  // Determine imports based on features
+  const imports = [
+    '// SPDX-License-Identifier: MIT',
+    'pragma solidity ^0.8.20;',
+    '',
+    'import "@openzeppelin/contracts/token/ERC20/ERC20.sol";'
+  ];
 
-  // Build contract start with only enabled features
-  const contractStart = `
-contract ${contractName} is ${inheritance} {
-    using SafeMath for uint256;
+  if (settings.securityFeatures.burnable || settings.contractType === 'deflationary') {
+    imports.push('import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";');
+  }
+  
+  if (settings.securityFeatures.pausable) {
+    imports.push('import "@openzeppelin/contracts/utils/Pausable.sol";');
+  }
+  
+  if (settings.securityFeatures.mintable) {
+    imports.push('import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";');
+  }
+  
+  if (settings.securityFeatures.snapshot) {
+    imports.push('import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Snapshot.sol";');
+  }
+  
+  if (settings.securityFeatures.voting) {
+    imports.push('import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";');
+  }
 
-    // Token configuration
-    uint256 private constant DECIMALS = ${settings.decimals};
-    uint256 private constant TOTAL_SUPPLY = ${settings.totalSupply} * 10**DECIMALS;
+  imports.push(
+    'import "@openzeppelin/contracts/access/Ownable.sol";',
+    'import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";'
+  );
+
+  // Build inheritance chain
+  const inheritance = ['ERC20'];
+  if (settings.securityFeatures.burnable || settings.contractType === 'deflationary') inheritance.push('ERC20Burnable');
+  if (settings.securityFeatures.pausable) inheritance.push('Pausable');
+  if (settings.securityFeatures.snapshot) inheritance.push('ERC20Snapshot');
+  if (settings.securityFeatures.voting) inheritance.push('ERC20Votes');
+  inheritance.push('Ownable', 'ReentrancyGuard');
+
+  const contractCode = `${imports.join('\n')}
+
+/**
+ * @title ${contractName}
+ * @dev ${contractTypeInfo?.description || 'Custom token contract'}
+ * @notice Generated by PulseChain Genesis Forge
+ * @author PulseChain Genesis Forge (https://memepulse.io)
+ * 
+ * Features:
+${contractTypeInfo?.features.map(f => ` * - ${f}`).join('\n') || ''}
+ * 
+ * Network: ${network?.name || 'Custom Network'}
+ * Total Supply: ${settings.totalSupply} ${settings.tokenSymbol}
+ * Decimals: ${settings.decimals}
+ * Gas Estimate: ${contractTypeInfo?.gasEstimate || '~3M gas'}
+ */
+contract ${contractName} is ${inheritance.join(', ')} {
     
-    ${settings.securityFeatures.antiWhale ? `
-    // Trading limits
-    uint256 public maxTxAmount;
-    uint256 public maxWalletAmount;` : ''}
+    // Constants
+    uint256 private constant MAX_SUPPLY = ${settings.totalSupply} * 10**${settings.decimals};
+    uint256 private constant MAX_TAX = ${settings.taxSettings.maxTax}; // Maximum tax percentage
     
-    // Trading status
+    // Token Configuration
     bool public tradingEnabled;
-    ${settings.securityFeatures.pausable ? 'bool public tradingPaused;' : ''}
+    bool public limitsInEffect = true;
+    bool public swapEnabled = ${settings.autoLiquidity};
     
-    // Fee configuration
-    uint256 public buyTax;
-    uint256 public sellTax;
-    uint256 public transferTax;
+    ${(settings.contractType === 'tax' || settings.contractType === 'meme-advanced') ? `
+    // Tax Configuration
+    uint256 public buyTax = ${settings.taxSettings.buyTax};
+    uint256 public sellTax = ${settings.taxSettings.sellTax};
+    uint256 public transferTax = ${settings.taxSettings.transferTax};
     
-    // Fee distribution
-    uint256 public liquidityShare;
-    uint256 public marketingShare;
-    uint256 public devShare;
-    ${settings.securityFeatures.burnable ? 'uint256 public burnShare;' : ''}
+    // Tax Distribution Shares (must total 100%)
+    uint256 public liquidityShare = ${settings.taxSettings.liquidityShare};
+    uint256 public marketingShare = ${settings.taxSettings.marketingShare};
+    uint256 public devShare = ${settings.taxSettings.devShare};
+    uint256 public burnShare = ${settings.taxSettings.burnShare};
+    ${settings.securityFeatures.reflection ? `uint256 public reflectionShare = ${settings.taxSettings.reflectionShare};` : ''}
+    uint256 public charityShare = ${settings.taxSettings.charityShare};` : ''}
+    
+    ${(settings.limitSettings.maxTxPercent > 0 || settings.limitSettings.maxWalletPercent > 0) ? `
+    // Trading Limits
+    uint256 public maxTxAmount = (MAX_SUPPLY * ${settings.limitSettings.maxTxPercent}) / 100;
+    uint256 public maxWalletAmount = (MAX_SUPPLY * ${settings.limitSettings.maxWalletPercent}) / 100;
+    uint256 public maxSellAmount = (MAX_SUPPLY * ${settings.limitSettings.maxSellPercent}) / 100;` : ''}
     
     // Wallets
     address public marketingWallet;
     address public devWallet;
     address public autoLiquidityWallet;
+    ${settings.walletSettings.charityWallet ? 'address public charityWallet;' : ''}
+    ${settings.walletSettings.treasuryWallet ? 'address public treasuryWallet;' : ''}
     
-    // Anti-bot & security
+    ${settings.autoLiquidity ? `
+    // DEX Configuration
+    address public immutable dexRouter = ${settings.routerAddress || network?.router || '0x165C3410fC91EF562C50559f7d2289fEbed552d9'}; // DEX Router
+    address public dexPair;
+    uint256 public swapTokensAtAmount = (MAX_SUPPLY * 5) / 10000; // 0.05%
+    bool private swapping;` : ''}
+    
+    // Security Mappings
     mapping(address => bool) private _isExcludedFromFees;
-    ${settings.securityFeatures.antiWhale ? 'mapping(address => bool) private _isExcludedFromLimits;' : ''}
+    mapping(address => bool) private _isExcludedFromLimits;
     ${settings.securityFeatures.blacklist ? 'mapping(address => bool) private _blacklist;' : ''}
-    mapping(address => uint256) private _lastTrade;
-    uint256 public tradeCooldown;
+    ${settings.limitSettings.tradingCooldown > 0 ? 'mapping(address => uint256) private _lastTransfer;' : ''}
+    ${settings.securityFeatures.reflection ? 'mapping(address => bool) private _isExcludedFromReflection;' : ''}
+    
+    ${settings.limitSettings.launchProtection ? `
+    // Launch Protection
+    uint256 public launchTime;
+    uint256 public launchProtectionDuration = 300; // 5 minutes
+    mapping(address => bool) private _isBot;` : ''}
     
     // Events
-    event TradingEnabled();
-    event WalletUpdated(string walletType, address newWallet);
-    event ExcludedFromFees(address account, bool isExcluded);
-    ${settings.securityFeatures.antiWhale ? 'event ExcludedFromLimits(address account, bool isExcluded);' : ''}
-    ${settings.securityFeatures.blacklist ? 'event AddressBlacklisted(address account, bool isBlacklisted);' : ''}
-    event TaxUpdated(string taxType, uint256 newValue);
-    event TaxSharesUpdated(
-    event TaxSharesUpdated(
-        uint256 liquidity,
-        uint256 marketing,
-        uint256 dev,
-        ${settings.securityFeatures.burnable ? 'uint256 burn' : ''}
-    );`;
-  const constructor = `
-    constructor(
-        address _marketingWallet,
-        address _devWallet,
-        address _autoLiquidityWallet
-    ) ERC20("${settings.tokenName}", "${settings.tokenSymbol}") {
-        require(_marketingWallet != address(0), "Marketing wallet cannot be zero address");
-        require(_devWallet != address(0), "Dev wallet cannot be zero address");
-        require(_autoLiquidityWallet != address(0), "Auto liquidity wallet cannot be zero address");
-        
-        _mint(msg.sender, TOTAL_SUPPLY);
-        
-        marketingWallet = _marketingWallet;
-        devWallet = _devWallet;
-        autoLiquidityWallet = _autoLiquidityWallet;
-        
-        ${settings.securityFeatures.antiWhale ? `
-        // Initialize trading limits
-        maxTxAmount = (TOTAL_SUPPLY * ${settings.maxTxAmount}) / 100;
-        maxWalletAmount = (TOTAL_SUPPLY * ${settings.maxWalletAmount}) / 100;` : ''}
-        
-        // Initialize fees
-        buyTax = ${settings.buyTax || 5};
-        sellTax = ${settings.sellTax || 5};
-        transferTax = ${settings.transferTax || 0};
-        
-        // Initialize fee shares
-        liquidityShare = ${settings.liquidityShare || 40};
-        marketingShare = ${settings.marketingShare || 30};
-        devShare = ${settings.devShare || 10};
-        ${settings.securityFeatures.burnable ? `burnShare = ${settings.burnShare || 10};` : ''}
-        ${settings.securityFeatures.burnable ? `burnShare = ${settings.burnShare || 10};` : ''}
-        tradeCooldown = 30 seconds;
-        
-        // Exclude contract deployer and essential addresses from fees and limits
-        _isExcludedFromFees[msg.sender] = true;
-        _isExcludedFromFees[address(this)] = true;
-        _isExcludedFromFees[marketingWallet] = true;
-        _isExcludedFromFees[devWallet] = true;
-        ${settings.securityFeatures.antiWhale ? `
-        _isExcludedFromLimits[msg.sender] = true;
-        _isExcludedFromLimits[address(this)] = true;
-        _isExcludedFromLimits[marketingWallet] = true;
-        _isExcludedFromLimits[devWallet] = true;` : ''}
-    }`;
-
-    // Only include necessary modifiers
-    const modifiers = `
-    modifier onlyValidAddress(address account) {
-        require(account != address(0), "Cannot be zero address");
-        _;
-    }
-
+    event TradingEnabled(uint256 timestamp);
+    event LimitsRemoved(uint256 timestamp);
+    ${(settings.contractType === 'tax' || settings.contractType === 'meme-advanced') ? 'event TaxesUpdated(uint256 buyTax, uint256 sellTax, uint256 transferTax);' : ''}
+    event WalletUpdated(string walletType, address oldWallet, address newWallet);
+    event ExcludedFromFees(address indexed account, bool isExcluded);
+    event ExcludedFromLimits(address indexed account, bool isExcluded);
+    ${settings.securityFeatures.blacklist ? 'event AddressBlacklisted(address indexed account, bool isBlacklisted);' : ''}
+    ${settings.autoLiquidity ? 'event SwapAndLiquify(uint256 tokensSwapped, uint256 ethReceived, uint256 tokensIntoLiquidity);' : ''}
+    ${settings.securityFeatures.reflection ? 'event ReflectionDistributed(uint256 amount);' : ''}
+    
+    // Modifiers
     ${settings.securityFeatures.blacklist ? `
     modifier notBlacklisted(address account) {
         require(!_blacklist[account], "Address is blacklisted");
         _;
     }` : ''}
-
-    ${settings.securityFeatures.pausable ? `
-    modifier whenTradingNotPaused() {
-        require(!tradingPaused, "Trading is paused");
+    
+    modifier validAddress(address account) {
+        require(account != address(0), "Invalid address");
         _;
+    }
+    
+    ${settings.autoLiquidity ? `
+    modifier lockTheSwap {
+        swapping = true;
+        _;
+        swapping = false;
     }` : ''}
-
-    modifier whenTradingEnabled() {
-        require(tradingEnabled, "Trading not enabled");
-        _;
-    }`;
-
-  // Add transfer override with only enabled features
-  const transfer = `
-    function _transfer(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) internal virtual override ${settings.securityFeatures.pausable ? 'whenNotPaused ' : ''}whenTradingEnabled ${settings.securityFeatures.blacklist ? 'notBlacklisted(sender) notBlacklisted(recipient)' : ''} {
-        require(sender != address(0), "Transfer from zero address");
-        require(recipient != address(0), "Transfer to zero address");
-        require(amount > 0, "Transfer amount must be greater than zero");
-
-        ${settings.securityFeatures.antiWhale ? `
-        // Check transaction limits
-        if (!_isExcludedFromLimits[sender] && !_isExcludedFromLimits[recipient]) {
-            require(amount <= maxTxAmount, "Transfer amount exceeds the maxTxAmount");
-            require(balanceOf(recipient).add(amount) <= maxWalletAmount, "Transfer would exceed maxWalletAmount");
-        }` : ''}
-
-        // Check trading cooldown
-        if (!_isExcludedFromFees[sender] && !_isExcludedFromFees[recipient]) {
-            require(block.timestamp >= _lastTrade[sender] + tradeCooldown, "Must wait for cooldown");
-            _lastTrade[sender] = block.timestamp;
-        }
-
-        // Calculate and apply fees
-        uint256 fee = 0;
-        if (!_isExcludedFromFees[sender] && !_isExcludedFromFees[recipient]) {
-            fee = calculateFee(sender, recipient, amount);
-            if (fee > 0) {
-                // Handle fee distribution
-                handleFees(amount, fee);
-                amount = amount.sub(fee);
-            }
-        }
-
-        super._transfer(sender, recipient, amount);
-    }`;
-
-  // Only include owner functions for enabled features
-  const ownerFunctions = `
+    
+    constructor() ERC20("${settings.tokenName}", "${settings.tokenSymbol}") Ownable(_msgSender()) {
+        
+        // Mint total supply to deployer
+        _mint(_msgSender(), MAX_SUPPLY);
+        
+        // Exclude essential addresses from fees and limits
+        _isExcludedFromFees[_msgSender()] = true;
+        _isExcludedFromFees[address(this)] = true;
+        
+        _isExcludedFromLimits[_msgSender()] = true;
+        _isExcludedFromLimits[address(this)] = true;
+        
+        emit Transfer(address(0), _msgSender(), MAX_SUPPLY);
+    }
+    
+    // Owner Functions
     function enableTrading() external onlyOwner {
+        require(!tradingEnabled, "Trading already enabled");
         tradingEnabled = true;
-        emit TradingEnabled();
+        ${settings.limitSettings.launchProtection ? 'launchTime = block.timestamp;' : ''}
+        emit TradingEnabled(block.timestamp);
     }
-
-    ${settings.securityFeatures.pausable ? `
-    function pauseTrading() external onlyOwner {
-        tradingPaused = true;
+    
+    function removeLimits() external onlyOwner {
+        limitsInEffect = false;
+        emit LimitsRemoved(block.timestamp);
     }
-
-    function unpauseTrading() external onlyOwner {
-        tradingPaused = false;
+    
+    ${(settings.contractType === 'tax' || settings.contractType === 'meme-advanced') ? `
+    function updateTaxes(
+        uint256 _buyTax,
+        uint256 _sellTax,
+        uint256 _transferTax
+    ) external onlyOwner {
+        require(_buyTax <= MAX_TAX && _sellTax <= MAX_TAX && _transferTax <= MAX_TAX, "Tax exceeds maximum");
+        buyTax = _buyTax;
+        sellTax = _sellTax;
+        transferTax = _transferTax;
+        emit TaxesUpdated(_buyTax, _sellTax, _transferTax);
     }` : ''}
-
-    ${settings.securityFeatures.antiWhale ? `
-    function setMaxTxAmount(uint256 amount) external onlyOwner {
-        require(amount > 0, "Amount must be greater than 0");
-        maxTxAmount = amount;
+    
+    function updateWallet(string memory walletType, address newWallet) external onlyOwner validAddress(newWallet) {
+        address oldWallet;
+        
+        if (keccak256(bytes(walletType)) == keccak256(bytes("marketing"))) {
+            oldWallet = marketingWallet;
+            marketingWallet = newWallet;
+        } else if (keccak256(bytes(walletType)) == keccak256(bytes("dev"))) {
+            oldWallet = devWallet;
+            devWallet = newWallet;
+        } else if (keccak256(bytes(walletType)) == keccak256(bytes("liquidity"))) {
+            oldWallet = autoLiquidityWallet;
+            autoLiquidityWallet = newWallet;
+        } else {
+            revert("Invalid wallet type");
+        }
+        
+        emit WalletUpdated(walletType, oldWallet, newWallet);
     }
-
-    function setMaxWalletAmount(uint256 amount) external onlyOwner {
-        require(amount > 0, "Amount must be greater than 0");
-        maxWalletAmount = amount;
-    }
-
-    function excludeFromLimits(address account, bool excluded) external onlyOwner {
-        _isExcludedFromLimits[account] = excluded;
-        emit ExcludedFromLimits(account, excluded);
-    }` : ''}
-
+    
     ${settings.securityFeatures.blacklist ? `
     function setBlacklist(address account, bool blacklisted) external onlyOwner {
+        require(account != address(0), "Cannot blacklist zero address");
+        require(account != owner(), "Cannot blacklist owner");
         _blacklist[account] = blacklisted;
         emit AddressBlacklisted(account, blacklisted);
     }` : ''}
-
+    
     function excludeFromFees(address account, bool excluded) external onlyOwner {
         _isExcludedFromFees[account] = excluded;
         emit ExcludedFromFees(account, excluded);
-    }`;
+    }
+    
+    function excludeFromLimits(address account, bool excluded) external onlyOwner {
+        _isExcludedFromLimits[account] = excluded;
+        emit ExcludedFromLimits(account, excluded);
+    }
+    
+    ${settings.securityFeatures.pausable ? `
+    function emergencyPause() external onlyOwner {
+        _pause();
+    }
+    
+    function emergencyUnpause() external onlyOwner {
+        _unpause();
+    }` : ''}
+    
+    // Emergency withdrawal function
+    function emergencyWithdraw(address token, uint256 amount) external onlyOwner {
+        if (token == address(0)) {
+            payable(owner()).transfer(amount);
+        } else {
+            IERC20(token).transfer(owner(), amount);
+        }
+    }
+    
+    // View Functions
+    function isExcludedFromFees(address account) public view returns (bool) {
+        return _isExcludedFromFees[account];
+    }
+    
+    function isExcludedFromLimits(address account) public view returns (bool) {
+        return _isExcludedFromLimits[account];
+    }
+    
+    ${settings.securityFeatures.blacklist ? `
+    function isBlacklisted(address account) public view returns (bool) {
+        return _blacklist[account];
+    }` : ''}
+    
+    function getCirculatingSupply() public view returns (uint256) {
+        return totalSupply() - balanceOf(address(0)) - balanceOf(address(0xdead));
+    }
+    
+    // Core Transfer Function with All Features
+    function _update(
+        address from,
+        address to,
+        uint256 amount
+    ) internal override ${settings.securityFeatures.pausable ? 'whenNotPaused ' : ''} {
+        
+        // Skip all checks for minting/burning
+        if (from == address(0) || to == address(0)) {
+            super._update(from, to, amount);
+            return;
+        }
+        
+        require(amount > 0, "Transfer amount must be greater than zero");
+        require(tradingEnabled || _isExcludedFromFees[from], "Trading not enabled");
+        
+        ${settings.securityFeatures.blacklist ? `
+        require(!_blacklist[from], "Sender is blacklisted");
+        require(!_blacklist[to], "Recipient is blacklisted");` : ''}
+        
+        ${settings.limitSettings.launchProtection ? `
+        // Launch protection
+        if (launchTime > 0 && block.timestamp < launchTime + launchProtectionDuration) {
+            require(_isExcludedFromLimits[from] || _isExcludedFromLimits[to], "Launch protection active");
+        }` : ''}
+        
+        ${settings.limitSettings.tradingCooldown > 0 ? `
+        // Trading cooldown
+        if (!_isExcludedFromFees[from] && !_isExcludedFromFees[to]) {
+            require(block.timestamp >= _lastTransfer[from] + ${settings.limitSettings.tradingCooldown}, "Transfer cooldown active");
+            _lastTransfer[from] = block.timestamp;
+        }` : ''}
+        
+        // Apply limits
+        if (limitsInEffect && !_isExcludedFromLimits[from] && !_isExcludedFromLimits[to]) {
+            ${settings.limitSettings.maxTxPercent > 0 ? `
+            require(amount <= maxTxAmount, "Transfer amount exceeds max transaction amount");` : ''}
+            
+            ${settings.limitSettings.maxWalletPercent > 0 ? `
+            if (to != address(dexPair)) {
+                require(balanceOf(to) + amount <= maxWalletAmount, "Transfer would exceed max wallet amount");
+            }` : ''}
+            
+            ${settings.limitSettings.maxSellPercent > 0 ? `
+            if (to == address(dexPair)) {
+                require(amount <= maxSellAmount, "Sell amount exceeds max sell amount");
+            }` : ''}
+        }
+        
+        ${settings.autoLiquidity ? `
+        // Auto liquidity and fee distribution
+        uint256 contractTokenBalance = balanceOf(address(this));
+        bool canSwap = contractTokenBalance >= swapTokensAtAmount;
+        
+        if (canSwap && swapEnabled && !swapping && to == dexPair && !_isExcludedFromFees[from]) {
+            swapAndDistribute(contractTokenBalance);
+        }` : ''}
+        
+        // Calculate and apply fees
+        bool takeFee = !swapping && !_isExcludedFromFees[from] && !_isExcludedFromFees[to];
+        
+        if (takeFee ${(settings.contractType === 'tax' || settings.contractType === 'meme-advanced') ? '&& (from == dexPair || to == dexPair)' : ''}) {
+            uint256 fees = calculateFees(from, to, amount);
+            if (fees > 0) {
+                super._update(from, address(this), fees);
+                amount = amount - fees;
+            }
+        }
+        
+        super._update(from, to, amount);
+    }
+    
+    ${(settings.contractType === 'tax' || settings.contractType === 'meme-advanced') ? `
+    function calculateFees(address from, address to, uint256 amount) private view returns (uint256) {
+        uint256 feePercent = 0;
+        
+        if (to == dexPair) {
+            // Selling
+            feePercent = sellTax;
+        } else if (from == dexPair) {
+            // Buying  
+            feePercent = buyTax;
+        } else {
+            // Regular transfer
+            feePercent = transferTax;
+        }
+        
+        return (amount * feePercent) / 100;
+    }` : ''}
+    
+    // Receive ETH/PLS
+    receive() external payable {}
+    
+    // Fallback function
+    fallback() external payable {}
+}`;
 
-  // Combine all parts
-  return [
-    imports,
-    contractStart,
-    constructor,
-    modifiers,
-    transfer,
-    ownerFunctions,
-    '}'
-  ].join('\n\n');
+  return contractCode;
+};
 };
 
-// --- CONTRACT TEMPLATE GENERATORS ---
-const generateStandardERC20 = (settings: ContractSettings): string => {
-  return [
-    'pragma solidity ^0.8.19;',
-    '',
-    'import "@openzeppelin/contracts/token/ERC20/ERC20.sol";',
-    'import "@openzeppelin/contracts/access/Ownable.sol";',
-    '',
-    `contract ${settings.tokenName.replace(/\s+/g, '')} is ERC20, Ownable {`,
-    '    constructor() ERC20("' + settings.tokenName + '", "' + settings.tokenSymbol + '") {',
-    '        _mint(msg.sender, ' + settings.totalSupply + ' * 10 ** decimals());',
-    '    }',
-    '}',
-  ].join('\n');
-};
+// Tab configuration
+const TABS = [
+  {
+    value: "contract-type",
+    label: "Contract Type",
+    icon: <Star className="h-4 w-4" />,
+  },
+  {
+    value: "basic-settings",
+    label: "Basic Settings",
+    icon: <Settings className="h-4 w-4" />,
+  },
+  {
+    value: "tax-settings",
+    label: "Tax & Fees",
+    icon: <DollarSign className="h-4 w-4" />,
+  },
+  {
+    value: "security",
+    label: "Security",
+    icon: <Shield className="h-4 w-4" />,
+  },
+  {
+    value: "advanced",
+    label: "Advanced",
+    icon: <Sliders className="h-4 w-4" />,
+  },
+  {
+    value: "preview",
+    label: "Preview",
+    icon: <Code className="h-4 w-4" />,
+  }
+];
 
-const generateTaxedToken = generateContractCode; // Use the existing advanced generator for taxed tokens
-
-// --- STEP INDICATOR COMPONENT ---
-const StepIndicator = ({ activeTab }: { activeTab: string }) => (
-  <div className="flex items-center justify-center space-x-4 bg-gray-900/50 p-4 rounded-lg mb-4 animate-fade-in">
-    <div className={cn(
-      "flex items-center space-x-2 p-2 rounded-lg pulse-tab transition-all duration-300",
-      activeTab === 'settings' ? "bg-purple-500/20 scale-105 shadow-lg" : "opacity-50"
-    )}>
-      <Settings className="w-4 h-4" />
-      <span>1. Basic Settings</span>
-    </div>
-    <div className="h-px w-8 bg-gradient-to-r from-pulse-purple to-pulse-orange animate-gradient-x" />
-    <div className={cn(
-      "flex items-center space-x-2 p-2 rounded-lg pulse-tab transition-all duration-300",
-      activeTab === 'security' ? "bg-purple-500/20 scale-105 shadow-lg" : "opacity-50"
-    )}>
-      <Shield className="w-4 h-4" />
-      <span>2. Security Features</span>
-    </div>
-    <div className="h-px w-8 bg-gradient-to-r from-pulse-purple to-pulse-orange animate-gradient-x" />
-    <div className={cn(
-      "flex items-center space-x-2 p-2 rounded-lg pulse-tab transition-all duration-300",
-      activeTab === 'code' ? "bg-purple-500/20 scale-105 shadow-lg" : "opacity-50"
-    )}>
-      <Code className="w-4 h-4" />
-      <span>3. Generate Code</span>
-    </div>
-  </div>
-);
-
-// --- MAIN COMPONENT ---
-const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorProps) => {
+// Contract Generator Component
+export default function ContractCodeGenerator({ tokenomics, coinIdea }: ContractCodeGeneratorProps) {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('settings');
-  const [generatedCode, setGeneratedCode] = useState('');
+  const [activeTab, setActiveTab] = useState('contract-type');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [generatedContract, setGeneratedContract] = useState("");
+
   const [settings, setSettings] = useState<ContractSettings>({
     tokenName: coinIdea?.name || '',
     tokenSymbol: coinIdea?.ticker?.replace('$', '') || '',
-    initialSupply: 1000000000,
-    decimals: 18,
     totalSupply: tokenomics?.totalSupply || '1000000000',
-    maxTxAmount: '1',
-    maxWalletAmount: '2',
-    autoLiquidity: true,
-    liquidityLockDays: 365,
-    owner: '',
-    buyTax: Number(tokenomics?.buyTax || '5'),
-    sellTax: Number(tokenomics?.sellTax || '5'),
-    transferTax: 0,
-    liquidityShare: Number(tokenomics?.taxAllocation?.liquidity || '40'),
-    marketingShare: Number(tokenomics?.taxAllocation?.marketing || '40'),
-    devShare: 20,
-    burnShare: Number(tokenomics?.taxAllocation?.burn || '0'),
+    decimals: 18,
+    contractType: '',
+    networkId: 369, // PulseChain default
     securityFeatures: {
       antiWhale: true,
       blacklist: true,
       pausable: true,
-      burnable: false
+      reflection: false,
+      burnable: false,
+      mintable: false,
+      snapshot: false,
+      voting: false,
+      deflationary: false,
+      rewardToken: false
     },
-    tradingCooldown: 30,
-    initialLiquidity: 80,
-    uniswapRouter: '0x...',
+    taxSettings: {
+      buyTax: Number(tokenomics?.buyTax || '5'),
+      sellTax: Number(tokenomics?.sellTax || '5'),
+      transferTax: 0,
+      maxTax: 25,
+      liquidityShare: Number(tokenomics?.taxAllocation?.liquidity || '40'),
+      marketingShare: Number(tokenomics?.taxAllocation?.marketing || '40'),
+      devShare: 10,
+      burnShare: Number(tokenomics?.taxAllocation?.burn || '10'),
+      reflectionShare: 0,
+      charityShare: 0
+    },
+    walletSettings: {
+      marketingWallet: '',
+      devWallet: '',
+      autoLiquidityWallet: '',
+      charityWallet: '',
+      treasuryWallet: ''
+    },
+    limitSettings: {
+      maxTxPercent: 1,
+      maxWalletPercent: 2,
+      maxSellPercent: 1,
+      tradingCooldown: 30,
+      launchProtection: true,
+      antiSnipe: true,
+      antiBotEnabled: true
+    },
+    routerAddress: '0x165C3410fC91EF562C50559f7d2289fEbed552d9',
+    autoLiquidity: true,
+    liquidityLockDays: 365
   });
-  const [advancedSettings, setAdvancedSettings] = useState<AdvancedSettings>({
-    maxTxLimit: 1,
-    maxWalletLimit: 2,
-    tradingCooldown: 30
-  });
-  // Add contractType state
-  const [contractType, setContractType] = useState<string>('');
 
+  // Update settings based on tokenomics props
   useEffect(() => {
-    setSettings(prev => ({
-      ...prev,
-      totalSupply: tokenomics.totalSupply,
-      maxTxAmount: tokenomics.buyTax,
-      maxWalletAmount: tokenomics.sellTax,
-      securityFeatures: {
-        ...prev.securityFeatures,
-        burnable: tokenomics.taxAllocation.burn !== "0"
-      }
-    }));
+    if (tokenomics) {
+      setSettings(prev => ({
+        ...prev,
+        totalSupply: tokenomics.totalSupply,
+        taxSettings: {
+          ...prev.taxSettings,
+          buyTax: Number(tokenomics.buyTax || '5'),
+          sellTax: Number(tokenomics.sellTax || '5'),
+          liquidityShare: Number(tokenomics.taxAllocation?.liquidity || '40'),
+          marketingShare: Number(tokenomics.taxAllocation?.marketing || '40'),
+          burnShare: Number(tokenomics.taxAllocation?.burn || '10')
+        },
+        securityFeatures: {
+          ...prev.securityFeatures,
+          burnable: tokenomics.taxAllocation.burn !== "0"
+        }
+      }));
+    }
   }, [tokenomics]);
 
-
+  // Update settings based on coin idea
   useEffect(() => {
-    setSettings(prev => ({
-      ...prev,
-      tokenName: coinIdea.name,
-      tokenSymbol: coinIdea.ticker || coinIdea.name.substring(0, 4).toUpperCase()
-    }));
+    if (coinIdea) {
+      setSettings(prev => ({
+        ...prev,
+        tokenName: coinIdea.name,
+        tokenSymbol: coinIdea.ticker?.replace('$', '') || coinIdea.name.substring(0, 4).toUpperCase()
+      }));
+    }
   }, [coinIdea]);
 
-  useEffect(() => {
-    // Try to get contractType from tokenomics (preset)
-    // Fallback to 'noTax' if not present
-    // If user selected NoTaxStandalone, treat as 'noTax'
-    let type = (tokenomics as any).contractType || '';
-    if (!type && tokenomics.buyTax === '0' && tokenomics.sellTax === '0') {
-      type = 'noTax';
-    }
-    setContractType(type);
-  }, [tokenomics]);
-
-  const handleSettingsChange = (field: keyof ContractSettings, value: any) => {
+  const handleSettingsChange = (key: string, value: any) => {
     setSettings(prev => ({
       ...prev,
-      [field]: value
+      [key]: value
     }));
   };
 
@@ -454,237 +722,757 @@ const ContractCodeGenerator = ({ tokenomics, coinIdea }: ContractCodeGeneratorPr
     }));
   };
 
-  const handleAdvancedSettingChange = (setting: keyof AdvancedSettings, value: number) => {
-    setAdvancedSettings(prev => ({
-      ...prev,
-      [setting]: value
-    }));
-    
-    // Update contract settings when advanced settings change
-    if (setting === 'maxTxLimit') {
-      handleSettingsChange('maxTxAmount', value.toString());
-    } else if (setting === 'maxWalletLimit') {
-      handleSettingsChange('maxWalletAmount', value.toString());
-    } else if (setting === 'tradingCooldown') {
-      handleSettingsChange('tradingCooldown', value);
-    }
-  };
-
-  const handleAiNameSuggestion = async () => {
-    const theme = coinIdea.theme || 'meme coin';
-    const suggestions = [
-      'Pulse' + theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1),
-      theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1) + 'Chain',
-      'Meta' + theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1),
-      theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1) + 'X',
-      theme.split(' ')[0].charAt(0).toUpperCase() + theme.split(' ')[0].slice(1) + 'DAO'
-    ];
-
-    const aiSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-    const ticker = aiSuggestion.substring(0, 4).toUpperCase();
-
+  const handleTaxSettingsChange = (key: string, value: number) => {
     setSettings(prev => ({
       ...prev,
-      tokenName: aiSuggestion,
-      tokenSymbol: ticker
+      taxSettings: {
+        ...prev.taxSettings,
+        [key]: value
+      }
     }));
-
-    toast({
-      title: "AI Name Generated! 🤖",
-      description: `Generated name: ${aiSuggestion} ($${ticker})`
-    });
   };
 
-  const generateContract = () => {
-    try {
-      let code = '';
-      if (contractType === 'noTax') {
-        code = generateStandardERC20(settings);
-      } else {
-        code = generateTaxedToken(settings);
+  const handleWalletSettingsChange = (key: string, value: string) => {
+    setSettings(prev => ({
+      ...prev,
+      walletSettings: {
+        ...prev.walletSettings,
+        [key]: value
       }
-      setGeneratedCode(code);
-      setActiveTab('code');
+    }));
+  };
+
+  const handleLimitSettingsChange = (key: string, value: any) => {
+    setSettings(prev => ({
+      ...prev,
+      limitSettings: {
+        ...prev.limitSettings,
+        [key]: value
+      }
+    }));
+  };
+
+  const handleGenerateContract = async () => {
+    if (!settings.tokenName || !settings.tokenSymbol) {
       toast({
-        title: 'Contract Generated! 🎉',
-        description: `Your ${contractType === 'noTax' ? 'Standard PRC20 (no tax)' : 'Tokenomics'} contract has been generated successfully.`,
+        title: "Missing Information",
+        description: "Please fill in the token name and symbol.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      // Contract generation feedback stages
+      setGeneratedContract("// Initializing contract generation...");
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      setGeneratedContract(prev => prev + "\n// Configuring token parameters...");
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      setGeneratedContract(prev => prev + "\n// Implementing security features...");
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      const contractCode = generateContractCode(settings);
+      setGeneratedContract(contractCode);
+      
+      toast({
+        title: "Contract Generated",
+        description: "Your smart contract has been generated successfully!",
+        duration: 3000
       });
     } catch (error) {
+      console.error('Contract generation error:', error);
       toast({
-        title: 'Error Generating Contract',
-        description: error instanceof Error ? error.message : 'An error occurred',
-        variant: 'destructive',
+        title: "Generation Failed",
+        description: "Failed to generate contract. Please check your settings.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCopyCode = async () => {
+    if (!generatedContract) return;
+    
+    try {
+      await navigator.clipboard.writeText(generatedContract);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+      
+      toast({
+        title: "Copied!",
+        description: "Contract code copied to clipboard",
+        duration: 2000
+      });
+    } catch (error) {
+      console.error('Copy error:', error);
+      toast({
+        title: "Copy Failed",
+        description: "Failed to copy contract code",
+        variant: "destructive"
       });
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedCode);
-    toast({
-      title: "Copied! 📋",
-      description: "Contract code copied to clipboard",
-    });
-  };
-
-  const downloadContract = () => {
-    if (!generatedCode) return;
+  const handleDownloadContract = () => {
+    if (!generatedContract || !settings.tokenName) return;
     
-    const contractName = settings.tokenName.replace(/\s+/g, '');
-    const blob = new Blob([generatedCode], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${contractName}.sol`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    toast({
-      title: "Contract Downloaded! 💾",
-      description: `Saved as ${contractName}.sol`,
-    });
+    try {
+      const blob = new Blob([generatedContract], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${settings.tokenName.replace(/\s+/g, '')}_contract.sol`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Downloaded!",
+        description: "Contract has been downloaded successfully",
+        duration: 2000
+      });
+    } catch (error) {
+      console.error('Download error:', error);
+      toast({
+        title: "Download Failed",
+        description: "Failed to download contract code",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-8 px-2 relative">
-      <ParticleBackground />
-      {/* Animated sparkles for ultra-wow effect */}
-      <span className="pulse-sparkle pulse-sparkle-1" />
-      <span className="pulse-sparkle pulse-sparkle-2" />
-      <span className="pulse-sparkle pulse-sparkle-3" />
-      <span className="pulse-sparkle pulse-sparkle-4" />
-      <span className="pulse-sparkle pulse-sparkle-5" />
-      {/* Animated logo or badge removed as requested */}
-      <div className="flex flex-col items-center mb-8 animate-fade-in">
-        <div className="pulse-title text-3xl font-extrabold tracking-wider mb-2 text-center">PulseChain Genesis Forge</div>
-        <div className="text-lg font-medium text-purple-200 pulse-tab mb-3 animate-gradient-x text-center">The Ultimate PRC20 Smart Contract Generator</div>
-        <div className="flex items-center gap-2 text-xs text-purple-300 font-mono bg-black/40 px-4 py-2 rounded-full border border-purple-700/40 animate-fade-in mt-1">
-          <Star className="w-4 h-4 text-yellow-400 animate-pulse" />
-          {/* Updated tagline, removed '100% On-Chain' and improved spacing */}
-          No Coding Required &bull; PulseChain Ready
+    <div className="py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-screen backdrop-blur-3xl">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="text-center mb-16">
+          <h2 className="font-orbitron text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-pulse-purple via-pulse-orange to-pulse-purple bg-clip-text text-transparent">
+            Smart Contract Generator
+          </h2>
+          <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            Generate a complete, feature-rich smart contract for your token
+          </p>
         </div>
-      </div>
-      <div className="w-full max-w-2xl mx-auto">
-        <Card className="pulse-gradient-border pulse-glass w-full p-0 md:p-6">
-          <CardHeader className="pb-2">
-            <CardTitle className="pulse-title text-2xl font-bold text-center">
-              Smart Contract Generator
-            </CardTitle>
-            <div className="text-xs px-3 py-1 mt-2 rounded bg-purple-900/40 border border-purple-500/30 text-purple-200 font-mono pulse-tab text-center">
-              {contractType === 'noTax' ? 'Standard PRC20 (No Tax)' : contractType ? contractType.charAt(0).toUpperCase() + contractType.slice(1) + ' Layout' : 'Custom'}
-            </div>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="flex flex-col gap-6">
-              {/* Step Indicator - simplified */}
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <div className={cn("pulse-tab", activeTab === 'settings' ? "font-bold" : "opacity-50")}>1. Settings</div>
-                <span className="text-purple-400">→</span>
-                <div className={cn("pulse-tab", activeTab === 'security' ? "font-bold" : "opacity-50")}>2. Security</div>
-                <span className="text-purple-400">→</span>
-                <div className={cn("pulse-tab", activeTab === 'code' ? "font-bold" : "opacity-50")}>3. Code</div>
-              </div>
-              {/* Main Tabs - simplified, no extra spacing */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsContent value="settings">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div>
-                      <Label>Token Name</Label>
-                      <Input value={settings.tokenName} onChange={e => handleSettingsChange('tokenName', e.target.value)} className="bg-black/50 border-purple-500/20 focus:border-purple-500/40" />
+
+        <div className="max-w-6xl mx-auto">
+          <Card className={cn(
+            "bg-black/40 backdrop-blur-xl border-2 border-purple-500/20",
+            "shadow-[0_0_45px_-15px_rgba(147,51,234,0.3)] rounded-2xl"
+          )}>
+            <Tabs defaultValue="contract-type" className="p-6">
+              <TabsList className={cn(
+                "grid grid-cols-6 w-full h-auto mb-8",
+                "bg-gray-800/50 backdrop-blur-md border-2 border-purple-500/20 rounded-xl p-3 gap-2"
+              )}>
+                <TabsTrigger
+                  value="contract-type"
+                  className={cn(
+                    "px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white/5",
+                    "data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20",
+                    "data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <Star className="h-4 w-4" />
+                    <span className="font-medium">Type</span>
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="basic-settings"
+                  className={cn(
+                    "px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white/5",
+                    "data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20",
+                    "data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <Settings className="h-4 w-4" />
+                    <span className="font-medium">Basic</span>
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="tax-settings"
+                  className={cn(
+                    "px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white/5",
+                    "data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20",
+                    "data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    <span className="font-medium">Tax</span>
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="security"
+                  className={cn(
+                    "px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white/5",
+                    "data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20",
+                    "data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <Shield className="h-4 w-4" />
+                    <span className="font-medium">Security</span>
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="advanced"
+                  className={cn(
+                    "px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white/5",
+                    "data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20",
+                    "data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <Sliders className="h-4 w-4" />
+                    <span className="font-medium">Advanced</span>
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="preview"
+                  className={cn(
+                    "px-4 py-3 rounded-lg transition-all duration-200 hover:bg-white/5",
+                    "data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/20",
+                    "data-[state=active]:to-orange-500/20 data-[state=active]:shadow-lg"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <Code className="h-4 w-4" />
+                    <span className="font-medium">Preview</span>
+                  </span>
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="contract-type" className="space-y-8">
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-blue-500/20 shadow-lg hover:border-blue-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <Star className="w-5 h-5 text-blue-400" />
+                      <CardTitle>Select Contract Type</CardTitle>
                     </div>
-                    <div>
-                      <Label>Token Symbol</Label>
-                      <Input value={settings.tokenSymbol} onChange={e => handleSettingsChange('tokenSymbol', e.target.value)} className="bg-black/50 border-purple-500/20 focus:border-purple-500/40" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {CONTRACT_TYPES.map((type) => {
+                        const IconComponent = type.icon;
+                        const isSelected = settings.contractType === type.id;
+                        return (
+                          <Card
+                            key={type.id}
+                            className={cn(
+                              "cursor-pointer transition-all duration-200 p-4",
+                              "border-2 hover:scale-105",
+                              isSelected 
+                                ? "border-purple-500 bg-purple-500/10 shadow-lg" 
+                                : "border-gray-600/30 bg-black/20 hover:border-purple-500/50"
+                            )}
+                            onClick={() => handleSettingsChange('contractType', type.id)}
+                          >
+                            <div className="flex flex-col items-center text-center space-y-3">
+                              <IconComponent className={cn(
+                                "w-8 h-8",
+                                isSelected ? "text-purple-400" : "text-gray-400"
+                              )} />
+                              <div>
+                                <h3 className="font-semibold">{type.name}</h3>
+                                <p className="text-sm text-gray-400 mb-2">{type.description}</p>
+                                <Badge 
+                                  variant="outline" 
+                                  className={cn(
+                                    "text-xs mb-2",
+                                    type.complexity === 'Basic' && "border-green-500 text-green-400",
+                                    type.complexity === 'Intermediate' && "border-yellow-500 text-yellow-400",
+                                    type.complexity === 'Advanced' && "border-orange-500 text-orange-400",
+                                    type.complexity === 'Expert' && "border-red-500 text-red-400"
+                                  )}
+                                >
+                                  {type.complexity}
+                                </Badge>
+                                <p className="text-xs text-gray-500">{type.gasEstimate}</p>
+                              </div>
+                            </div>
+                          </Card>
+                        );
+                      })}
                     </div>
-                    <div>
-                      <Label>Total Supply</Label>
-                      <Input type="text" value={settings.totalSupply} onChange={e => handleSettingsChange('totalSupply', e.target.value)} className="bg-black/50 border-purple-500/20 focus:border-purple-500/40" />
-                    </div>
-                    <div>
-                      <Label>Decimals</Label>
-                      <Input type="number" value={settings.decimals} onChange={e => handleSettingsChange('decimals', parseInt(e.target.value))} className="bg-black/50 border-purple-500/20 focus:border-purple-500/40" />
-                    </div>
-                  </div>
-                  <div className="flex justify-end mt-4">
-                    <Button onClick={() => setActiveTab('security')} className="pulse-glow-btn">Next</Button>
-                  </div>
-                </TabsContent>
-                <TabsContent value="security">
-                  <div className="grid grid-cols-1 gap-4">
-                    {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
-                      <div key={feature} className="flex items-center gap-3 p-3 rounded-lg pulse-feature">
-                        <Switch checked={enabled} onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)} />
-                        <div>
-                          <div className="font-medium pulse-tab">{feature.charAt(0).toUpperCase() + feature.slice(1)}</div>
-                          <div className="text-xs text-gray-400">{getFeatureDescription(feature)}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-between mt-4">
-                    <Button variant="outline" onClick={() => setActiveTab('settings')}>Back</Button>
-                    <Button onClick={() => setActiveTab('code')} className="pulse-glow-btn">Next</Button>
-                  </div>
-                </TabsContent>
-                <TabsContent value="code">
-                  <div className="flex flex-col gap-4">
-                    <Button onClick={generateContract} className="pulse-glow-btn w-full">
-                      <Sparkles className="w-4 h-4 mr-2" />Generate Smart Contract
-                    </Button>
-                    {generatedCode && (
-                      <div className="relative">
-                        <pre className="p-4 rounded-lg bg-black/70 border border-purple-500/20 overflow-x-auto max-h-[50vh] scrollbar-thin scrollbar-thumb-purple-500/20 text-left">
-                          <code className="text-sm text-gray-300 font-mono">{generatedCode}</code>
-                        </pre>
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <Button onClick={copyToClipboard} variant="outline" size="icon" className="bg-black/50"><Copy className="w-4 h-4" /></Button>
-                          <Button onClick={downloadContract} variant="outline" size="icon" className="bg-black/50"><Download className="w-4 h-4" /></Button>
+                    
+                    {settings.contractType && (
+                      <div className="mt-6 p-4 bg-black/40 rounded-lg">
+                        <h4 className="font-semibold mb-2">Features Included:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {CONTRACT_TYPES.find(t => t.id === settings.contractType)?.features.map((feature) => (
+                            <Badge key={feature} variant="secondary" className="bg-purple-500/20 text-purple-300">
+                              {feature}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
                     )}
-                    <div className="flex justify-between">
-                      <Button variant="outline" onClick={() => setActiveTab('security')}>Back</Button>
-                      {generatedCode && (
-                        <div className="flex gap-2">
-                          <Button variant="outline" onClick={copyToClipboard}><Copy className="w-4 h-4 mr-2" />Copy</Button>
-                          <Button variant="outline" onClick={downloadContract}><Download className="w-4 h-4 mr-2" />Download</Button>
-                        </div>
-                      )}
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-green-500/20 shadow-lg hover:border-green-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <Target className="w-5 h-5 text-green-400" />
+                      <CardTitle>Network Selection</CardTitle>
                     </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </CardContent>
-        </Card>
-        {/* Resources Section - should be above analytics */}
-        <div className="mt-12">
-          <ResourcesSection />
-        </div>
-        {/* Token Analytics section - now directly below ResourcesSection, inside main container */}
-        <div className="mt-12 mb-8">
-          <div className="pulse-title text-xl font-bold mb-4 text-center">Token Analytics</div>
-          <div className="pulse-glass p-6">
-            {/* If you have a TokenAnalyticsDashboard component, render it here */}
-            {/* <TokenAnalyticsDashboard ...props /> */}
-            <p className="text-purple-200 text-center">Token analytics and charts will appear here after contract generation.</p>
-          </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Select value={settings.networkId.toString()} onValueChange={(value) => handleSettingsChange('networkId', parseInt(value))}>
+                      <SelectTrigger className="bg-black/50 border-green-500/20 focus:border-green-500/40">
+                        <SelectValue placeholder="Select Network" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black/90 border-green-500/20">
+                        {NETWORK_OPTIONS.map((network) => (
+                          <SelectItem key={network.id} value={network.id.toString()}>
+                            <div className="flex items-center gap-2">
+                              <span>{network.name}</span>
+                              <Badge variant="outline" className="text-xs">{network.symbol}</Badge>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="basic-settings" className="space-y-8">
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-blue-500/20 shadow-lg hover:border-blue-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <Settings className="w-5 h-5 text-blue-400" />
+                      <CardTitle>Token Configuration</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="tokenName">Token Name</Label>
+                          <Input
+                            id="tokenName"
+                            value={settings.tokenName}
+                            onChange={(e) => handleSettingsChange('tokenName', e.target.value)}
+                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                            placeholder="e.g., PulseChain Meme Token"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="tokenSymbol">Token Symbol</Label>
+                          <Input
+                            id="tokenSymbol"
+                            value={settings.tokenSymbol}
+                            onChange={(e) => handleSettingsChange('tokenSymbol', e.target.value)}
+                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                            placeholder="e.g., PCMT"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="totalSupply">Total Supply</Label>
+                          <Input
+                            id="totalSupply"
+                            value={settings.totalSupply}
+                            onChange={(e) => handleSettingsChange('totalSupply', e.target.value)}
+                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                            placeholder="e.g., 1000000000"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="decimals">Decimals</Label>
+                          <Input
+                            id="decimals"
+                            type="number"
+                            min="0"
+                            max="18"
+                            value={settings.decimals}
+                            onChange={(e) => handleSettingsChange('decimals', parseInt(e.target.value))}
+                            className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="tax-settings" className="space-y-8">
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-yellow-500/20 shadow-lg hover:border-yellow-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <DollarSign className="w-5 h-5 text-yellow-400" />
+                      <CardTitle>Tax Configuration</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="space-y-3">
+                        <Label>Buy Tax: {settings.taxSettings.buyTax}%</Label>
+                        <Slider
+                          value={[settings.taxSettings.buyTax]}
+                          onValueChange={(value) => handleTaxSettingsChange('buyTax', value[0])}
+                          max={settings.taxSettings.maxTax}
+                          step={0.1}
+                          className="w-full"
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <Label>Sell Tax: {settings.taxSettings.sellTax}%</Label>
+                        <Slider
+                          value={[settings.taxSettings.sellTax]}
+                          onValueChange={(value) => handleTaxSettingsChange('sellTax', value[0])}
+                          max={settings.taxSettings.maxTax}
+                          step={0.1}
+                          className="w-full"
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <Label>Transfer Tax: {settings.taxSettings.transferTax}%</Label>
+                        <Slider
+                          value={[settings.taxSettings.transferTax]}
+                          onValueChange={(value) => handleTaxSettingsChange('transferTax', value[0])}
+                          max={10}
+                          step={0.1}
+                          className="w-full"
+                        />
+                      </div>
+                    </div>
+
+                    <Separator className="my-6" />
+
+                    <div>
+                      <h4 className="font-semibold mb-4 flex items-center gap-2">
+                        <Target className="w-4 h-4" />
+                        Tax Distribution (Must total 100%)
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {[
+                          { key: 'liquidityShare', label: 'Liquidity', icon: RefreshCw },
+                          { key: 'marketingShare', label: 'Marketing', icon: TrendingUp },
+                          { key: 'devShare', label: 'Development', icon: Settings },
+                          { key: 'burnShare', label: 'Burn', icon: Flame },
+                          { key: 'reflectionShare', label: 'Reflection', icon: Eye },
+                          { key: 'charityShare', label: 'Charity', icon: Users }
+                        ].map(({ key, label, icon: Icon }) => (
+                          <div key={key} className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <Icon className="w-4 h-4 text-purple-400" />
+                              <Label>{label}: {settings.taxSettings[key as keyof TaxSettings]}%</Label>
+                            </div>
+                            <Slider
+                              value={[settings.taxSettings[key as keyof TaxSettings] as number]}
+                              onValueChange={(value) => handleTaxSettingsChange(key, value[0])}
+                              max={100}
+                              step={1}
+                              className="w-full"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-4 p-3 bg-black/40 rounded-lg">
+                        <div className="flex justify-between items-center">
+                          <span>Total Distribution:</span>
+                          <Badge 
+                            variant={
+                              (settings.taxSettings.liquidityShare + 
+                               settings.taxSettings.marketingShare + 
+                               settings.taxSettings.devShare + 
+                               settings.taxSettings.burnShare + 
+                               settings.taxSettings.reflectionShare + 
+                               settings.taxSettings.charityShare) === 100 
+                                ? "default" : "destructive"
+                            }
+                          >
+                            {settings.taxSettings.liquidityShare + 
+                             settings.taxSettings.marketingShare + 
+                             settings.taxSettings.devShare + 
+                             settings.taxSettings.burnShare + 
+                             settings.taxSettings.reflectionShare + 
+                             settings.taxSettings.charityShare}%
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-purple-500/20 shadow-lg hover:border-purple-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <Wallet className="w-5 h-5 text-purple-400" />
+                      <CardTitle>Wallet Configuration</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {[
+                      { key: 'marketingWallet', label: 'Marketing Wallet', description: 'Receives marketing tax allocation' },
+                      { key: 'devWallet', label: 'Development Wallet', description: 'Receives development tax allocation' },
+                      { key: 'autoLiquidityWallet', label: 'Auto Liquidity Wallet', description: 'Receives liquidity tokens (optional)' },
+                      { key: 'charityWallet', label: 'Charity Wallet', description: 'Receives charity tax allocation' },
+                      { key: 'treasuryWallet', label: 'Treasury Wallet', description: 'Additional treasury address' }
+                    ].map(({ key, label, description }) => (
+                      <div key={key} className="space-y-2">
+                        <Label htmlFor={key}>{label}</Label>
+                        <Input
+                          id={key}
+                          value={settings.walletSettings[key as keyof WalletSettings]}
+                          onChange={(e) => handleWalletSettingsChange(key, e.target.value)}
+                          className="bg-black/50 border-purple-500/20 focus:border-purple-500/40"
+                          placeholder="0x..."
+                        />
+                        <p className="text-xs text-gray-400">{description}</p>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="security" className="space-y-8">
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-red-500/20 shadow-lg hover:border-red-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <Shield className="w-5 h-5 text-red-400" />
+                      <CardTitle>Security Features</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {Object.entries(settings.securityFeatures).map(([feature, enabled]) => (
+                        <div key={feature} className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              {feature === 'antiWhale' && <AlertTriangle className="w-4 h-4 text-orange-400" />}
+                              {feature === 'blacklist' && <Lock className="w-4 h-4 text-red-400" />}
+                              {feature === 'pausable' && <Timer className="w-4 h-4 text-yellow-400" />}
+                              {feature === 'reflection' && <TrendingUp className="w-4 h-4 text-blue-400" />}
+                              {feature === 'burnable' && <Flame className="w-4 h-4 text-orange-400" />}
+                              {feature === 'mintable' && <Sparkles className="w-4 h-4 text-green-400" />}
+                              {feature === 'snapshot' && <Eye className="w-4 h-4 text-purple-400" />}
+                              {feature === 'voting' && <Users className="w-4 h-4 text-blue-400" />}
+                              {feature === 'deflationary' && <Flame className="w-4 h-4 text-red-400" />}
+                              {feature === 'rewardToken' && <Star className="w-4 h-4 text-yellow-400" />}
+                              <Label className="font-medium capitalize">
+                                {feature.replace(/([A-Z])/g, ' $1').trim()}
+                              </Label>
+                            </div>
+                            <p className="text-sm text-gray-400">{getFeatureDescription(feature)}</p>
+                          </div>
+                          <Switch
+                            checked={enabled}
+                            onCheckedChange={() => handleSecurityFeatureToggle(feature as keyof SecurityFeatures)}
+                            className="data-[state=checked]:bg-red-500 ml-4"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="advanced" className="space-y-8">
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-orange-500/20 shadow-lg hover:border-orange-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <Sliders className="w-5 h-5 text-orange-400" />
+                      <CardTitle>Trading Limits & Protection</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="space-y-3">
+                        <Label>Max Transaction: {settings.limitSettings.maxTxPercent}%</Label>
+                        <Slider
+                          value={[settings.limitSettings.maxTxPercent]}
+                          onValueChange={(value) => handleLimitSettingsChange('maxTxPercent', value[0])}
+                          min={0.1}
+                          max={10}
+                          step={0.1}
+                          className="w-full"
+                        />
+                        <p className="text-xs text-gray-400">Maximum tokens per transaction (% of total supply)</p>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <Label>Max Wallet: {settings.limitSettings.maxWalletPercent}%</Label>
+                        <Slider
+                          value={[settings.limitSettings.maxWalletPercent]}
+                          onValueChange={(value) => handleLimitSettingsChange('maxWalletPercent', value[0])}
+                          min={0.1}
+                          max={10}
+                          step={0.1}
+                          className="w-full"
+                        />
+                        <p className="text-xs text-gray-400">Maximum tokens per wallet (% of total supply)</p>
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <Label>Max Sell: {settings.limitSettings.maxSellPercent}%</Label>
+                        <Slider
+                          value={[settings.limitSettings.maxSellPercent]}
+                          onValueChange={(value) => handleLimitSettingsChange('maxSellPercent', value[0])}
+                          min={0.1}
+                          max={5}
+                          step={0.1}
+                          className="w-full"
+                        />
+                        <p className="text-xs text-gray-400">Maximum sell amount (% of total supply)</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        <Label>Trading Cooldown: {settings.limitSettings.tradingCooldown} seconds</Label>
+                        <Slider
+                          value={[settings.limitSettings.tradingCooldown]}
+                          onValueChange={(value) => handleLimitSettingsChange('tradingCooldown', value[0])}
+                          min={0}
+                          max={300}
+                          step={5}
+                          className="w-full"
+                        />
+                        <p className="text-xs text-gray-400">Cooldown period between trades</p>
+                      </div>
+                    </div>
+
+                    <Separator className="my-6" />
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {[
+                        { key: 'launchProtection', label: 'Launch Protection', description: 'Protection during initial launch phase', icon: Shield },
+                        { key: 'antiSnipe', label: 'Anti-Snipe', description: 'Prevent sniping bots at launch', icon: Target },
+                        { key: 'antiBotEnabled', label: 'Anti-Bot', description: 'General bot detection and prevention', icon: Bot }
+                      ].map(({ key, label, description, icon: Icon }) => (
+                        <div key={key} className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Icon className="w-4 h-4 text-orange-400" />
+                              <Label className="font-medium">{label}</Label>
+                            </div>
+                            <p className="text-sm text-gray-400">{description}</p>
+                          </div>
+                          <Switch
+                            checked={settings.limitSettings[key as keyof LimitSettings] as boolean}
+                            onCheckedChange={(checked) => handleLimitSettingsChange(key, checked)}
+                            className="data-[state=checked]:bg-orange-500 ml-4"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-black/30 rounded-xl p-6 border-2 border-green-500/20 shadow-lg hover:border-green-500/40 transition-all duration-200">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <RefreshCw className="w-5 h-5 text-green-400" />
+                      <CardTitle>Liquidity Settings</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
+                      <div>
+                        <Label className="font-medium">Auto Liquidity</Label>
+                        <p className="text-sm text-gray-400">Automatically add liquidity from taxes</p>
+                      </div>
+                      <Switch
+                        checked={settings.autoLiquidity}
+                        onCheckedChange={(checked) => handleSettingsChange('autoLiquidity', checked)}
+                        className="data-[state=checked]:bg-green-500"
+                      />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <Label>Liquidity Lock Period: {settings.liquidityLockDays} days</Label>
+                      <Slider
+                        value={[settings.liquidityLockDays]}
+                        onValueChange={(value) => handleSettingsChange('liquidityLockDays', value[0])}
+                        min={30}
+                        max={1095}
+                        step={30}
+                        className="w-full"
+                      />
+                      <p className="text-xs text-gray-400">How long to lock initial liquidity</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="preview" className="space-y-6">
+                <Card className="bg-black/30 rounded-xl border-2 border-green-500/20">
+                  <CardContent className="p-6">
+                    <div className={cn(
+                      "bg-black/60 rounded-lg p-4 font-mono text-sm",
+                      "overflow-x-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent"
+                    )}>
+                      <pre className="whitespace-pre-wrap break-words">
+                        {generatedContract || "// Your generated contract will appear here"}
+                      </pre>
+                    </div>
+                    <div className="flex justify-end gap-4 mt-6">
+                      <Button
+                        onClick={handleCopyCode}
+                        variant="outline"
+                        className={cn(
+                          "bg-purple-500/20 hover:bg-purple-500/30",
+                          "border-purple-500/20 hover:border-purple-500/40"
+                        )}
+                        disabled={!generatedContract}
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        <span>{isCopied ? "Copied!" : "Copy Code"}</span>
+                      </Button>
+                      <Button
+                        onClick={handleDownloadContract}
+                        variant="outline"
+                        className={cn(
+                          "bg-green-500/20 hover:bg-green-500/30",
+                          "border-green-500/20 hover:border-green-500/40"
+                        )}
+                        disabled={!generatedContract}
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        <span>Download</span>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Button
+                  onClick={handleGenerateContract}
+                  disabled={isGenerating}
+                  className={cn(
+                    "w-full bg-gradient-to-r from-purple-600 to-orange-500",
+                    "hover:from-purple-700 hover:to-orange-600 text-white font-semibold",
+                    "py-4 rounded-xl shadow-lg transition-all duration-300",
+                    "flex items-center justify-center gap-2"
+                  )}
+                >
+                  {isGenerating ? (
+                    <>
+                      <div className="animate-spin h-4 w-4 border-2 border-white/20 border-t-white rounded-full" />
+                      <span>Generating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="h-4 w-4" />
+                      <span>Generate Smart Contract</span>
+                    </>
+                  )}
+                </Button>
+              </TabsContent>
+            </Tabs>
+          </Card>
         </div>
       </div>
-      {/* Token Analytics section - always at very bottom, outside ALL containers */}
-      <footer className="w-full flex flex-col items-center justify-center mt-16 mb-8">
-        <div className="w-full max-w-2xl">
-          <div className="pulse-title text-xl font-bold mb-4 text-center">Token Analytics</div>
-          <div className="pulse-glass p-6">
-            {/* If you have a TokenAnalyticsDashboard component, render it here */}
-            {/* <TokenAnalyticsDashboard ...props /> */}
-            <p className="text-purple-200 text-center">Token analytics and charts will appear here after contract generation.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
-};
-
-export default ContractCodeGenerator;
+}
