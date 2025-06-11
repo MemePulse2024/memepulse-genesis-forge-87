@@ -136,6 +136,27 @@ const TokenomicsEngine = ({ tokenomics, setTokenomics }: TokenomicsEngineProps) 
     setAiTip('AI randomized your tokenomics for max meme potential!');
   };
 
+  // Auto-clear AI suggestion after 7 seconds
+  useEffect(() => {
+    if (!aiSuggestion) return;
+    const timeout = setTimeout(() => setAiSuggestion(''), 7000);
+    return () => clearTimeout(timeout);
+  }, [aiSuggestion]);
+
+  // Auto-clear AI explain after 7 seconds
+  useEffect(() => {
+    if (!aiExplain) return;
+    const timeout = setTimeout(() => setAiExplain(''), 7000);
+    return () => clearTimeout(timeout);
+  }, [aiExplain]);
+
+  // Auto-clear AI tip after 7 seconds
+  useEffect(() => {
+    if (!aiTip) return;
+    const timeout = setTimeout(() => setAiTip(''), 7000);
+    return () => clearTimeout(timeout);
+  }, [aiTip]);
+
   return (
     <section id="tokenomics" className="relative py-16 md:py-24 bg-gradient-to-br from-black via-gray-900/50 to-black min-h-[60vh] backdrop-blur-3xl">
       <div className="container mx-auto px-4 max-w-6xl">
