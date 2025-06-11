@@ -1,15 +1,13 @@
-
 import { useState, useEffect } from 'react';
 
 const BlockTimeDisplay = () => {
-  const [averageBlockTime, setAverageBlockTime] = useState<string>('Loading...');
+  const [averageBlockTime, setAverageBlockTime] = useState<string>('Calculating...');
   const [error, setError] = useState<boolean>(false);
+  const [retryCount, setRetryCount] = useState<number>(0);
 
   useEffect(() => {
     const fetchBlockData = async () => {
       try {
-        console.log('Fetching recent blocks to calculate average block time...');
-        
         // Fetch the latest block first
         const latestResponse = await fetch('https://rpc.pulsechain.com', {
           method: 'POST',
@@ -29,8 +27,7 @@ const BlockTimeDisplay = () => {
         }
 
         const latestData = await latestResponse.json();
-        console.log('Latest block data received:', latestData);
-
+        
         if (!latestData.result || !latestData.result.number) {
           throw new Error('Invalid latest block response');
         }
@@ -79,29 +76,38 @@ const BlockTimeDisplay = () => {
         }
 
         const averageSeconds = timeDifferences.reduce((sum, diff) => sum + diff, 0) / timeDifferences.length;
-        
-        console.log(`Average block time calculated: ${averageSeconds.toFixed(1)}s`);
         setAverageBlockTime(`${averageSeconds.toFixed(1)}s blocks`);
         setError(false);
+        setRetryCount(0);
 
       } catch (error) {
         console.error('Block data fetch error:', error);
         setError(true);
-        setAverageBlockTime('~12s blocks');
+        setAverageBlockTime('Calculating...');
+        
+        // Retry after 5 seconds if we haven't tried too many times
+        if (retryCount < 3) {
+          setTimeout(() => {
+            setRetryCount(prev => prev + 1);
+            fetchBlockData();
+          }, 5000);
+        } else {
+          setAverageBlockTime('Checking block time...');
+        }
       }
     };
 
     // Initial fetch
     fetchBlockData();
     
-    // Update every 30 seconds since we're showing average, not real-time
+    // Update every 30 seconds
     const interval = setInterval(fetchBlockData, 30000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [retryCount]);
 
   return (
-    <span className="px-3 md:px-4 py-2 bg-indigo-600/30 border border-indigo-400/50 text-indigo-300 font-semibold rounded-full text-xs md:text-sm backdrop-blur-sm">
+    <span className="px-3 md:px-4 py-2 bg-indigo-600/30 border border-indigo-400/50 text-indigo-300 font-semibold rounded-full text-xs md:text-sm backdrop-blur-sm animate-pulse">
       ⚡ {averageBlockTime}
     </span>
   );
