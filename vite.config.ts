@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/memepulse-genesis-forge-87/', // Set base for GitHub Pages deployment (must match repo name)
+  base: './', // Use relative base for root deployment
   server: {
     host: "::",
     port: 8080,
