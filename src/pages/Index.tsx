@@ -124,6 +124,48 @@ const Index = () => {
               <SectionHeader icon={<BarChart3 className="w-8 h-8 text-green-300" />} title="Token Analytics Dashboard" desc="Track your token's performance and on-chain stats in real time." />
               <TokenAnalyticsDashboard />
             </section>
+            {/* Meme of the Day Section */}
+            <section id="meme-of-the-day" className="section-glass animate-fade-in-up">
+              <SectionHeader icon={<Sparkles className="w-8 h-8 text-pink-400" />} title="Meme of the Day" desc="Get inspired by the hottest meme on PulseChain right now!" />
+              <div className="bg-black/60 border border-pulse-orange/30 rounded-xl p-4 md:p-6 backdrop-blur-sm flex flex-col items-center">
+                {/* Placeholder for Meme of the Day Content */}
+                <p className="text-gray-300 text-center mb-4">🎉 Coming Soon: Our handpicked Meme of the Day feature! 🎉</p>
+                <Button variant="primary" className="animate-pulse" disabled>
+                  <span className="font-semibold">Stay Tuned!</span>
+                </Button>
+              </div>
+            </section>
+            {/* Randomize Button Section */}
+            <section id="randomize" className="section-glass animate-fade-in-up">
+              <div className="flex flex-col items-center">
+                <p className="text-gray-300 text-center mb-4">Feeling lucky? Click the button below to generate a random meme coin idea!</p>
+                <Button variant="secondary" className="flex items-center gap-2" onClick={() => {
+                  // TODO: Implement random meme coin idea generation
+                  toast({ title: 'Random Idea Generated!', description: 'Check the Meme Coin Idea Generator section.', duration: 2000 });
+                }}>
+                  <Lightbulb className="w-5 h-5" />
+                  <span className="font-semibold">Randomize Idea</span>
+                </Button>
+              </div>
+            </section>
+            {/* Meme Tips Section */}
+            <section id="meme-tips" className="section-glass animate-fade-in-up">
+              <SectionHeader icon={<Sparkles className="w-8 h-8 text-pink-400" />} title="Meme Tips & Tricks" desc="Level up your meme game with these expert tips!" />
+              <div className="space-y-4">
+                <div className="bg-black/60 border border-pulse-orange/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+                  <h4 className="font-semibold text-lg mb-2">🔥 Tip #1: Use Trending Topics</h4>
+                  <p className="text-gray-300">Capitalize on current events or trends to make your meme coin relevant and timely.</p>
+                </div>
+                <div className="bg-black/60 border border-pulse-orange/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+                  <h4 className="font-semibold text-lg mb-2">🎨 Tip #2: Eye-Catching Art</h4>
+                  <p className="text-gray-300">Invest in good design! Memes with striking visuals tend to perform better.</p>
+                </div>
+                <div className="bg-black/60 border border-pulse-orange/30 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+                  <h4 className="font-semibold text-lg mb-2">📢 Tip #3: Strong Messaging</h4>
+                  <p className="text-gray-300">Make sure your meme coin's purpose and value proposition are crystal clear.</p>
+                </div>
+              </div>
+            </section>
           </main>
         </div>
       </div>

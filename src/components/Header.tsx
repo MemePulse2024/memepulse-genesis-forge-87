@@ -1,11 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import BlockTimeDisplay from './BlockTimeDisplay';
+
+const memeWisdoms = [
+  "WAGMI: We're All Gonna Meme It! 🚀",
+  "Buy the dip, tip the devs, meme the world! 😂",
+  "Diamond hands, paper memes. 💎🤲",
+  "PulseChain: Where memes become dreams.",
+  "If you can read this, you're early. 🦍",
+  "Degen tip: Never go full rug. 🏃‍♂️💨",
+  "Meme magic is real. Believe! ✨",
+  "HODL your memes, not your breath!",
+  "The best utility is fun."
+];
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [wisdom, setWisdom] = useState(memeWisdoms[0]);
 
   useEffect(() => {
     setIsVisible(true);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWisdom(memeWisdoms[Math.floor(Math.random() * memeWisdoms.length)]);
+    }, 6000);
+    return () => clearInterval(interval);
   }, []);
 
   const scrollToGenerator = () => {
@@ -38,10 +58,10 @@ const Header = () => {
               </span>
             </h1>
             <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-amber-400 mb-2">
-              💎 GENESIS FORGE 💎
+              💎 GENESIS FORGE 💎 <span className="ml-2 text-pulse-orange animate-bounce">🔥</span>
             </div>
             <div className="text-sm sm:text-lg md:text-xl font-semibold text-indigo-300 uppercase tracking-wider">
-              Built for the PulseChain Ecosystem
+              Built for the PulseChain Ecosystem <span className="ml-2">🦄</span>
             </div>
           </div>
           
@@ -69,6 +89,12 @@ const Header = () => {
             </span>
             <span className="px-3 md:px-4 py-2 bg-purple-600/30 border border-purple-400/50 text-purple-300 font-semibold rounded-full text-xs md:text-sm backdrop-blur-sm">
               🔥 Fork-Free Future
+            </span>
+          </div>
+
+          <div className="mb-2">
+            <span className="inline-block px-4 py-2 rounded-full bg-gradient-to-r from-pulse-orange to-pulse-purple text-white font-bold text-base shadow-lg animate-pulse">
+              {wisdom}
             </span>
           </div>
         </div>
