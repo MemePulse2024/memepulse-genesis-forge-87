@@ -12,7 +12,7 @@ interface BasicSettingsFormProps {
 
 export const BasicSettingsForm = ({ totalSupply, buyTax, sellTax, onUpdate }: BasicSettingsFormProps) => {
   const beatsDisplay = totalSupply ? 
-    `${weiToBeats(parseFloat(totalSupply)).toLocaleString()} BEATS (1 wei = 1M BEATS)` 
+    `${weiToBeats(parseFloat(totalSupply)).toLocaleString()} BEATS` 
     : '';
 
   return (
