@@ -108,7 +108,6 @@ interface ContractSettings {
   routerAddress: string;
   autoLiquidity: boolean;
   liquidityLockDays: number;
-  rewardTokenAddress?: string; // NEW: for reward token feature
 }
 
 const CONTRACT_TYPES: ContractType[] = [
@@ -263,7 +262,6 @@ const generateContractCode = (settings: ContractSettings): string => {
     // Misc
     bool public autoLiquidity = ${settings.autoLiquidity};
     uint256 public liquidityLockDays = ${settings.liquidityLockDays};
-    ${settings.securityFeatures.rewardToken ? `address public rewardTokenAddress = ${settings.rewardTokenAddress || 'address(0)'};` : ''}
   `;
 
   // Security features logic
@@ -416,8 +414,7 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
     },
     routerAddress: "",
     autoLiquidity: false,
-    liquidityLockDays: 0,
-    rewardTokenAddress: '', // NEW
+    liquidityLockDays: 0
   });
 
   const [showConfetti, setShowConfetti] = useState(false);
@@ -790,14 +787,6 @@ export default function ContractCodeGenerator({ tokenomics, coinIdea }: Contract
                     <Input id="decimals" type="number" value={settings.decimals} onChange={e => handleSettingsChange('decimals', parseInt(e.target.value))} />
                   </div>
                 </div>
-                {/* Reward Token Address input, only if rewardToken is enabled */}
-                {settings.securityFeatures.rewardToken && (
-                  <div className="col-span-1 md:col-span-2">
-                    <Label htmlFor="rewardTokenAddress">Reward Token Address</Label>
-                    <Input id="rewardTokenAddress" placeholder="0x..." value={settings.rewardTokenAddress || ''} onChange={e => handleSettingsChange('rewardTokenAddress', e.target.value)} />
-                    <span className="text-xs text-gray-400">Address of the token to use for rewards (if applicable)</span>
-                  </div>
-                )}
               </CardContent>
             </Card>
             {/* Tax Settings */}
