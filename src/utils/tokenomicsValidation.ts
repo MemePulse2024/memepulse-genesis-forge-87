@@ -34,5 +34,12 @@ export const validateAllocations = (tokenomics: TokenomicsData) => {
   return errors;
 };
 
-// Removed all references to 'beats', BEATS conversion, and related formatting
-// (You may want to replace with standard number formatting or remove these utilities if not needed)
+export const formatNumber = (num: string | number) => {
+  const n = typeof num === 'string' ? parseFloat(num) : num;
+  if (isNaN(n)) return '0';
+  if (n >= 1e12) return (n / 1e12).toFixed(2) + 'T';
+  if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+  if (n >= 1e3) return (n / 1e3).toFixed(2) + 'K';
+  return n.toLocaleString();
+};
