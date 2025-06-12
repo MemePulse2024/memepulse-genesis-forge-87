@@ -1,7 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { weiToBeats } from '@/utils/tokenomicsValidation';
 
 interface BasicSettingsFormProps {
   totalSupply: string;
@@ -11,10 +10,6 @@ interface BasicSettingsFormProps {
 }
 
 export const BasicSettingsForm = ({ totalSupply, buyTax, sellTax, onUpdate }: BasicSettingsFormProps) => {
-  const beatsDisplay = totalSupply ? 
-    `${weiToBeats(parseFloat(totalSupply)).toLocaleString()} BEATS` 
-    : '';
-
   return (
     <Card className="bg-card/80 backdrop-blur-md border-purple-500/20">
       <CardHeader>
@@ -30,9 +25,6 @@ export const BasicSettingsForm = ({ totalSupply, buyTax, sellTax, onUpdate }: Ba
             onChange={(e) => onUpdate('totalSupply', e.target.value)}
             className="bg-black/50 border-gray-600"
           />
-          {totalSupply && (
-            <p className="text-sm text-amber-400 mt-1">{beatsDisplay}</p>
-          )}
         </div>
         
         <div className="grid grid-cols-2 gap-4">

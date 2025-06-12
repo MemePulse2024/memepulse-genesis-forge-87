@@ -34,17 +34,5 @@ export const validateAllocations = (tokenomics: TokenomicsData) => {
   return errors;
 };
 
-// Convert wei to BEATS (1 wei = 1 million BEATS)
-export const weiToBeats = (wei: number) => wei * 1000000;
-
-// Format number with BEATS conversion
-export const formatNumber = (num: string) => {
-  const numValue = parseFloat(num);
-  const beatsValue = weiToBeats(numValue);
-  
-  if (beatsValue >= 1e12) return `${(beatsValue / 1e12).toFixed(2)}T BEATS`;
-  if (beatsValue >= 1e9) return `${(beatsValue / 1e9).toFixed(2)}B BEATS`;
-  if (beatsValue >= 1e6) return `${(beatsValue / 1e6).toFixed(2)}M BEATS`;
-  if (beatsValue >= 1e3) return `${(beatsValue / 1e3).toFixed(2)}K BEATS`;
-  return `${beatsValue.toLocaleString()} BEATS`;
-};
+// Removed all references to 'beats', BEATS conversion, and related formatting
+// (You may want to replace with standard number formatting or remove these utilities if not needed)
