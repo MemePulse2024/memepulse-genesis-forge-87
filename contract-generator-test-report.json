@@ -1,0 +1,305 @@
+{
+  "summary": {
+    "total": 49,
+    "passed": 48,
+    "failed": 1,
+    "successRate": "97.96%"
+  },
+  "timestamp": "2025-06-12T07:30:37.701Z",
+  "tests": [
+    {
+      "name": "Component File Exists",
+      "passed": true,
+      "message": "ContractCodeGenerator.tsx file exists",
+      "timestamp": "2025-06-12T07:30:36.595Z"
+    },
+    {
+      "name": "Contract Generation Function",
+      "passed": true,
+      "message": "generateContractCode function is present",
+      "timestamp": "2025-06-12T07:30:36.595Z"
+    },
+    {
+      "name": "Generate Handler Function",
+      "passed": true,
+      "message": "handleGenerateContract function is present",
+      "timestamp": "2025-06-12T07:30:36.595Z"
+    },
+    {
+      "name": "Security Features Interface",
+      "passed": true,
+      "message": "SecurityFeatures interface is defined",
+      "timestamp": "2025-06-12T07:30:36.595Z"
+    },
+    {
+      "name": "Tax Settings Interface",
+      "passed": true,
+      "message": "TaxSettings interface is defined",
+      "timestamp": "2025-06-12T07:30:36.595Z"
+    },
+    {
+      "name": "Generate Function Structure",
+      "passed": true,
+      "message": "generateContractCode function is properly structured",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Solidity Version",
+      "passed": true,
+      "message": "Generated contract includes Solidity version pragma",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "OpenZeppelin Imports",
+      "passed": true,
+      "message": "Generated contract includes OpenZeppelin imports",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "ERC20 Standard",
+      "passed": true,
+      "message": "Generated contract inherits from ERC20",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Constructor Function",
+      "passed": true,
+      "message": "Generated contract includes constructor",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Token Minting",
+      "passed": true,
+      "message": "Generated contract includes token minting logic",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Contract Element 1",
+      "passed": true,
+      "message": "Contract should include: pragma solidity ^0.8.19;",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Contract Element 2",
+      "passed": true,
+      "message": "Contract should include: import \"@openzeppelin/contracts/token/ERC20/ERC20.sol\";",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Contract Element 3",
+      "passed": true,
+      "message": "Contract should include: import \"@openzeppelin/contracts/security/Pausable.sol\";",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Contract Element 4",
+      "passed": true,
+      "message": "Contract should include: import \"@openzeppelin/contracts/access/Ownable.sol\";",
+      "timestamp": "2025-06-12T07:30:36.596Z"
+    },
+    {
+      "name": "Contract Element 5",
+      "passed": true,
+      "message": "Contract should include: contract TestMemeToken is",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 6",
+      "passed": true,
+      "message": "Contract should include: constructor() ERC20(\"TestMemeToken\", \"TEST\")",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 7",
+      "passed": true,
+      "message": "Contract should include: _mint(msg.sender, 1000000000 * 10 ** decimals());",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 8",
+      "passed": true,
+      "message": "Contract should include: uint256 public buyTax = 5;",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 9",
+      "passed": true,
+      "message": "Contract should include: uint256 public sellTax = 5;",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 10",
+      "passed": true,
+      "message": "Contract should include: modifier antiWhale",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 11",
+      "passed": true,
+      "message": "Contract should include: mapping(address => bool) private _blacklist;",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 12",
+      "passed": true,
+      "message": "Contract should include: function pause() public onlyOwner",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Contract Element 13",
+      "passed": true,
+      "message": "Contract should include: function unpause() public onlyOwner",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Owner Access Control",
+      "passed": true,
+      "message": "Generated contracts include owner access control",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Input Validation",
+      "passed": true,
+      "message": "Generated contracts include require statements for validation",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Custom Modifiers",
+      "passed": true,
+      "message": "Generated contracts include custom modifiers",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "No tx.origin Usage",
+      "passed": true,
+      "message": "Generated contracts avoid tx.origin (security best practice)",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "Reentrancy Protection",
+      "passed": true,
+      "message": "Generated contracts consider reentrancy protection",
+      "timestamp": "2025-06-12T07:30:36.597Z"
+    },
+    {
+      "name": "TypeScript Compilation",
+      "passed": true,
+      "message": "Component compiles without TypeScript errors",
+      "timestamp": "2025-06-12T07:30:37.117Z"
+    },
+    {
+      "name": "Dependency: react",
+      "passed": true,
+      "message": "Required dependency react is installed",
+      "timestamp": "2025-06-12T07:30:37.117Z"
+    },
+    {
+      "name": "Dependency: react-dom",
+      "passed": true,
+      "message": "Required dependency react-dom is installed",
+      "timestamp": "2025-06-12T07:30:37.118Z"
+    },
+    {
+      "name": "Dependency: @radix-ui/react-switch",
+      "passed": true,
+      "message": "Required dependency @radix-ui/react-switch is installed",
+      "timestamp": "2025-06-12T07:30:37.118Z"
+    },
+    {
+      "name": "Dependency: @radix-ui/react-tabs",
+      "passed": true,
+      "message": "Required dependency @radix-ui/react-tabs is installed",
+      "timestamp": "2025-06-12T07:30:37.118Z"
+    },
+    {
+      "name": "Dependency: lucide-react",
+      "passed": true,
+      "message": "Required dependency lucide-react is installed",
+      "timestamp": "2025-06-12T07:30:37.118Z"
+    },
+    {
+      "name": "Dependency: recharts",
+      "passed": true,
+      "message": "Required dependency recharts is installed",
+      "timestamp": "2025-06-12T07:30:37.118Z"
+    },
+    {
+      "name": "UI Element: useState",
+      "passed": true,
+      "message": "Component includes useState for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: useEffect",
+      "passed": true,
+      "message": "Component includes useEffect for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: Card",
+      "passed": true,
+      "message": "Component includes Card for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: Button",
+      "passed": true,
+      "message": "Component includes Button for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: Input",
+      "passed": true,
+      "message": "Component includes Input for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: Switch",
+      "passed": true,
+      "message": "Component includes Switch for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: Label",
+      "passed": true,
+      "message": "Component includes Label for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "UI Element: toast",
+      "passed": true,
+      "message": "Component includes toast for proper UI functionality",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "AI Suggest Function",
+      "passed": true,
+      "message": "AI suggest functionality is implemented",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "AI Explain Function",
+      "passed": true,
+      "message": "AI explain functionality is implemented",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "AI Randomize Function",
+      "passed": true,
+      "message": "AI randomize functionality is implemented",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "AI Auto-clear Timer",
+      "passed": true,
+      "message": "AI suggestions auto-clear after 7 seconds",
+      "timestamp": "2025-06-12T07:30:37.119Z"
+    },
+    {
+      "name": "Contract Compilation",
+      "passed": false,
+      "message": "Contract compilation failed: Command failed: cd /workspaces/memepulse-genesis-forge-87 && npx hardhat compile\nError HH801: Plugin @nomicfoundation/hardhat-toolbox requires the following dependencies to be installed: @nomicfoundation/hardhat-chai-matchers, @nomicfoundation/hardhat-ignition-ethers, @nomicfoundation/hardhat-network-helpers, @nomicfoundation/hardhat-verify, @typechain/ethers-v6, @typechain/hardhat, @types/chai, @types/mocha, hardhat-gas-reporter, solidity-coverage, ts-node, typechain.\nPlease run: npm install --save-dev \"@nomicfoundation/hardhat-chai-matchers@^2.0.0\" \"@nomicfoundation/hardhat-ignition-ethers@^0.15.0\" \"@nomicfoundation/hardhat-network-helpers@^1.0.0\" \"@nomicfoundation/hardhat-verify@^2.0.0\" \"@typechain/ethers-v6@^0.5.0\" \"@typechain/hardhat@^9.0.0\" \"@types/chai@^4.2.0\" \"@types/mocha@>=9.1.0\" \"hardhat-gas-reporter@^1.0.8\" \"solidity-coverage@^0.8.1\" \"ts-node@>=8.0.0\" \"typechain@^8.3.0\"\nHardhatError: HH801: Plugin @nomicfoundation/hardhat-toolbox requires the following dependencies to be installed: @nomicfoundation/hardhat-chai-matchers, @nomicfoundation/hardhat-ignition-ethers, @nomicfoundation/hardhat-network-helpers, @nomicfoundation/hardhat-verify, @typechain/ethers-v6, @typechain/hardhat, @types/chai, @types/mocha, hardhat-gas-reporter, solidity-coverage, ts-node, typechain.\nPlease run: npm install --save-dev \"@nomicfoundation/hardhat-chai-matchers@^2.0.0\" \"@nomicfoundation/hardhat-ignition-ethers@^0.15.0\" \"@nomicfoundation/hardhat-network-helpers@^1.0.0\" \"@nomicfoundation/hardhat-verify@^2.0.0\" \"@typechain/ethers-v6@^0.5.0\" \"@typechain/hardhat@^9.0.0\" \"@types/chai@^4.2.0\" \"@types/mocha@>=9.1.0\" \"hardhat-gas-reporter@^1.0.8\" \"solidity-coverage@^0.8.1\" \"ts-node@>=8.0.0\" \"typechain@^8.3.0\"\n    at analyzeModuleNotFoundError (/workspaces/memepulse-genesis-forge-87/node_modules/hardhat/src/internal/core/config/config-loading.ts:241:11)\n    at loadConfigAndTasks (/workspaces/memepulse-genesis-forge-87/node_modules/hardhat/src/internal/core/config/config-loading.ts:105:5)\n    at main (/workspaces/memepulse-genesis-forge-87/node_modules/hardhat/src/internal/cli/cli.ts:221:62)\n    at Object.<anonymous> (/workspaces/memepulse-genesis-forge-87/node_modules/hardhat/src/internal/cli/cli.ts:483:1)\n    at Module._compile (node:internal/modules/cjs/loader:1529:14)\n    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1613:10)\n    at Module.load (node:internal/modules/cjs/loader:1275:32)\n    at Function.Module._load (node:internal/modules/cjs/loader:1096:12)\n    at Module.require (node:internal/modules/cjs/loader:1298:19)\n    at require (node:internal/modules/helpers:182:18)\n",
+      "timestamp": "2025-06-12T07:30:37.701Z"
+    }
+  ]
+}
