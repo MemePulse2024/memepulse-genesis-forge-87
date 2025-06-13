@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/558322ce-0718-4d44-a160-b0b28ebefd79
+**URL**: https://memepulse-genesis-forge-87.lovable.app/
 
 ## How can I edit this code?
 
