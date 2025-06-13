@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://memepulse-genesis-forge-87.lovable.app/
+**URL**: https://preview--memepulse-genesis-forge-87.lovable.app/
 
 ## How can I edit this code?
 
